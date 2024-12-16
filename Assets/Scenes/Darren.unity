@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b280e3951c2aa844b3ed2ed1b7c5b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSens: 3
+  mouseSens: 1
   target: {fileID: 1815484238}
   distanceFromTarget: 5
   smoothTime: 0.2
