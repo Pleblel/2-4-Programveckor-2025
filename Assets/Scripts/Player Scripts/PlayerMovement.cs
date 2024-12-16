@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour, IMovable
@@ -14,13 +15,13 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     [Header("References")]
     Rigidbody rb;
+    [SerializeField] Camera followCamera; 
 
     [Header("PlayerVariables")]
-    [SerializeField] float jumpPower = 5.0f;
     [SerializeField] float dashPower = 5.0f;
     [SerializeField] float dashTime = 0.3f;
     [SerializeField] float dashCoolDown = 1.0f;
-    bool inAir = false;
+    [SerializeField] float rotationSpeed = 7.0f;
     bool canDash = true;
     bool isDashing = false;
 
@@ -54,7 +55,6 @@ public class PlayerMovement : MonoBehaviour, IMovable
             return;
 
         DashInput();
-        Jump();
     }
 
     private void FixedUpdate()
@@ -68,9 +68,17 @@ public class PlayerMovement : MonoBehaviour, IMovable
     public void Move(Vector3 direction)
     {
         //Get the direction, multiply the directions by movement speed, store the target velocity on the "y" axis to ensure no gravity issues
-        Vector3 targetVelocity = direction * movementSpeed;
+        Vector3 targetVelocity = Quaternion.Euler(0,followCamera.transform.eulerAngles.y,0) * direction * movementSpeed;
         targetVelocity.y = rb.velocity.y;
         rb.velocity = targetVelocity;
+
+
+        if(targetVelocity != Vector3.zero)
+        {
+            Quaternion desiredRoation = Quaternion.LookRotation(targetVelocity, Vector3.up);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, desiredRoation, rotationSpeed * Time.deltaTime); 
+        }
     }
 
 
@@ -98,15 +106,4 @@ public class PlayerMovement : MonoBehaviour, IMovable
         canDash = true;
     }
 
-
-
-
-    private void Jump()
-    {
-        //Use the absolute power of rb.velocity.y to check if the player is in the air or not
-        inAir = Mathf.Abs(rb.velocity.y) > 0.01f;
-
-        if (Input.GetButton("Jump") && !inAir)
-            rb.velocity = new Vector2(rb.velocity.x, jumpPower);
-    }
 }

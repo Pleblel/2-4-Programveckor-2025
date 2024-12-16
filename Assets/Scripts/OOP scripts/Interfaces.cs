@@ -32,7 +32,6 @@ public interface IInteractables
 
 
 
-
 public interface IArmor : IEquipable
 {
     float defenseBonus { get; }
