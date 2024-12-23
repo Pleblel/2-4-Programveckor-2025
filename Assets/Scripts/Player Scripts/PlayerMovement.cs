@@ -15,7 +15,8 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     [Header("References")]
     Rigidbody rb;
-    [SerializeField] Camera followCamera; 
+    [SerializeField] Camera followCamera;
+    private Transform lockOnTarget;
 
     [Header("PlayerVariables")]
     [SerializeField] float dashPower = 5.0f;
@@ -46,9 +47,10 @@ public class PlayerMovement : MonoBehaviour, IMovable
     void Update()
     {
         //Get the movement direction inputs
-        movementDirection = new Vector3(diretionX, 0f, directionZ).normalized;
         diretionX = Input.GetAxisRaw("Horizontal");
         directionZ = Input.GetAxisRaw("Vertical");
+        movementDirection = new Vector3(diretionX, 0f, directionZ).normalized;
+      
 
         //Returns the line of code, not letting anything under it run
         if (isDashing)
@@ -67,17 +69,24 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     public void Move(Vector3 direction)
     {
-        //Get the direction, multiply the directions by movement speed, store the target velocity on the "y" axis to ensure no gravity issues
-        Vector3 targetVelocity = Quaternion.Euler(0,followCamera.transform.eulerAngles.y,0) * direction * movementSpeed;
+        //Set the moveDirection depending on where the camera is facing
+        Vector3 targetVelocity = Quaternion.Euler(0, followCamera.transform.eulerAngles.y, 0) * direction * movementSpeed;
         targetVelocity.y = rb.velocity.y;
         rb.velocity = targetVelocity;
 
-
-        if(targetVelocity != Vector3.zero)
+        if (lockOnTarget != null)
         {
-            Quaternion desiredRoation = Quaternion.LookRotation(targetVelocity, Vector3.up);
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, desiredRoation, rotationSpeed * Time.deltaTime); 
+            //Makes the player move around the target it is locked onto
+            Vector3 targetDirection = (lockOnTarget.position - transform.position).normalized;
+            targetDirection.y = 0;
+            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+        else if (targetVelocity != Vector3.zero)
+        {
+            //Rotate the player in the direction it is moving
+            Quaternion desiredRotation = Quaternion.LookRotation(targetVelocity, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
         }
     }
 
@@ -94,16 +103,22 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     private IEnumerator Dash()
     {
-        //Dashes the player forward (z-axis)
-        canDash = false;
-        isDashing = true;
-        Vector3 dashDiretion = transform.forward;
-        rb.velocity = dashDiretion * dashPower;
-        yield return new WaitForSeconds(dashTime);
-        rb.velocity = Vector3.zero;
-        isDashing = false;
-        yield return new WaitForSeconds(dashCoolDown);
-        canDash = true;
+        //Dashes the player in the direction they are moving
+         canDash = false;
+         isDashing = true;
+         Vector3 dashDirection = movementDirection != Vector3.zero ? movementDirection : transform.forward; //Checks whether to simply dash forward or dash in the movement direction
+         rb.velocity = Quaternion.Euler(0, followCamera.transform.eulerAngles.y, 0) * dashDirection * dashPower; //Adjusts the dash direction based off of where the camera is facing
+         yield return new WaitForSeconds(dashTime);
+         rb.velocity = Vector3.zero;
+         isDashing = false;
+         yield return new WaitForSeconds(dashCoolDown);
+         canDash = true;
+
+           
     }
 
+    public void SetLockOnTarget(Transform target)
+    {
+        lockOnTarget = target;
+    }
 }
