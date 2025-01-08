@@ -86,10 +86,7 @@ public class PlayerAttack : MonoBehaviour
         {
             Vector3 spawnPosition = transform.position + transform.forward;
             GameObject hitbox = Instantiate(hitboxPrefab, spawnPosition, Quaternion.identity);
-            if (hitboxController != null)
-            {
-                hitboxController.SetDamage(lastChargeAmount);
-            }
+
             Destroy(hitbox, hitboxDuration);
         }
     }
