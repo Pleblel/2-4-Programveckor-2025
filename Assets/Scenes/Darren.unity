@@ -754,8 +754,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 633402964361108972, guid: a5faef33b10924d4ba7e39de4aa779cb, type: 3}
+      propertyPath: m_Mass
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 633402964361108972, guid: a5faef33b10924d4ba7e39de4aa779cb, type: 3}
       propertyPath: m_UseGravity
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 633402964361108972, guid: a5faef33b10924d4ba7e39de4aa779cb, type: 3}
+      propertyPath: m_Constraints
+      value: 112
       objectReference: {fileID: 0}
     - target: {fileID: 2269113801412775272, guid: a5faef33b10924d4ba7e39de4aa779cb, type: 3}
       propertyPath: m_LocalScale.y
@@ -767,7 +775,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2269113801412775272, guid: a5faef33b10924d4ba7e39de4aa779cb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.62
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 2269113801412775272, guid: a5faef33b10924d4ba7e39de4aa779cb, type: 3}
       propertyPath: m_LocalPosition.z

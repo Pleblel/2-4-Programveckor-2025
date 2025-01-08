@@ -48,8 +48,8 @@ public class SpiderEnemy : BaseEntity, IMovable
         if(PlayerIsInMeleeRange())
         movementDirection = (playerPosition.transform.position  - transform.position).normalized;
 
-        if(PlayerIsInShootingRange())
-        StartCoroutine()
+        if (PlayerIsInShootingRange())
+            StartCoroutine("ShootGoo");
     }
 
     private void FixedUpdate()
