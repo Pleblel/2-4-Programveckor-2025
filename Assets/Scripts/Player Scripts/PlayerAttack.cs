@@ -8,10 +8,14 @@ public class PlayerAttack : MonoBehaviour
     [Header("UI Elements")]
     public Slider chargeBarSlider; // The UI slider element
 
-    float chargeSpeed = 0.75f;  // How fast the bar charges
+    [Header("Hitbox Settings")]
+    public GameObject hitboxPrefab; // Hitbox prefab to spawn
+    public float hitboxDuration = 0.5f; // Duration of hitbox
+
+    float chargeSpeed = 0.5f;  // How fast the bar charges
     float maxCharge = 1f;  // Maximum charge amount
     float currentCharge = 0f;
-    public float lastChargeAmount = 0f;
+    float lastChargeAmount = 0f;
     bool isCharging = false;
 
     void Start()
@@ -37,8 +41,9 @@ public class PlayerAttack : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             isCharging = false;
-            lastChargeAmount = currentCharge;
-            currentCharge = 0;
+            SaveChargeAmount();
+            SpawnHitbox();
+            ResetCharge();
         }
 
         // Charge while mouse button is held
@@ -57,11 +62,36 @@ public class PlayerAttack : MonoBehaviour
         currentCharge = Mathf.Clamp(currentCharge, 0f, maxCharge);
     }
 
+    void ResetCharge()
+    {
+        currentCharge = 0f;
+    }
+
+    void SaveChargeAmount()
+    {
+        lastChargeAmount = currentCharge;
+    }
+
     void UpdateBar()
     {
         if (chargeBarSlider != null)
         {
             chargeBarSlider.value = currentCharge;
+        }
+    }
+
+    void SpawnHitbox()
+    {
+        if (hitboxPrefab != null)
+        {
+            Vector3 spawnPosition = transform.position + transform.forward;
+            GameObject hitbox = Instantiate(hitboxPrefab, spawnPosition, Quaternion.identity);
+            HitboxController hitboxController = hitbox.GetComponent<HitboxController>();
+            if (hitboxController != null)
+            {
+                hitboxController.SetDamage(lastChargeAmount);
+            }
+            Destroy(hitbox, hitboxDuration);
         }
     }
 }
