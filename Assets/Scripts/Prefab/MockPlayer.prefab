@@ -213,6 +213,7 @@ GameObject:
   - component: {fileID: 633402964361108972}
   - component: {fileID: 8896713122134758499}
   - component: {fileID: 8904737658007214619}
+  - component: {fileID: 3134948276415888206}
   m_Layer: 0
   m_Name: MockPlayer
   m_TagString: Player
@@ -373,6 +374,24 @@ MonoBehaviour:
     m_Bits: 8
   cameraTarget: {fileID: 6593527106769842154}
   maxLockOnDistance: 50
+--- !u!114 &3134948276415888206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6121285804857655109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c5e926bb205dd8469751d9ca465d84b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRange: 3
+  movableLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  playerTransform: {fileID: 0}
+  moveSpeed: 5
 --- !u!1 &7825999376231728341
 GameObject:
   m_ObjectHideFlags: 0
