@@ -46,5 +46,12 @@ public abstract class BaseEntity : MonoBehaviour, ILivingEntity, ICombatant
 
 }
 
+public abstract class Projectile : MonoBehaviour
+{
+    public float travelSpeed = 4.0f;
 
+    public Rigidbody rb; 
+
+    public Vector3 direction;
+}
 

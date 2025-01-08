@@ -7,8 +7,6 @@ public class SpiderEnemy : BaseEntity, IMovable
     [Header("Variables")]
     [SerializeField] private float meleeRange = 10f;
     [SerializeField] private float shootingRange = 15f;
-    [SerializeField] private float shootingCooldown = 1.0f;
-    [SerializeField] private float timeInBetweenShots = 0.1f;
     [SerializeField] private bool isShooting = false;
     [SerializeField] private bool canShoot = true;
 
@@ -17,6 +15,7 @@ public class SpiderEnemy : BaseEntity, IMovable
     [SerializeField] private GameObject playerPosition;
     Rigidbody rb;
     public GameObject Goo;
+    public Transform bulletSpawn; 
    
     public float movementSpeed { get; private set; }
    
@@ -31,7 +30,7 @@ public class SpiderEnemy : BaseEntity, IMovable
         currentHealth = maxHealth;
         movementSpeed = 5.0f; 
         damage = 5.0f;
-        attackSpeed = 1.0f;
+        attackSpeed = 1.5f;
         defense = 1.0f;
 
         rb = GetComponent<Rigidbody>();
@@ -107,8 +106,8 @@ public class SpiderEnemy : BaseEntity, IMovable
     {
         canShoot = false;
         isShooting = true;
-        Instantiate(Goo, transform.position, Quaternion.identity);
-        yield return new WaitForSeconds(shootingCooldown);
+        Instantiate(Goo, bulletSpawn.position, Quaternion.identity);
+        yield return new WaitForSeconds(attackSpeed);
         canShoot = true;
         isShooting = false;      
     }
