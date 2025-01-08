@@ -16,7 +16,7 @@ public class SpiderEnemy : BaseEntity, IMovable
     [Header("References")]
     [SerializeField] private GameObject playerPosition;
     Rigidbody rb;
-    GameObject Goo;
+    public GameObject Goo;
    
     public float movementSpeed { get; private set; }
    
@@ -48,14 +48,18 @@ public class SpiderEnemy : BaseEntity, IMovable
         if(PlayerIsInMeleeRange())
         movementDirection = (playerPosition.transform.position  - transform.position).normalized;
 
-        if (PlayerIsInShootingRange())
+        if (PlayerIsInShootingRange() && canShoot && !PlayerIsInMeleeRange())
             StartCoroutine("ShootGoo");
     }
 
     private void FixedUpdate()
     {   
         if(PlayerIsInMeleeRange() && !isShooting)
-        Move(movementDirection);   
+        {
+            Move(movementDirection);
+            StopAllCoroutines();
+        }
+          
     }
 
 
