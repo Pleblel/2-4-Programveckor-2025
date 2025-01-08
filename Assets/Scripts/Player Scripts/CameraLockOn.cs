@@ -36,6 +36,11 @@ public class CameraLockOn : MonoBehaviour
         {
             UpdateLockOnCamera();
         }
+
+        if(currentTarget == null)
+        {
+            DisableLockOn();
+        }
     }
 
     private void ToggleLockOn()
