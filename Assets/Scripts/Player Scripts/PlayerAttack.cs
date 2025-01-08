@@ -8,15 +8,15 @@ public class PlayerAttack : MonoBehaviour
     [Header("UI Elements")]
     public Slider chargeBarSlider; // The UI slider element
 
-    [Header("Hitbox Settings")]
-    public GameObject hitboxPrefab; // Hitbox prefab to spawn
-    public float hitboxDuration = 0.5f; // Duration of hitbox
-
     float chargeSpeed = 0.5f;  // How fast the bar charges
     float maxCharge = 1f;  // Maximum charge amount
     float currentCharge = 0f;
     float lastChargeAmount = 0f;
     bool isCharging = false;
+
+    [Header("Attack Settings")]
+    public Vector3 hitboxSize = new Vector3(1f, 1f, 1f); // Size of the hitbox
+    public float hitboxDistance = 1f; // Distance in front of the player
 
     void Start()
     {
@@ -42,7 +42,7 @@ public class PlayerAttack : MonoBehaviour
         {
             isCharging = false;
             SaveChargeAmount();
-            SpawnHitbox();
+            DealDamage();
             ResetCharge();
         }
 
@@ -78,16 +78,29 @@ public class PlayerAttack : MonoBehaviour
         {
             chargeBarSlider.value = currentCharge;
         }
-    }
+    }   
 
-    void SpawnHitbox()
+    void DealDamage()
     {
-        if (hitboxPrefab != null)
+        Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
+        Collider[] hitColliders = Physics.OverlapBox(boxCenter, hitboxSize / 2);
+        foreach (Collider collider in hitColliders)
         {
-            Vector3 spawnPosition = transform.position + transform.forward;
-            GameObject hitbox = Instantiate(hitboxPrefab, spawnPosition, Quaternion.identity);
-
-            Destroy(hitbox, hitboxDuration);
+            BaseEntity entity = collider.GetComponent<BaseEntity>();
+            if (entity != null && entity.isAlive)
+            {
+                entity.TakeDamage(lastChargeAmount * 100);
+                entity.Death();
+            }
         }
     }
+
+    // Draw the hitbox for visualization in the editor
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
+        Gizmos.DrawWireCube(boxCenter, hitboxSize);
+    }
 }
+
