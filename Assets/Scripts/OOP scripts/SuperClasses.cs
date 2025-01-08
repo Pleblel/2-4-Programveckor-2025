@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Compilation;
 using UnityEngine;
 
 //Everyone
@@ -50,8 +51,13 @@ public abstract class Projectile : MonoBehaviour
 {
     public float travelSpeed = 4.0f;
 
+    public float damage = 0f;
+
     public Rigidbody rb; 
 
     public Vector3 direction;
+
+    public abstract void Damage(BaseEntity _entity);
+    
 }
 

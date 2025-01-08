@@ -106,7 +106,14 @@ public class SpiderEnemy : BaseEntity, IMovable
     {
         canShoot = false;
         isShooting = true;
-        Instantiate(Goo, bulletSpawn.position, Quaternion.identity);
+        GameObject GooInstance = Instantiate(Goo, bulletSpawn.position, Quaternion.identity);
+        GooBall gooScript = GooInstance.GetComponent<GooBall>();
+
+        if (gooScript != null) 
+        {
+            gooScript.InitializeDamage(damage);
+        }
+    
         yield return new WaitForSeconds(attackSpeed);
         canShoot = true;
         isShooting = false;      

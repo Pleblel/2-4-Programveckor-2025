@@ -31,6 +31,17 @@ public interface IInteractables
 }
 
 
+public interface IDamageAble
+{
+    void Damage(BaseEntity entity);
+}
+
+public interface IDamageAbleOvertime
+{
+    IEnumerator PassiveDamage(BaseEntity entity);
+
+    float damageTimer { get; }
+}
 
 public interface IArmor : IEquipable
 {
