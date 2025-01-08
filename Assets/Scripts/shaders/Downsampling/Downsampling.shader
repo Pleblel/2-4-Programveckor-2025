@@ -1,4 +1,4 @@
-Shader "Hidden/Downsampling" {
+Shader "Unlit/Downsampling" {
     Properties {
         _MainTex ("Texture", 2D) = "white" {}
     }

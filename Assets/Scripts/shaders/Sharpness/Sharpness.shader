@@ -1,4 +1,4 @@
-Shader "Hidden/Sharpness" {
+Shader "Unlit/Sharpness" {
     Properties {
         _MainTex ("Texture", 2D) = "white" {}
     }
