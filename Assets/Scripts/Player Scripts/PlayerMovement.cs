@@ -61,6 +61,8 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     private void FixedUpdate()
     {
+        rb.angularVelocity = Vector3.zero;
+
         if (isDashing)
             return;
         Move(movementDirection);

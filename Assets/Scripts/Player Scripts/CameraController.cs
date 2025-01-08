@@ -33,7 +33,6 @@ public class CameraController : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y") * mouseSens;
 
         rotationY += mouseX;
-        rotationX += mouseY;
 
         rotationX = Mathf.Clamp(rotationX, rotationXMinMax.x, rotationXMinMax.y);
 
