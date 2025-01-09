@@ -730,6 +730,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 142888211038158030, guid: fdba5d70bfb5d7649b5de11d119efabe, type: 3}
+      propertyPath: meleeRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 142888211038158030, guid: fdba5d70bfb5d7649b5de11d119efabe, type: 3}
       propertyPath: playerPosition
       value: 
       objectReference: {fileID: 665485626}

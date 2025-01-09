@@ -6,7 +6,6 @@ public class SpiderEnemy : BaseEntity, IMovable
 {
     [Header("Variables")]
     [SerializeField] private float chaseRange = 10f;
-    [SerializeField] private float meleeRange = 5f;
     [SerializeField] private float shootingRange = 15f;
     [SerializeField] private bool isShooting = false;
     [SerializeField] private bool canShoot = true;
@@ -58,13 +57,20 @@ public class SpiderEnemy : BaseEntity, IMovable
         else if (!PlayerIsInChaseRange())
             rb.velocity = Vector3.zero;
 
-        if (PlayerIsInMeleeRange() && canMeleeAttack && !isShooting)
+        if (canMeleeAttack && !isMeleeAttacking && IsPlayerInMeleeHitbox())
             StartCoroutine(MeleeAttack());
-            
+        else if (!IsPlayerInMeleeHitbox())
+            isMeleeAttacking = false;
+        
+
 
 
         if (PlayerIsInShootingRange() && canShoot && !PlayerIsInChaseRange())
             StartCoroutine("ShootGoo");
+
+
+
+        Debug.Log(isMeleeAttacking);
     }
 
     private void FixedUpdate()
@@ -72,7 +78,6 @@ public class SpiderEnemy : BaseEntity, IMovable
         if(PlayerIsInChaseRange() && !isShooting && !isMeleeAttacking)
         {
             Move(movementDirection);
-            StopAllCoroutines();
         }
           
     }
@@ -98,14 +103,6 @@ public class SpiderEnemy : BaseEntity, IMovable
     }
 
 
-    private bool PlayerIsInMeleeRange()
-    {
-        if (playerPosition == null) return false;
-        float distanceToPlayer = Vector3.Distance(transform.position, playerPosition.transform.position);
-
-        return distanceToPlayer <= chaseRange;
-    }
-
     private bool PlayerIsInChaseRange()
     {
         if (playerPosition == null) return false;
@@ -122,6 +119,21 @@ public class SpiderEnemy : BaseEntity, IMovable
 
         return distanceToPlayer <= shootingRange;
     }
+
+    private bool IsPlayerInMeleeHitbox()
+    {
+        Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
+        Collider[] hitColliders = Physics.OverlapBox(boxCenter, hitboxSize / 2);
+        foreach (Collider collider in hitColliders)
+        {
+            if (collider.CompareTag("Player"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     IEnumerator ShootGoo()
     {
@@ -145,22 +157,26 @@ public class SpiderEnemy : BaseEntity, IMovable
         canMeleeAttack = false;
         isMeleeAttacking = true;
 
-        Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
-        Collider[] hitColliders = Physics.OverlapBox(boxCenter, hitboxSize / 2);
-        
-        foreach (Collider collider in hitColliders)
+        if (IsPlayerInMeleeHitbox())
         {
-            BaseEntity entity = collider.GetComponent<BaseEntity>();
-            if (entity != null && entity.isAlive && entity.CompareTag("Player"))
+            Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
+            Collider[] hitColliders = Physics.OverlapBox(boxCenter, hitboxSize / 2);
+            foreach (Collider collider in hitColliders)
             {
-                Attack(entity);
-                entity.Death();
+                BaseEntity entity = collider.GetComponent<BaseEntity>();
+                if (collider.CompareTag("Player"))
+                {
+                    Attack(entity);
+                    entity.Death();
+                }
             }
         }
+
         yield return new WaitForSeconds(attackSpeed);
         canMeleeAttack = true;
         isMeleeAttacking = false;
     }
+
 
     private void FacePlayer()
     {
@@ -191,9 +207,6 @@ public class SpiderEnemy : BaseEntity, IMovable
 
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, shootingRange);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, meleeRange);
 
         Gizmos.color = Color.magenta;
         Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
