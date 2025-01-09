@@ -50,6 +50,7 @@ public class SpiderEnemy : BaseEntity, IMovable
         Mathf.RoundToInt(maxHealth);
         Mathf.RoundToInt(currentHealth);
 
+        FacePlayer();
         playerPosition = GameObject.FindGameObjectWithTag("Player");
 
         if (PlayerIsInChaseRange())
@@ -163,7 +164,23 @@ public class SpiderEnemy : BaseEntity, IMovable
 
     private void FacePlayer()
     {
-       
+        if (playerPosition != null)
+        {
+            // Calculate the direction to the player
+            Vector3 direction = playerPosition.transform.position - transform.position;
+
+            // Zero out the y-axis rotation if you want the enemy to rotate only on the horizontal plane
+            direction.y = 0;
+
+            // Ensure the direction is normalized to avoid scaling issues
+            direction.Normalize();
+
+            // Calculate the rotation needed to face the player
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            // Smoothly rotate towards the player (optional)
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+        }
     }
 
 
