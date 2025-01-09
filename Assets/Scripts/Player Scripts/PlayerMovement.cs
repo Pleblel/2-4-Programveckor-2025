@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour, IMovable
 {
+    //Sofia with the audo manager script parts
+    AudioManager audioManager;
 
     //Darren
 
@@ -38,6 +40,8 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     private void Awake()
     {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+
         rb = GetComponent<Rigidbody>();
         movementSpeed = 6.0f;
         runningSpeed = movementSpeed * 1.5f;
@@ -86,6 +90,8 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
         if (wantsToRun && CanRun())
         {
+            //audioManager.PlaySFX(audioManager.walking);
+
             StartRunning();
         }
         else
