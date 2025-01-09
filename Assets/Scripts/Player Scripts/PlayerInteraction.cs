@@ -1,22 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInteraction : MonoBehaviour
+public class ObjectMover : MonoBehaviour
 {
-    public float interactionRange = 3f;
+    public float interactionDistance = 1.5f;
+    public float interactionSphereSize = 1f;
     public LayerMask movableLayer;
     public Transform playerTransform;
     public float moveSpeed = 5f;
 
     private GameObject currentObject;
     private bool isMovingObject = false;
-    private Vector3 offset;
-
-    private void Awake()
-    {
-        playerTransform = gameObject.transform;
-    }
+    private Vector3 interactionPoint;
+    private Vector3 interactVelocity;
 
     void Update()
     {
@@ -31,6 +26,11 @@ public class PlayerInteraction : MonoBehaviour
                 ReleaseObject();
             }
         }
+    }
+
+    private void FixedUpdate()
+    {
+        interactionPoint = playerTransform.position + playerTransform.forward * interactionDistance;
 
         if (isMovingObject && currentObject != null)
         {
@@ -40,7 +40,7 @@ public class PlayerInteraction : MonoBehaviour
 
     void TryGrabObject()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(playerTransform.position, interactionRange, movableLayer);
+        Collider[] hitColliders = Physics.OverlapSphere(interactionPoint, interactionSphereSize, movableLayer);
         if (hitColliders.Length > 0)
         {
             float closestDistance = Mathf.Infinity;
@@ -59,27 +59,21 @@ public class PlayerInteraction : MonoBehaviour
             if (closestCollider != null)
             {
                 currentObject = closestCollider.gameObject;
-                LatchOntoObject();
+                currentObject.GetComponent<Rigidbody>().useGravity = false;
                 isMovingObject = true;
             }
         }
     }
 
-    void LatchOntoObject()
-    {
-        Bounds bounds = currentObject.GetComponent<Collider>().bounds;
-        Vector3 closestPoint = bounds.ClosestPoint(playerTransform.position);
-        offset = currentObject.transform.position - closestPoint;
-    }
-
     void MoveObjectWithPlayer()
     {
-        Vector3 targetPosition = playerTransform.position + offset;
-        currentObject.transform.position = Vector3.Lerp(currentObject.transform.position, targetPosition, Time.deltaTime * moveSpeed);
+        currentObject.GetComponent<Rigidbody>().position = Vector3.SmoothDamp(currentObject.transform.position, interactionPoint, ref interactVelocity, 0.2f, Mathf.Infinity, Time.fixedDeltaTime);
+        //currentObject.transform.position = interactionPoint;
     }
 
     void ReleaseObject()
     {
+        currentObject.GetComponent<Rigidbody>().useGravity = true;
         currentObject = null;
         isMovingObject = false;
     }
@@ -87,6 +81,6 @@ public class PlayerInteraction : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(playerTransform.position, interactionRange);
+        Gizmos.DrawWireSphere(interactionPoint, interactionSphereSize);
     }
 }
