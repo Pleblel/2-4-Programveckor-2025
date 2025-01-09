@@ -43,8 +43,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 
         rb = GetComponent<Rigidbody>();
-        movementSpeed = 6.0f;
-        runningSpeed = movementSpeed * 1.5f;
+        SetMovementSpeed(6.0f);
         originalMovementSpeed = movementSpeed;
         currentStamina = maxStamina;
     }
@@ -56,6 +55,8 @@ public class PlayerMovement : MonoBehaviour, IMovable
         movementDirection = new Vector3(diretionX, 0f, directionZ).normalized;
 
         HandleRunning();
+
+        Debug.Log(movementSpeed);
     }
 
     private void FixedUpdate()
@@ -135,6 +136,13 @@ public class PlayerMovement : MonoBehaviour, IMovable
     {
         lockOnTarget = target;
     }
+
+    public void SetMovementSpeed(float newMovementSpeed)
+    {
+        movementSpeed = newMovementSpeed;
+        runningSpeed = movementSpeed * 1.5f;
+    }
+
 
 
     private void OnDrawGizmos()
