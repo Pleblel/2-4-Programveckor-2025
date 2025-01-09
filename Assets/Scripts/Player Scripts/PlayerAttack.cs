@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerAttack : MonoBehaviour
 {
     [Header("UI Elements")]
-    public Slider chargeBarSlider; // The UI slider element
+    [SerializeField] Slider chargeBarSlider; // The UI slider element
 
     float chargeSpeed = 0.5f;  // How fast the bar charges
     float maxCharge = 1f;  // Maximum charge amount
@@ -14,9 +14,9 @@ public class PlayerAttack : MonoBehaviour
     float lastChargeAmount = 0f;
     bool isCharging = false;
 
-        [Header("Attack Settings")]
-        public Vector3 hitboxSize = new Vector3(1f, 1f, 1f); // Size of the hitbox
-        public float hitboxDistance = 1f; // Distance in front of the player
+    [Header("Attack Settings")]
+    [SerializeField] Vector3 hitboxSize = new Vector3(1f, 1f, 1f); // Size of the hitbox
+    [SerializeField] float hitboxDistance = 1f; // Distance in front of the player
 
     void Start()
     {
@@ -41,9 +41,9 @@ public class PlayerAttack : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             isCharging = false;
-            SaveChargeAmount();
+            lastChargeAmount = currentCharge;
             DealDamage();
-            ResetCharge();
+            currentCharge = 0f;
         }
 
         // Charge while mouse button is held
@@ -53,7 +53,10 @@ public class PlayerAttack : MonoBehaviour
         }
 
         // Update UI
-        UpdateBar();
+        if (chargeBarSlider != null)
+        {
+            chargeBarSlider.value = currentCharge;
+        }
     }
 
     void Charge()
@@ -61,24 +64,6 @@ public class PlayerAttack : MonoBehaviour
         currentCharge += chargeSpeed * Time.deltaTime;
         currentCharge = Mathf.Clamp(currentCharge, 0f, maxCharge);
     }
-
-    void ResetCharge()
-    {
-        currentCharge = 0f;
-    }
-
-    void SaveChargeAmount()
-    {
-        lastChargeAmount = currentCharge;
-    }
-
-    void UpdateBar()
-    {
-        if (chargeBarSlider != null)
-        {
-            chargeBarSlider.value = currentCharge;
-        }
-    }   
 
     void DealDamage()
     {
