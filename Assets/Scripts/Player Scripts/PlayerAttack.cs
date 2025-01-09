@@ -14,9 +14,9 @@ public class PlayerAttack : MonoBehaviour
     float lastChargeAmount = 0f;
     bool isCharging = false;
 
-    [Header("Attack Settings")]
-    public Vector3 hitboxSize = new Vector3(1f, 1f, 1f); // Size of the hitbox
-    public float hitboxDistance = 1f; // Distance in front of the player
+        [Header("Attack Settings")]
+        public Vector3 hitboxSize = new Vector3(1f, 1f, 1f); // Size of the hitbox
+        public float hitboxDistance = 1f; // Distance in front of the player
 
     void Start()
     {
