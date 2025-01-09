@@ -20,7 +20,9 @@ public class PoisonPuddle : MonoBehaviour, IDamageAbleOvertime
     // Update is called once per frame
     void Update()
     {
-        aliveTimer -= Time.deltaTime; 
+        aliveTimer -= Time.deltaTime;
+
+        Die();
     }
 
     void Die()

@@ -5,18 +5,26 @@ using UnityEngine;
 public class SpiderEnemy : BaseEntity, IMovable
 {
     [Header("Variables")]
-    [SerializeField] private float meleeRange = 10f;
+    [SerializeField] private float chaseRange = 10f;
+    [SerializeField] private float meleeRange = 5f;
     [SerializeField] private float shootingRange = 15f;
     [SerializeField] private bool isShooting = false;
     [SerializeField] private bool canShoot = true;
+    private bool isMeleeAttacking = false;
+    private bool canMeleeAttack = true; 
 
 
     [Header("References")]
     [SerializeField] private GameObject playerPosition;
     Rigidbody rb;
     public GameObject Goo;
-    public Transform bulletSpawn; 
-   
+    public Transform bulletSpawn;
+
+    [Header("Attack Settings")]
+    public Vector3 hitboxSize = new Vector3(1f, 1f, 1f); // Size of the hitbox
+    public float hitboxDistance = 1f; // Distance in front of the player
+    
+
     public float movementSpeed { get; private set; }
    
     
@@ -43,17 +51,24 @@ public class SpiderEnemy : BaseEntity, IMovable
         Mathf.RoundToInt(currentHealth);
 
         playerPosition = GameObject.FindGameObjectWithTag("Player");
-      
-        if(PlayerIsInMeleeRange())
-        movementDirection = (playerPosition.transform.position  - transform.position).normalized;
 
-        if (PlayerIsInShootingRange() && canShoot && !PlayerIsInMeleeRange())
+        if (PlayerIsInChaseRange())
+            movementDirection = (playerPosition.transform.position - transform.position).normalized;
+        else if (!PlayerIsInChaseRange())
+            rb.velocity = Vector3.zero;
+
+        if (PlayerIsInMeleeRange() && canMeleeAttack && !isShooting)
+            StartCoroutine(MeleeAttack());
+            
+
+
+        if (PlayerIsInShootingRange() && canShoot && !PlayerIsInChaseRange())
             StartCoroutine("ShootGoo");
     }
 
     private void FixedUpdate()
     {   
-        if(PlayerIsInMeleeRange() && !isShooting)
+        if(PlayerIsInChaseRange() && !isShooting && !isMeleeAttacking)
         {
             Move(movementDirection);
             StopAllCoroutines();
@@ -61,13 +76,10 @@ public class SpiderEnemy : BaseEntity, IMovable
           
     }
 
-
     public void Move(Vector3 direction)
     {
         rb.velocity = direction * movementSpeed;
     }
-
-
 
     public override void Attack(ILivingEntity entity)
     {
@@ -90,7 +102,15 @@ public class SpiderEnemy : BaseEntity, IMovable
         if (playerPosition == null) return false;
         float distanceToPlayer = Vector3.Distance(transform.position, playerPosition.transform.position);
 
-        return distanceToPlayer <= meleeRange;
+        return distanceToPlayer <= chaseRange;
+    }
+
+    private bool PlayerIsInChaseRange()
+    {
+        if (playerPosition == null) return false;
+        float distanceToPlayer = Vector3.Distance(transform.position, playerPosition.transform.position);
+
+        return distanceToPlayer <= chaseRange;
         
     }
 
@@ -119,14 +139,47 @@ public class SpiderEnemy : BaseEntity, IMovable
         isShooting = false;      
     }
 
+    IEnumerator MeleeAttack()
+    {
+        canMeleeAttack = false;
+        isMeleeAttacking = true;
+
+        Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
+        Collider[] hitColliders = Physics.OverlapBox(boxCenter, hitboxSize / 2);
+        
+        foreach (Collider collider in hitColliders)
+        {
+            BaseEntity entity = collider.GetComponent<BaseEntity>();
+            if (entity != null && entity.isAlive && entity.CompareTag("Player"))
+            {
+                Attack(entity);
+                entity.Death();
+            }
+        }
+        yield return new WaitForSeconds(attackSpeed);
+        canMeleeAttack = true;
+        isMeleeAttacking = false;
+    }
+
+    private void FacePlayer()
+    {
+       
+    }
+
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, meleeRange);
-
+        Gizmos.DrawWireSphere(transform.position, chaseRange);
 
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, shootingRange);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, meleeRange);
+
+        Gizmos.color = Color.magenta;
+        Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
+        Gizmos.DrawWireCube(boxCenter, hitboxSize);
     }
 }
