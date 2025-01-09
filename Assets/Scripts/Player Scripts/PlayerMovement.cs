@@ -18,14 +18,20 @@ public class PlayerMovement : MonoBehaviour, IMovable
     [SerializeField] Camera followCamera;
     private Transform lockOnTarget;
 
-    [Header("PlayerVariables")]
-    [SerializeField] float dashPower = 5.0f;
-    [SerializeField] float dashTime = 0.3f;
-    [SerializeField] float dashCoolDown = 1.0f;
+    [Header("Movement Settings")] 
+    float originalMovementSpeed;
+    float runningSpeed;
     [SerializeField] float rotationSpeed = 7.0f;
-    bool canDash = true;
-    bool isDashing = false;
 
+    [Header("Stamina Settings")]
+    [SerializeField] private float maxStamina = 100f;
+    private float currentStamina;
+    [SerializeField] private float staminaDepletionRate = 20f;
+    [SerializeField] private float staminaRegenRate = 15f;
+    [SerializeField] private float staminaRegenDelay = 1f;
+    [SerializeField] private float minStaminaToRun = 10f;
+    private float timeLastUsedStamina;
+    private bool isRunning = false;
 
 
     public float movementSpeed { get; private set; }
@@ -34,51 +40,34 @@ public class PlayerMovement : MonoBehaviour, IMovable
     {
         rb = GetComponent<Rigidbody>();
         movementSpeed = 6.0f;
-
+        runningSpeed = movementSpeed * 1.5f;
+        originalMovementSpeed = movementSpeed;
+        currentStamina = maxStamina;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        //Get the movement direction inputs
         diretionX = Input.GetAxisRaw("Horizontal");
         directionZ = Input.GetAxisRaw("Vertical");
         movementDirection = new Vector3(diretionX, 0f, directionZ).normalized;
-      
 
-        //Returns the line of code, not letting anything under it run
-        if (isDashing)
-            return;
-
-        DashInput();
+        HandleRunning();
     }
 
     private void FixedUpdate()
     {
         rb.angularVelocity = Vector3.zero;
-
-        if (isDashing)
-            return;
         Move(movementDirection);
     }
 
-
     public void Move(Vector3 direction)
     {
-        //Set the moveDirection depending on where the camera is facing
         Vector3 targetVelocity = Quaternion.Euler(0, followCamera.transform.eulerAngles.y, 0) * direction * movementSpeed;
         targetVelocity.y = rb.velocity.y;
         rb.velocity = targetVelocity;
 
         if (lockOnTarget != null)
         {
-            //Makes the player move around the target it is locked onto
             Vector3 targetDirection = (lockOnTarget.position - transform.position).normalized;
             targetDirection.y = 0;
             Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
@@ -86,41 +75,66 @@ public class PlayerMovement : MonoBehaviour, IMovable
         }
         else if (targetVelocity != Vector3.zero)
         {
-            //Rotate the player in the direction it is moving
             Quaternion desiredRotation = Quaternion.LookRotation(targetVelocity, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
         }
     }
 
-
-    private void DashInput()
+    private void HandleRunning()
     {
-        //"Fire3" is the left shift keybind
-        if (Input.GetButtonDown("Fire3") && canDash)
+        bool wantsToRun = Input.GetKey(KeyCode.LeftShift);
+
+        if (wantsToRun && CanRun())
         {
-            StartCoroutine("Dash");
+            StartRunning();
+        }
+        else
+        {
+            StopRunning();
+        }
+
+        if (!isRunning && Time.time > timeLastUsedStamina + staminaRegenDelay)
+        {
+            RegenerateStamina();
         }
     }
 
-
-    private IEnumerator Dash()
+    private bool CanRun()
     {
-        //Dashes the player in the direction they are moving
-         canDash = false;
-         isDashing = true;
-         Vector3 dashDirection = movementDirection != Vector3.zero ? movementDirection : transform.forward; //Checks whether to simply dash forward or dash in the movement direction
-         rb.velocity = Quaternion.Euler(0, followCamera.transform.eulerAngles.y, 0) * dashDirection * dashPower; //Adjusts the dash direction based off of where the camera is facing
-         yield return new WaitForSeconds(dashTime);
-         rb.velocity = Vector3.zero;
-         isDashing = false;
-         yield return new WaitForSeconds(dashCoolDown);
-         canDash = true;
+        return currentStamina > minStaminaToRun && movementDirection.magnitude > 0;
+    }
 
-           
+    private void StartRunning()
+    {
+        isRunning = true;
+        currentStamina -= staminaDepletionRate * Time.deltaTime;
+        timeLastUsedStamina = Time.time;
+        currentStamina = Mathf.Max(0, currentStamina);
+        movementSpeed = runningSpeed;
+    }
+
+    private void StopRunning()
+    {
+        isRunning = false;
+        movementSpeed = originalMovementSpeed;
+    }
+
+    private void RegenerateStamina()
+    {
+        currentStamina += staminaRegenRate * Time.deltaTime;
+        currentStamina = Mathf.Min(currentStamina, maxStamina);
     }
 
     public void SetLockOnTarget(Transform target)
     {
         lockOnTarget = target;
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        Vector3 boxCenter = transform.position + transform.forward * 2;
+        Gizmos.DrawWireSphere(boxCenter, 0.5f);
     }
 }
