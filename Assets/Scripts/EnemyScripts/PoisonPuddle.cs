@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PoisonPuddle : MonoBehaviour, IDamageAbleOvertime
 {
 
     float damage = 1f;
     float aliveTimer = 3f;
+    float ImpairmentMultiplier = 0.25f;
     bool canDealDamage = true;
     public float damageTimer { get; private set; }
 
@@ -47,7 +49,33 @@ public class PoisonPuddle : MonoBehaviour, IDamageAbleOvertime
         if (other.CompareTag("Player") && canDealDamage)
         {
             BaseEntity player = other.GetComponent<BaseEntity>();
+
+            if(player != null)
             StartCoroutine(PassiveDamage(player));
+        }
+
+        IMovable playerMovement = other.GetComponent<IMovable>();
+        if(playerMovement != null)
+        {
+            PlayerMovement movementScript = other.GetComponent<PlayerMovement>();
+            if(movementScript != null)
+            {
+                movementScript.movementSpeed = movementScript.originalMovementSpeed * ImpairmentMultiplier;
+            }
+        }
+    }
+
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            PlayerMovement movementScript = other.GetComponent<PlayerMovement>();
+            
+            if(movementScript != null)
+            {
+                movementScript.movementSpeed = movementScript.originalMovementSpeed;
+            }
         }
     }
 }

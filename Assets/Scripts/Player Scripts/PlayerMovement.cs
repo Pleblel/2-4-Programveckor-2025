@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
     private Transform lockOnTarget;
 
     [Header("Movement Settings")] 
-    float originalMovementSpeed;
+    public float originalMovementSpeed;
     float runningSpeed;
     [SerializeField] float rotationSpeed = 7.0f;
 
@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
     private bool isRunning = false;
 
 
-    public float movementSpeed { get; private set; }
+    public float movementSpeed { get; set; }
 
     private void Awake()
     {
