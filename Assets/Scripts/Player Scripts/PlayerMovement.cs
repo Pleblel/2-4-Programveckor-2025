@@ -23,7 +23,11 @@ public class PlayerMovement : MonoBehaviour, IMovable
     [Header("Movement Settings")] 
     public float originalMovementSpeed;
     float runningSpeed;
+    float slowedSpeed;
+    [SerializeField] float runSpeedMultiplier = 1.5f;
+    [SerializeField] float impairmentDivider = 2.0f;
     [SerializeField] float rotationSpeed = 7.0f;
+    bool beingSlowed;
 
     [Header("Stamina Settings")]
     [SerializeField] private float maxStamina = 100f;
@@ -55,6 +59,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
         movementDirection = new Vector3(diretionX, 0f, directionZ).normalized;
 
         HandleRunning();
+        HandleSlow();
 
         Debug.Log(movementSpeed);
     }
@@ -67,12 +72,14 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     public void Move(Vector3 direction)
     {
+        //Make the movement dependent on how the camera is facing on rotation
         Vector3 targetVelocity = Quaternion.Euler(0, followCamera.transform.eulerAngles.y, 0) * direction * movementSpeed;
         targetVelocity.y = rb.velocity.y;
         rb.velocity = targetVelocity;
 
         if (lockOnTarget != null)
         {
+            //Make sure the player is constantly facing towards the locked on target and moves around it
             Vector3 targetDirection = (lockOnTarget.position - transform.position).normalized;
             targetDirection.y = 0;
             Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
@@ -80,6 +87,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
         }
         else if (targetVelocity != Vector3.zero)
         {
+            //Stops rotation from being forced on the enemy
             Quaternion desiredRotation = Quaternion.LookRotation(targetVelocity, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
         }
@@ -128,6 +136,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     private void RegenerateStamina()
     {
+        //Regen the stamina based on the regen rate and frames
         currentStamina += staminaRegenRate * Time.deltaTime;
         currentStamina = Mathf.Min(currentStamina, maxStamina);
     }
@@ -139,10 +148,40 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     public void SetMovementSpeed(float newMovementSpeed)
     {
+        //Handle all movement speed options
         movementSpeed = newMovementSpeed;
-        runningSpeed = movementSpeed * 1.5f;
+        runningSpeed = movementSpeed * runSpeedMultiplier;
+        slowedSpeed = movementSpeed / impairmentDivider;
     }
 
+    void HandleSlow()
+    {
+        //Make the move speed slow
+        if (beingSlowed)
+        {
+            movementSpeed = slowedSpeed;
+        }
+    }
+
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Slow"))
+        {
+            Debug.Log("Hitting slow");
+            beingSlowed = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Slow"))
+        {
+            Debug.Log("Hitting slow");
+            beingSlowed = false;
+            movementSpeed = originalMovementSpeed;
+        }
+    }
 
 
     private void OnDrawGizmos()

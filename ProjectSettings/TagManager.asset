@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Floor
   - Audio
+  - Slow
   layers:
   - Default
   - TransparentFX
