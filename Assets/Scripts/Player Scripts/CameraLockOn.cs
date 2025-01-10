@@ -10,6 +10,7 @@ public class CameraLockOn : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera lockOnCamera;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private Transform cameraTarget;
+    [SerializeField] private LayerMask obstacleLayer;
 
     [Header("Variables")]
     [SerializeField] private float maxLockOnDistance = 20f;
@@ -34,13 +35,15 @@ public class CameraLockOn : MonoBehaviour
 
         if (currentTarget != null)
         {
-            UpdateLockOnCamera();
+            if (HasLineOfSight(currentTarget))
+                UpdateLockOnCamera();
+            else
+               DisableLockOn();
         }
 
-        if(currentTarget == null)
-        {
-            DisableLockOn();
-        }
+      
+
+        
     }
 
     private void ToggleLockOn()
@@ -71,10 +74,10 @@ public class CameraLockOn : MonoBehaviour
             Vector3 directionToTarget = (targetCollider.transform.position - transform.position).normalized;
             float angle = Vector3.Angle(transform.forward, directionToTarget);
 
-            //Set the closest angle and closestTarget based off of the code above
-            if (angle < closestAngle)
+            //Set the closest angle and closestTarget based off of the code above if the target has line of sight
+            if (HasLineOfSight(targetCollider.transform) && angle < closestAngle)
             {
-                closestAngle = angle;
+                closestAngle = angle; 
                 closestTarget = targetCollider.transform;
             }
         }
@@ -86,6 +89,21 @@ public class CameraLockOn : MonoBehaviour
             EnableLockOn();
         }
     }
+
+    private bool HasLineOfSight(Transform target)
+    {
+        Vector3 directionToTarget = (target.position - transform.position).normalized;
+        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+
+        if(Physics.Raycast(transform.position, directionToTarget, out RaycastHit hit, distanceToTarget, obstacleLayer | enemyLayer))
+        {
+            return hit.transform == target;
+        }
+
+        return false;
+    }
+
+    
 
     private void EnableLockOn()
     {

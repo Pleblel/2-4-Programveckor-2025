@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour, IMovable
 {
-    //Sofia with the audo manager script parts
-    AudioManager audioManager;
 
     //Darren
 
@@ -44,7 +42,6 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     private void Awake()
     {
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 
         rb = GetComponent<Rigidbody>();
         SetMovementSpeed(6.0f);
@@ -68,6 +65,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
     {
         rb.angularVelocity = Vector3.zero;
         Move(movementDirection);
+
     }
 
     public void Move(Vector3 direction)
@@ -91,6 +89,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
             Quaternion desiredRotation = Quaternion.LookRotation(targetVelocity, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
         }
+
     }
 
     private void HandleRunning()
@@ -99,7 +98,6 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
         if (wantsToRun && CanRun())
         {
-            //audioManager.PlaySFX(audioManager.walking);
 
             StartRunning();
         }
