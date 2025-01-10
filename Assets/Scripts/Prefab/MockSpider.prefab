@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64c4dd659a6fb124598cc3fa49a16b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meleeRange: 10
+  chaseRange: 10
   shootingRange: 15
   isShooting: 0
   canShoot: 1
