@@ -65,12 +65,8 @@ public class SpiderEnemy : BaseEntity, IMovable
             isMeleeAttacking = false;
         
 
-
-
         if (PlayerIsInShootingRange() && canShoot && !PlayerIsInChaseRange())
             StartCoroutine("ShootGoo");
-
-
 
         Debug.Log(isMeleeAttacking);
     }
@@ -101,7 +97,7 @@ public class SpiderEnemy : BaseEntity, IMovable
     }
     public override void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+        currentHealth -= (damage / defense);
     }
 
 
@@ -161,6 +157,7 @@ public class SpiderEnemy : BaseEntity, IMovable
 
         if (IsPlayerInMeleeHitbox())
         {
+            //Pelle
             //Sets a position on where the collider should be to hit the player
             Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
             Collider[] hitColliders = Physics.OverlapBox(boxCenter, hitboxSize / 2);

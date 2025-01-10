@@ -6,8 +6,8 @@ public class AudioManager : MonoBehaviour
 {
     [Header("------------- Audio Source -------------")]
 
-    [SerializeField] AudioSource musicSource;
-    [SerializeField] AudioSource SFXSource;
+    [SerializeField] public AudioSource musicSource;
+    [SerializeField] public AudioSource SFXSource;
 
     [Header("------------- Audio Clip -------------")]
     [Header("CHARACTER")]
@@ -54,6 +54,12 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(AudioClip clip)
     {
-        SFXSource.PlayOneShot(clip);
+        SFXSource.clip = clip;
+        SFXSource.Play();
+    }
+    
+    public void StopSFX()
+    {
+        SFXSource.Stop();
     }
 }

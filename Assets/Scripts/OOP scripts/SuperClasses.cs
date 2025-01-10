@@ -42,7 +42,7 @@ public abstract class BaseEntity : MonoBehaviour, ILivingEntity, ICombatant
     }
     public virtual void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+        currentHealth -= damage / defense;
     }
 
 }
