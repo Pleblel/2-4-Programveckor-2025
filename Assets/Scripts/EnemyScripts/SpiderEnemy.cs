@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SpiderEnemy : BaseEntity, IMovable
 {
+    //Darren
+
     [Header("Variables")]
     [SerializeField] private float chaseRange = 10f;
     [SerializeField] private float shootingRange = 15f;
@@ -20,8 +22,8 @@ public class SpiderEnemy : BaseEntity, IMovable
     public Transform bulletSpawn;
 
     [Header("Attack Settings")]
-    public Vector3 hitboxSize = new Vector3(1f, 1f, 1f); // Size of the hitbox
-    public float hitboxDistance = 1f; // Distance in front of the player
+    private Vector3 hitboxSize = new Vector3(1f, 1f, 1f); // Size of the hitbox
+    private float hitboxDistance = 1f; // Distance in front of the player
     
 
     public float movementSpeed { get; private set; }
@@ -159,6 +161,7 @@ public class SpiderEnemy : BaseEntity, IMovable
 
         if (IsPlayerInMeleeHitbox())
         {
+            //Sets a position on where the collider should be to hit the player
             Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
             Collider[] hitColliders = Physics.OverlapBox(boxCenter, hitboxSize / 2);
             foreach (Collider collider in hitColliders)

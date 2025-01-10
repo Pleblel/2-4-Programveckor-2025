@@ -486,6 +486,73 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5625750423834686831, guid: a5faef33b10924d4ba7e39de4aa779cb, type: 3}
   m_PrefabInstance: {fileID: 612220830284366798}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1982358322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1982358323}
+  - component: {fileID: 1982358324}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Audio
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1982358323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982358322}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.626088, y: -0.83000004, z: -1.906367}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1982358324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982358322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06ecc24218522284b99a766d03819bef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicSource: {fileID: 0}
+  SFXSource: {fileID: 0}
+  lowHealthBeat: {fileID: 0}
+  death: {fileID: 0}
+  walking: {fileID: 0}
+  running: {fileID: 0}
+  mainMenuMusic: {fileID: 0}
+  calmGameMusic: {fileID: 0}
+  panicGameMusic: {fileID: 0}
+  drag: {fileID: 0}
+  button: {fileID: 0}
+  lever: {fileID: 0}
+  hit: {fileID: 0}
+  obtainItem: {fileID: 0}
+  manCrying: {fileID: 0}
+  manScreaming: {fileID: 0}
+  ratNoise: {fileID: 0}
+  ratDeath: {fileID: 0}
+  spiderShoot: {fileID: 0}
+  spiderDeath: {fileID: 0}
+  armadilloDash: {fileID: 0}
+  armadilloWallHit: {fileID: 0}
+  jumpScareSound: {fileID: 0}
 --- !u!1 &1996540707
 GameObject:
   m_ObjectHideFlags: 0
@@ -798,3 +865,4 @@ SceneRoots:
   - {fileID: 6934469392019066987}
   - {fileID: 1996540711}
   - {fileID: 1685168976}
+  - {fileID: 1982358323}
