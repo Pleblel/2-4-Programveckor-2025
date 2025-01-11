@@ -140,8 +140,18 @@ public class ArmadilloEnemy : BaseEntity, IMovable
             // Check if the collision is with the player or a wall
             if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Wall"))
             {
+                if (collision.gameObject.CompareTag("Player") && isRolling)
+                {
+                    BaseEntity playerEntity = collision.gameObject.GetComponent<BaseEntity>();
+
+                    if(playerEntity != null)
+                    playerEntity.TakeDamage(damage);
+                      
+                }
+
                 isRolling = false; // Stop rolling
             }
+
         }
     }
   
