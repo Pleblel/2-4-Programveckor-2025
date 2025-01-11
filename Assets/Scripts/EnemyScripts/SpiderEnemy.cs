@@ -20,6 +20,8 @@ public class SpiderEnemy : BaseEntity, IMovable
     Rigidbody rb;
     public GameObject Goo;
     public Transform bulletSpawn;
+    [SerializeField] private LayerMask obstacleLayer;
+    [SerializeField] private LayerMask playerLayer;
 
     [Header("Attack Settings")]
     private Vector3 hitboxSize = new Vector3(1f, 1f, 1f); // Size of the hitbox
@@ -51,8 +53,17 @@ public class SpiderEnemy : BaseEntity, IMovable
         Mathf.RoundToInt(maxHealth);
         Mathf.RoundToInt(currentHealth);
 
-        FacePlayer();
+        
+       
         playerPosition = GameObject.FindGameObjectWithTag("Player");
+
+        if (!HasLineOfSight(playerPosition.transform))
+        {
+            rb.velocity = Vector3.zero;
+            return;
+        }
+
+        FacePlayer();
 
         if (PlayerIsInChaseRange())
             movementDirection = (playerPosition.transform.position - transform.position).normalized;
@@ -72,8 +83,10 @@ public class SpiderEnemy : BaseEntity, IMovable
     }
 
     private void FixedUpdate()
-    {   
-        if(PlayerIsInChaseRange() && !isShooting && !isMeleeAttacking)
+    {
+        if (!HasLineOfSight(playerPosition.transform)) return;
+
+        if (PlayerIsInChaseRange() && !isShooting && !isMeleeAttacking)
         {
             Move(movementDirection);
         }
@@ -177,6 +190,20 @@ public class SpiderEnemy : BaseEntity, IMovable
         isMeleeAttacking = false;
     }
 
+
+
+    private bool HasLineOfSight(Transform target)
+    {
+        Vector3 directionToTarget = (target.position - transform.position).normalized;
+        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+
+        if (Physics.Raycast(transform.position, directionToTarget, out RaycastHit hit, distanceToTarget, obstacleLayer | playerLayer))
+        {
+            return hit.transform == target;
+        }
+
+        return false;
+    }
 
     private void FacePlayer()
     {

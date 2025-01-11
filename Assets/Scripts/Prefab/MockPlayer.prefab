@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 8904737658007214619}
   - component: {fileID: 3134948276415888206}
   - component: {fileID: 3671247894343790778}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MockPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -353,10 +353,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followCamera: {fileID: 0}
-  dashPower: 13
-  dashTime: 0.3
-  dashCoolDown: 1
+  originalMovementSpeed: 0
+  runSpeedMultiplier: 1.5
+  impairmentDivider: 2
   rotationSpeed: 7
+  maxStamina: 100
+  staminaDepletionRate: 20
+  staminaRegenRate: 15
+  staminaRegenDelay: 1
+  minStaminaToRun: 10
 --- !u!114 &8904737658007214619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,6 +379,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   cameraTarget: {fileID: 6593527106769842154}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 64
   maxLockOnDistance: 50
 --- !u!114 &3134948276415888206
 MonoBehaviour:
@@ -387,12 +395,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c5e926bb205dd8469751d9ca465d84b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 3
+  interactionDistance: 0
+  moveSpeed: 5
+  offset: 0
+  movingOffset: 0
   movableLayer:
     serializedVersion: 2
     m_Bits: 1024
   playerTransform: {fileID: 2269113801412775272}
-  moveSpeed: 5
 --- !u!114 &3671247894343790778
 MonoBehaviour:
   m_ObjectHideFlags: 0

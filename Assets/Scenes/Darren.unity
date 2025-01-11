@@ -562,7 +562,7 @@ GameObject:
   - component: {fileID: 1996540708}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -713,6 +713,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MockPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 6121285804857655109, guid: a5faef33b10924d4ba7e39de4aa779cb, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8896713122134758499, guid: a5faef33b10924d4ba7e39de4aa779cb, type: 3}
       propertyPath: followCamera
       value: 
@@ -797,7 +801,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1608570137770829514, guid: 0d72badde008f2a4592ff78b080a822d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.626088
+      value: -10.3
       objectReference: {fileID: 0}
     - target: {fileID: 1608570137770829514, guid: 0d72badde008f2a4592ff78b080a822d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -805,7 +809,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1608570137770829514, guid: 0d72badde008f2a4592ff78b080a822d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.906367
+      value: 5.2
       objectReference: {fileID: 0}
     - target: {fileID: 1608570137770829514, guid: 0d72badde008f2a4592ff78b080a822d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -842,6 +846,10 @@ PrefabInstance:
     - target: {fileID: 5031844950856641219, guid: 0d72badde008f2a4592ff78b080a822d, type: 3}
       propertyPath: rollingRange
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5031844950856641219, guid: 0d72badde008f2a4592ff78b080a822d, type: 3}
+      propertyPath: obstacleLayer.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

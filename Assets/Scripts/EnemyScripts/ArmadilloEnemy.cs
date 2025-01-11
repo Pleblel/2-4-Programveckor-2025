@@ -19,6 +19,8 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     [Header("Refereneces")]
     public GameObject player;
     Rigidbody rb;
+    [SerializeField] private LayerMask obstacleLayer;
+    [SerializeField] private LayerMask playerLayer;
 
 
     public float movementSpeed { get; private set; }
@@ -47,6 +49,13 @@ public class ArmadilloEnemy : BaseEntity, IMovable
 
         player = GameObject.FindGameObjectWithTag("Player");
 
+
+        if (!HasLineOfSight(player.transform))
+        {
+            rb.velocity = Vector3.zero;
+            return;       
+        }
+
         if (currentHealth <= 1)
         {
             currentHealth = maxHealth;
@@ -59,7 +68,10 @@ public class ArmadilloEnemy : BaseEntity, IMovable
 
     private void FixedUpdate()
     {
-        if(IsInWalkRange() && !isRolling)
+
+        if (!HasLineOfSight(player.transform)) return;
+
+        if (IsInWalkRange() && !isRolling)
         Move(movementDirection);
 
         if(IsInRollRange() && canRoll && !isRolling)
@@ -129,6 +141,20 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     public override void TakeDamage(float damage)
     {
         currentHealth -= (damage / defense);
+    }
+
+
+    private bool HasLineOfSight(Transform target)
+    {
+        Vector3 directionToTarget = (target.position - transform.position).normalized;
+        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+
+        if (Physics.Raycast(transform.position, directionToTarget, out RaycastHit hit, distanceToTarget, obstacleLayer | playerLayer))
+        {
+            return hit.transform == target;
+        }
+
+        return false;
     }
 
 

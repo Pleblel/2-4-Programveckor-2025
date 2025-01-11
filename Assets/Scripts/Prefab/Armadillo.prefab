@@ -147,6 +147,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rollingSpeed: 12
-  rollingRange: 15
+  rollingRange: 10
   walkingRange: 15
+  chargeUpRoll: 3
   player: {fileID: 0}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
