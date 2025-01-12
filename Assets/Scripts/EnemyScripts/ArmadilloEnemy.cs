@@ -69,7 +69,14 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     private void FixedUpdate()
     {
 
-        if (!HasLineOfSight(player.transform)) return;
+        if(player != null)
+        {
+            if (!HasLineOfSight(player.transform))
+            {
+                return;
+            }
+        }
+        
 
         if (IsInWalkRange() && !isRolling)
         Move(movementDirection);
@@ -112,10 +119,10 @@ public class ArmadilloEnemy : BaseEntity, IMovable
 
         rb.velocity = Vector3.zero;
         yield return new WaitForSeconds(chargeUpRoll);
-        rb.velocity = rollDirection * rollingSpeed;
 
         while (isRolling)
         {
+            rb.velocity = rollDirection * rollingSpeed;
             yield return null;
         }
 

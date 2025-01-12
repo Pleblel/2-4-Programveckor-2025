@@ -185,3 +185,9 @@ MonoBehaviour:
   playerPosition: {fileID: 0}
   Goo: {fileID: 6643554084686226751, guid: 154b210bd73894243a54bc81c6b9d42a, type: 3}
   bulletSpawn: {fileID: 5269296073463476255}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 256
