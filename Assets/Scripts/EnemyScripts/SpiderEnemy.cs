@@ -72,8 +72,6 @@ public class SpiderEnemy : BaseEntity, IMovable
 
         if (canMeleeAttack && !isMeleeAttacking && IsPlayerInMeleeHitbox())
             StartCoroutine(MeleeAttack());
-        else if (!IsPlayerInMeleeHitbox())
-            isMeleeAttacking = false;
         
 
         if (PlayerIsInShootingRange() && canShoot && !PlayerIsInChaseRange())
@@ -168,6 +166,9 @@ public class SpiderEnemy : BaseEntity, IMovable
         canMeleeAttack = false;
         isMeleeAttacking = true;
 
+        rb.velocity = Vector3.zero;
+        yield return new WaitForSeconds(0.4f);
+
         if (IsPlayerInMeleeHitbox())
         {
             //Pelle
@@ -179,15 +180,18 @@ public class SpiderEnemy : BaseEntity, IMovable
                 BaseEntity entity = collider.GetComponent<BaseEntity>();
                 if (collider.CompareTag("Player"))
                 {
-                    Attack(entity);
-                    entity.Death();
+                    //Attack(entity);
+                    //entity.Death();
+                    Debug.Log("Attacked");
                 }
             }
         }
 
+        yield return new WaitForSeconds(0.2f);
+        isMeleeAttacking = false;
+
         yield return new WaitForSeconds(attackSpeed);
         canMeleeAttack = true;
-        isMeleeAttacking = false;
     }
 
 
