@@ -395,14 +395,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c5e926bb205dd8469751d9ca465d84b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionDistance: 0
+  interactionDistance: 1
   moveSpeed: 5
-  offset: 0
-  movingOffset: 0
+  offset: 0.5
+  movingOffset: 1.6
   movableLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 3072
   playerTransform: {fileID: 2269113801412775272}
+  isMovingObject: 0
 --- !u!114 &3671247894343790778
 MonoBehaviour:
   m_ObjectHideFlags: 0
