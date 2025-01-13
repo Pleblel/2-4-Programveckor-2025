@@ -11,7 +11,8 @@ public class WalkIK : MonoBehaviour
     [SerializeField] float stepDistance = 4;
     [SerializeField] float stepLength = 4;
     [SerializeField] float stepHeight = 1;
-    [SerializeField] float stepOffset;
+    [SerializeField] float stepOffsetX;
+    [SerializeField] float stepOffsetZ;
     [SerializeField] Vector3 footOffset = default;
     [SerializeField] Rigidbody bodyRb = null;
     [SerializeField] AnimationCurve stepCurve;
@@ -30,9 +31,14 @@ public class WalkIK : MonoBehaviour
 
     private void Update()
     {
+
+        float diretionX = Input.GetAxisRaw("Horizontal") * stepOffsetX;
+        float directionZ = Input.GetAxisRaw("Vertical") * stepOffsetZ;
+
+
         transform.position = currentPosition;
 
-        Ray movingRay = new Ray(body.position + (body.right * footSpacing) + body.transform.forward * stepOffset, Vector3.down);
+        Ray movingRay = new Ray(body.position + (body.right * footSpacing) + (body.transform.forward * stepOffsetX) + (body.transform.right * stepOffsetZ), Vector3.down);
         Ray stillRay = new Ray(body.position + (body.right * footSpacing), Vector3.down);
 
         if (bodyRb.velocity.magnitude > 0.1f)
@@ -112,7 +118,6 @@ public class WalkIK : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(newPosition, 0.5f);
-        Gizmos.DrawRay(body.position + (body.right * footSpacing) + body.transform.forward* 2 * stepOffset, Vector3.down);
     }
 
 
