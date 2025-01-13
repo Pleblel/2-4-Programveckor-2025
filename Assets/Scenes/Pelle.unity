@@ -1130,10 +1130,11 @@ MonoBehaviour:
     m_Bits: 128
   body: {fileID: 774573059160368771}
   otherFoot: {fileID: 1315242729}
-  speed: 3
+  speed: 2
   stepDistance: 0.5
   stepLength: 0.5
-  stepHeight: 0.3
+  stepHeight: 1
+  stepOffset: 2.5
   footOffset: {x: 0, y: 0.175, z: 0}
   bodyRb: {fileID: 919132148449683970}
   stepCurve:
@@ -1440,10 +1441,11 @@ MonoBehaviour:
     m_Bits: 128
   body: {fileID: 774573059160368771}
   otherFoot: {fileID: 1127858809}
-  speed: 3
+  speed: 2
   stepDistance: 0.5
   stepLength: 0.5
-  stepHeight: 0.3
+  stepHeight: 1
+  stepOffset: 2.5
   footOffset: {x: 0, y: 0.175, z: 0}
   bodyRb: {fileID: 919132148449683970}
   stepCurve:
@@ -2282,7 +2284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followCamera: {fileID: 1057844633}
-  originalMovementSpeed: 0
+  originalMovementSpeed: 4
   runSpeedMultiplier: 1.5
   impairmentDivider: 2
   rotationSpeed: 7
