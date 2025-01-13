@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("MUSIC")]
     public AudioClip mainMenuMusic;
+    public AudioClip settingMusic;
     public AudioClip calmGameMusic;
     public AudioClip panicGameMusic;
 
@@ -45,10 +47,17 @@ public class AudioManager : MonoBehaviour
     public AudioClip jumpScareSound;
 
 
-
     private void Start()
     {
-        musicSource.clip = mainMenuMusic;
+
+    }
+
+    public void PlayMusic(AudioClip newClip)
+    {
+        if(musicSource == newClip && musicSource.isPlaying)
+            return; //avoids restarting track
+
+        musicSource.clip = newClip;
         musicSource.Play();
     }
 
