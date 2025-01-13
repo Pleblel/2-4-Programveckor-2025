@@ -17,7 +17,7 @@ public class WalkIK : MonoBehaviour
     [SerializeField] AnimationCurve stepCurve;
 
     float footSpacing;
-    Vector3 oldPosition, currentPosition, newPosition;
+    Vector3 oldPosition, currentPosition, newPosition; 
     float lerp;
     int doOnce = 1;
 
@@ -32,15 +32,16 @@ public class WalkIK : MonoBehaviour
     {
         transform.position = currentPosition;
 
-        Ray ray = new Ray(body.position + (body.right * footSpacing), Vector3.down);
+        Ray movingRay = new Ray(body.position + (body.right * footSpacing) + body.transform.forward * stepOffset, Vector3.down);
+        Ray stillRay = new Ray(body.position + (body.right * footSpacing), Vector3.down);
 
         if (bodyRb.velocity.magnitude > 0.1f)
         {
-            HandleMovement(ray, true);
+            HandleMovement(movingRay, true);
         }
         else
         {
-            HandleMovement(ray, false);
+            HandleMovement(stillRay, false);
         }
     }
 
@@ -55,7 +56,7 @@ public class WalkIK : MonoBehaviour
                 {
                     lerp = 0;
                     int direction = body.InverseTransformPoint(info.point).z > body.InverseTransformPoint(newPosition).z ? 1 : -1;
-                    newPosition = info.point + (body.forward * stepLength * direction) + footOffset + body.transform.forward * stepOffset;
+                    newPosition = info.point + (body.forward * stepLength * direction) + footOffset;
                 }
             }
         }
@@ -81,15 +82,22 @@ public class WalkIK : MonoBehaviour
             Vector3 tempPosition = Vector3.Lerp(oldPosition, newPosition, curveValue);
             tempPosition.y += Mathf.Sin(curveValue * Mathf.PI) * stepHeight;
 
+            // Adjust rotation to add sine wave offset to the base -70 degrees
+            float sineOffset = Mathf.Sin(curveValue * Mathf.PI) * 45; // Adjust the scale as needed
+            Vector3 currentEulerAngles = transform.localEulerAngles; // Preserve current rotation
+            currentEulerAngles.x = -69.5f + sineOffset; // Modify X rotation
+            transform.localRotation = Quaternion.Euler(currentEulerAngles);
+
+
             currentPosition = tempPosition;
             lerp += Time.deltaTime * speed;
 
             // Recalculate new position if movement direction changes
-            if (isMoving && Physics.Raycast(ray, out RaycastHit dynamicInfo, 10, terrainLayer.value))
+            if (isMoving && Physics.Raycast(ray, out RaycastHit movingInfo, 10, terrainLayer.value))
             {
-                if (Vector3.Distance(newPosition, dynamicInfo.point) > stepDistance * 0.5f)
+                if (Vector3.Distance(newPosition, movingInfo.point) > stepDistance * 0.5f)
                 {
-                    newPosition = dynamicInfo.point + (body.forward * stepLength) + footOffset;
+                    newPosition = movingInfo.point + (body.forward * stepLength) + footOffset;
                 }
             }
         }
@@ -101,9 +109,12 @@ public class WalkIK : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(newPosition, 0.5f);
+        Gizmos.DrawRay(body.position + (body.right * footSpacing) + body.transform.forward* 2 * stepOffset, Vector3.down);
     }
+
 
     public bool IsMoving()
     {
