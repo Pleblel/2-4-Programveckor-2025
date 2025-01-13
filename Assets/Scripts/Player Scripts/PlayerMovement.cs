@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
     {
 
         rb = GetComponent<Rigidbody>();
-        SetMovementSpeed(6.0f);
+        SetMovementSpeed(4.0f);
         originalMovementSpeed = movementSpeed;
         currentStamina = maxStamina;
     }
