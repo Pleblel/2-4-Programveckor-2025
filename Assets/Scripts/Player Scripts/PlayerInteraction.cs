@@ -16,7 +16,7 @@ public class PlayerGrab : MonoBehaviour
     [SerializeField] Transform playerTransform;
 
     private GameObject currentObject;
-    private bool isMovingObject = false;
+    public bool isMovingObject = false;
     private Vector3 interactionPoint;
     private Vector3 boxHalfExtent = new Vector3(0.5f, 1, 0.2f);
     private Vector3 difference;
