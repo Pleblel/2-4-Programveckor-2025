@@ -82,12 +82,12 @@ public class PlayerMovement : MonoBehaviour, IMovable
             Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
-        else if (targetVelocity != Vector3.zero)
-        {
+        //else if (targetVelocity != Vector3.zero)
+        //{
             //Stops rotation from being forced on the enemy
-            Quaternion desiredRotation = Quaternion.LookRotation(targetVelocity, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
-        }
+            //Quaternion desiredRotation = Quaternion.LookRotation(targetVelocity, Vector3.up);
+           // transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
+        //}
 
     }
 
