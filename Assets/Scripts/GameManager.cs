@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
+    public bool elctricityOn = true;
+
     // Start is called before the first frame update
     void Start()
     {
