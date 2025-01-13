@@ -3,12 +3,15 @@ using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class ObjectMover : MonoBehaviour
+public class PlayerGrab : MonoBehaviour
 {
+    [Header("Settings")]
     public float interactionDistance;
     public float moveSpeed;
     public float offset;
     public float movingOffset;
+
+    [Header("Interacts")]
     public LayerMask movableLayer;
     public Transform playerTransform;
 
@@ -16,7 +19,6 @@ public class ObjectMover : MonoBehaviour
     private bool isMovingObject = false;
     private Vector3 interactionPoint;
     private Vector3 boxHalfExtent = new Vector3(0.5f, 1, 0.2f);
-    private Transform playerOrientation;
     private Vector3 difference;
 
     void Update()
