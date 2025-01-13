@@ -9,16 +9,18 @@ public class SwitchController : MonoBehaviour
     public delegate void SwitchActivatedHandler();
     public static event SwitchActivatedHandler OnSwitchActivated;
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            ActivateSwitch();
+        }
+    }
+
     // This function simulates activating the switch
     public void ActivateSwitch()
     {
         Debug.Log("Switch activated!");
         OnSwitchActivated?.Invoke(); // Trigger the event if there are subscribers
-    }
-
-    private void OnMouseDown()
-    {
-        // Simulate activation on mouse click
-        ActivateSwitch();
     }
 }

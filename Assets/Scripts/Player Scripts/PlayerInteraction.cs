@@ -6,14 +6,14 @@ using UnityEngine;
 public class PlayerGrab : MonoBehaviour
 {
     [Header("Settings")]
-    public float interactionDistance;
-    public float moveSpeed;
-    public float offset;
-    public float movingOffset;
+    [SerializeField] float interactionDistance;
+    [SerializeField] float moveSpeed;
+    [SerializeField] float offset;
+    [SerializeField] float movingOffset;
 
     [Header("Interacts")]
-    public LayerMask movableLayer;
-    public Transform playerTransform;
+    [SerializeField] LayerMask movableLayer;
+    [SerializeField] Transform playerTransform;
 
     private GameObject currentObject;
     private bool isMovingObject = false;

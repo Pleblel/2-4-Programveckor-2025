@@ -1,44 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ArmadilloEnemy : BaseEntity, IMovable
+public class Screamer : BaseEntity, IMovable
 {
-
-
     [Header("MovementVariables")]
-    [SerializeField] float rollingSpeed = 12f;
-    [SerializeField] float rollingRange = 10f;
     [SerializeField] float walkingRange = 15f;
-    [SerializeField] float chargeUpRoll = 3.0f;
     Vector3 movementDirection;
-    bool canRoll = true;
-    bool isRolling = false;
-    float originalMovementSpeed;
-
+    
     [Header("Refereneces")]
     public GameObject player;
+    public GameManager gm;
     Rigidbody rb;
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private LayerMask playerLayer;
 
+    [Header("FightingVariables")]
+    [SerializeField] float electricityOnDefense = 5;
+    float originalDefense;
+    private Vector3 hitboxSize = new Vector3(1f, 1f, 1f); // Size of the hitbox
+    private float hitboxDistance = 1f; // Distance in front of the player
+    private bool isMeleeAttacking = false;
+    private bool canMeleeAttack = true;
 
     public float movementSpeed { get; private set; }
 
-  
+
 
     // Start is called before the first frame update
     protected override void Start()
     {
         maxHealth = 100.0f;
         currentHealth = maxHealth;
-        damage = 10.0f;
-        attackSpeed = 5.0f;
-        defense = 1000.0f;
-        movementSpeed = 2.0f;
-        originalMovementSpeed = movementSpeed;
+        damage = 25.0f;
+        attackSpeed = 6.0f;
+        defense = 1.0f;
+        movementSpeed = 3.5f;
+        originalDefense = defense;
         rb = GetComponent<Rigidbody>();
-        
+        gm = FindObjectOfType<GameManager>();
+
+
     }
 
     // Update is called once per frame
@@ -48,47 +49,60 @@ public class ArmadilloEnemy : BaseEntity, IMovable
         Mathf.RoundToInt(currentHealth);
 
         player = GameObject.FindGameObjectWithTag("Player");
+        gm = FindObjectOfType<GameManager>();
 
-        
 
+        if (!gm.elctricityOn) return;
+
+
+        ChangeDefense();
 
         if (!HasLineOfSight(player.transform))
         {
             rb.velocity = Vector3.zero;
-            return;       
+            return;
         }
 
         FacePlayer();
 
-        if (currentHealth <= 1)
-        {
-            currentHealth = maxHealth;
-        }
+        if (canMeleeAttack && !isMeleeAttacking && IsPlayerInMeleeHitbox() && gm.elctricityOn)
+            StartCoroutine(MeleeAttack());
 
-        if (IsInWalkRange() || IsInRollRange())
+        
+
+
+        if (IsInWalkRange())
             movementDirection = (player.transform.position - transform.position).normalized;
+
+
+        Debug.Log(defense);
     }
 
 
     private void FixedUpdate()
     {
+        if (!gm.elctricityOn) return;
 
-        if(player != null)
+        if (player != null)
         {
             if (!HasLineOfSight(player.transform))
             {
                 return;
             }
         }
-        
 
-        if (IsInWalkRange() && !isRolling)
-        Move(movementDirection);
 
-        if(IsInRollRange() && canRoll && !isRolling)
-        {
-            StartCoroutine(Roll());
-        }
+        if (IsInWalkRange() && gm.elctricityOn && !isMeleeAttacking)
+            Move(movementDirection);         
+    }
+
+
+    private void ChangeDefense()
+    {
+        if (gm.elctricityOn)
+            defense = electricityOnDefense;
+        else if (!gm.elctricityOn)
+            defense = originalDefense;
     }
 
     private bool IsInWalkRange()
@@ -99,43 +113,10 @@ public class ArmadilloEnemy : BaseEntity, IMovable
         return distance <= walkingRange;
     }
 
-    private bool IsInRollRange()
-    {
-        if (player == null) return false;
-        float distance = Vector3.Distance(transform.position, player.transform.position);
-
-        return distance <= rollingRange;
-    }
-
 
     public void Move(Vector3 direction)
     {
         rb.velocity = direction * movementSpeed;
-    }
-
-    IEnumerator Roll()
-    {
-        if (!canRoll) yield break;
-        canRoll = false;
-        isRolling = true;
-
-        Vector3 rollDirection = movementDirection;
-
-        rb.velocity = Vector3.zero;
-        yield return new WaitForSeconds(chargeUpRoll);
-
-        while (isRolling)
-        {
-            rb.velocity = rollDirection * rollingSpeed;
-            yield return null;
-        }
-
-        rb.velocity = Vector3.zero;
-        isRolling = false;
-
-        yield return new WaitForSeconds(attackSpeed);
-
-        canRoll = true;
     }
 
 
@@ -169,6 +150,21 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     }
 
 
+    private bool IsPlayerInMeleeHitbox()
+    {
+        Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
+        Collider[] hitColliders = Physics.OverlapBox(boxCenter, hitboxSize / 2);
+        foreach (Collider collider in hitColliders)
+        {
+            if (collider.CompareTag("Player"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     private void FacePlayer()
     {
         if (player != null)
@@ -191,34 +187,54 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     }
 
 
-    private void OnCollisionEnter(Collision collision)
+    IEnumerator MeleeAttack()
     {
-        if (isRolling)
+        canMeleeAttack = false;
+        isMeleeAttacking = true;
+
+        rb.velocity = Vector3.zero;
+        yield return new WaitForSeconds(0.4f);
+
+        if (IsPlayerInMeleeHitbox())
         {
-            // Check if the collision is with the player or a wall
-            if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Wall"))
+            //Pelle
+            //Sets a position on where the collider should be to hit the player
+
+            Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
+            Collider[] hitColliders = Physics.OverlapBox(boxCenter, hitboxSize / 2);
+            foreach (Collider collider in hitColliders)
             {
-                if (collision.gameObject.CompareTag("Player") && isRolling)
+                BaseEntity entity = collider.GetComponent<BaseEntity>();
+                if (collider.CompareTag("Player"))
                 {
-                    BaseEntity playerEntity = collision.gameObject.GetComponent<BaseEntity>();
+                    //Attack(entity);
+                    //entity.Death();
 
-                    if (playerEntity != null)
-                        Attack(playerEntity);
-                      
+                    Debug.Log("Attacked");
                 }
-
-                isRolling = false; // Stop rolling
             }
-
         }
+
+        yield return new WaitForSeconds(0.3f);
+        isMeleeAttacking = false;
+
+
+
+        yield return new WaitForSeconds(attackSpeed);
+        canMeleeAttack = true;
+        
     }
-  
+
+
+
     private void OnDrawGizmos()
-    { 
-        Gizmos.color = Color.green;
+    {
+        Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(transform.position, walkingRange);
 
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, rollingRange);
+
+        Gizmos.color = Color.cyan;
+        Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
+        Gizmos.DrawWireCube(boxCenter, hitboxSize);
     }
 }
