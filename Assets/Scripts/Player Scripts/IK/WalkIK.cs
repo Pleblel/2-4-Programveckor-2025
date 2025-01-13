@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -18,7 +19,7 @@ public class WalkIK : MonoBehaviour
     [SerializeField] AnimationCurve stepCurve;
 
     float footSpacing;
-    Vector3 oldPosition, currentPosition, newPosition; 
+    Vector3 oldPosition, currentPosition, newPosition;
     float lerp;
     int doOnce = 1;
 
@@ -31,27 +32,34 @@ public class WalkIK : MonoBehaviour
 
     private void Update()
     {
-
-        float diretionX = Input.GetAxisRaw("Horizontal") * stepOffsetX;
-        float directionZ = Input.GetAxisRaw("Vertical") * stepOffsetZ;
-
+        float directionX = Input.GetAxisRaw("Horizontal");
+        float directionZ = Input.GetAxisRaw("Vertical");
 
         transform.position = currentPosition;
 
-        Ray movingRay = new Ray(body.position + (body.right * footSpacing) + (body.transform.forward * stepOffsetX) + (body.transform.right * stepOffsetZ), Vector3.down);
+        Ray movingRay;
+        if (directionZ < 0)
+        {
+            movingRay = new Ray(body.position + (body.right * footSpacing) - (body.transform.forward * Mathf.Abs(directionZ) * 3f * stepOffsetZ) + (body.transform.right * directionX * stepOffsetX * 2), Vector3.down);
+        }
+        else
+        {
+            movingRay = new Ray(body.position + (body.right * footSpacing) + (body.transform.forward * directionZ * stepOffsetZ) + (body.transform.right * directionX * stepOffsetX * 2), Vector3.down);
+        }
+
         Ray stillRay = new Ray(body.position + (body.right * footSpacing), Vector3.down);
 
         if (bodyRb.velocity.magnitude > 0.1f)
         {
-            HandleMovement(movingRay, true);
+            HandleMovement(movingRay, true, directionZ);
         }
         else
         {
-            HandleMovement(stillRay, false);
+            HandleMovement(stillRay, false, directionZ);
         }
     }
 
-    private void HandleMovement(Ray ray, bool isMoving)
+    private void HandleMovement(Ray ray, bool isMoving, float dirZ)
     {
         if (isMoving)
         {
@@ -88,10 +96,21 @@ public class WalkIK : MonoBehaviour
             Vector3 tempPosition = Vector3.Lerp(oldPosition, newPosition, curveValue);
             tempPosition.y += Mathf.Sin(curveValue * Mathf.PI) * stepHeight;
 
-            // Adjust rotation to add sine wave offset to the base -70 degrees
-            float sineOffset = Mathf.Sin(curveValue * Mathf.PI) * 45; // Adjust the scale as needed
-            Vector3 currentEulerAngles = transform.localEulerAngles; // Preserve current rotation
-            currentEulerAngles.x = -69.5f + sineOffset; // Modify X rotation
+            // Adjust rotation using a switch case for dirZ
+            float sineOffset = Mathf.Sin(curveValue * Mathf.PI) * 45;
+            Vector3 currentEulerAngles = transform.localEulerAngles;
+            switch (Mathf.Sign(dirZ))
+            {
+                case 1: // Moving forward
+                    currentEulerAngles.x = -69.5f + sineOffset;
+                    break;
+                case -1: // Moving backward
+                    currentEulerAngles.x = -69.5f;
+                    break;
+                case 0: // Neutral (no sine offset)
+                    currentEulerAngles.x = -69.5f;
+                    break;
+            }
             transform.localRotation = Quaternion.Euler(currentEulerAngles);
 
 
@@ -115,11 +134,9 @@ public class WalkIK : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(newPosition, 0.5f);
     }
-
 
     public bool IsMoving()
     {

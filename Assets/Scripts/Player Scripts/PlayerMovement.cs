@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
     //Darren
 
     [Header("PlayerDirections")]
-    float diretionX;
+    float directionX;
     float directionZ;
     Vector3 movementDirection;
 
@@ -51,9 +51,9 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     void Update()
     {
-        diretionX = Input.GetAxisRaw("Horizontal");
+        directionX = Input.GetAxisRaw("Horizontal");
         directionZ = Input.GetAxisRaw("Vertical");
-        movementDirection = new Vector3(diretionX, 0f, directionZ).normalized;
+        movementDirection = new Vector3(directionX, 0f, directionZ).normalized;
 
         HandleRunning();
         HandleSlow();
