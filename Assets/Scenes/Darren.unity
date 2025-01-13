@@ -157,6 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66fbef4ffccd221499843f5a0626c0ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   elctricityOn: 1
 --- !u!4 &1010054821
 Transform:
@@ -533,6 +534,7 @@ MonoBehaviour:
   walking: {fileID: 0}
   running: {fileID: 0}
   mainMenuMusic: {fileID: 0}
+  settingMusic: {fileID: 0}
   calmGameMusic: {fileID: 0}
   panicGameMusic: {fileID: 0}
   drag: {fileID: 0}
@@ -567,7 +569,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1996540708
 BoxCollider:
   m_ObjectHideFlags: 0
