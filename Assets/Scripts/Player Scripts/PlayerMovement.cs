@@ -58,7 +58,6 @@ public class PlayerMovement : MonoBehaviour, IMovable
         HandleRunning();
         HandleSlow();
 
-        Debug.Log(movementSpeed);
     }
 
     private void FixedUpdate()
