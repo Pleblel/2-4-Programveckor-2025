@@ -44,25 +44,3 @@ public class GameManager : MonoBehaviour
         
     }
 }
-//Elm
-[System.Serializable]
-public class Item
-{
-    public string itemName;
-    public Sprite icon;
-    public bool isStackable;
-    public bool isQuestItem;
-
-    public Item(string name, Sprite icon, bool stackable, bool questItem)
-    {
-        itemName = name;
-        this.icon = icon;
-        isStackable = stackable;
-        isQuestItem = questItem;
-    }
-
-    public virtual void Use()
-    {
-        Debug.Log($"Using item: {itemName}");
-    }
-}
