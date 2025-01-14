@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
     {
 
         rb = GetComponent<Rigidbody>();
-        PG = GetComponent<PlayerGrab>();
+        PG = GetComponentInChildren<PlayerGrab>();
         SetMovementSpeed(4.0f);
         originalMovementSpeed = movementSpeed;
         currentStamina = maxStamina;
@@ -89,6 +89,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
         {
             //Stops rotation from being forced on the enemy
            Quaternion desiredRotation = Quaternion.LookRotation(targetVelocity, Vector3.up);
+            desiredRotation.x = 0;
            transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
         }
 
