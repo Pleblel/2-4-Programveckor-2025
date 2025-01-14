@@ -7,7 +7,6 @@ public class PlayerGrab : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] float interactionDistance;
-    [SerializeField] float moveSpeed;
     [SerializeField] float offset;
     [SerializeField] float movingOffset;
 
@@ -27,6 +26,7 @@ public class PlayerGrab : MonoBehaviour
         {
             if (!isMovingObject)
             {
+                interactionPoint = playerTransform.position + playerTransform.forward * interactionDistance;
                 TryGrabObject();
             }
             else
@@ -35,15 +35,15 @@ public class PlayerGrab : MonoBehaviour
             }
         }
 
-        interactionPoint = playerTransform.position + playerTransform.forward * interactionDistance;
+
 
         if (isMovingObject && currentObject != null)
         {
-            Vector3 currentRotation = transform.eulerAngles;
+            Vector3 currentRotation = playerTransform.eulerAngles;
             float roundedX = Mathf.Round(currentRotation.x / 90f) * 90f;
             float roundedY = Mathf.Round(currentRotation.y / 90f) * 90f;
             float roundedZ = Mathf.Round(currentRotation.z / 90f) * 90f;
-            transform.eulerAngles = new Vector3(roundedX, roundedY, roundedZ);
+            playerTransform.eulerAngles = new Vector3(roundedX, roundedY, roundedZ);
             MoveObjectWithPlayer();
         }
     }
@@ -91,6 +91,7 @@ public class PlayerGrab : MonoBehaviour
                 {
                     newPosition.x = objectBounds.max.x + offset;
                     newPosition.z = objectBounds.center.z;
+
                 }
                 else if (minDistance == distanceToLeft)
                 {
@@ -108,7 +109,7 @@ public class PlayerGrab : MonoBehaviour
                     newPosition.z = objectBounds.min.z - offset;
                 }
 
-                transform.position = newPosition;
+                playerTransform.position = newPosition;
 
                 float newXComponent = currentObject.transform.position.x - gameObject.transform.position.x;
                 float newYComponent = currentObject.transform.position.y - gameObject.transform.position.y;
