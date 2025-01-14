@@ -20,6 +20,8 @@ public class CameraLockOn : MonoBehaviour
     private CameraController mainCameraController;
     private PlayerMovement playerMovement;
 
+    public bool isLockedOn = false;
+
     private void Start()
     {
         mainCameraController = Camera.main.GetComponent<CameraController>();
@@ -110,6 +112,7 @@ public class CameraLockOn : MonoBehaviour
         mainCameraController.ToggleMouseControl(false);
         lockOnCamera.gameObject.SetActive(true);
         playerMovement.SetLockOnTarget(currentTarget);
+        isLockedOn = true;
     }
 
     private void DisableLockOn()
@@ -119,6 +122,7 @@ public class CameraLockOn : MonoBehaviour
         lockOnCamera.gameObject.SetActive(false);
         currentTarget = null;
         playerMovement.SetLockOnTarget(null);
+        isLockedOn = false;
     }
 
     private void UpdateLockOnCamera()
