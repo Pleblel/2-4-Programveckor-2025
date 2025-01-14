@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
     [SerializeField] float impairmentDivider = 2.0f;
     [SerializeField] float rotationSpeed = 7.0f;
     bool beingSlowed;
+    bool electrified;
 
     [Header("Stamina Settings")]
     [SerializeField] private float maxStamina = 100f;
@@ -160,6 +161,11 @@ public class PlayerMovement : MonoBehaviour, IMovable
         {
             movementSpeed = slowedSpeed;
         }
+
+        if (electrified)
+        {
+            movementSpeed = slowedSpeed / 2;
+        }
     }
 
 
@@ -169,6 +175,11 @@ public class PlayerMovement : MonoBehaviour, IMovable
         {
             Debug.Log("Hitting slow");
             beingSlowed = true;
+        }
+
+        if (other.CompareTag("Electric"))
+        {
+            electrified = true;
         }
     }
 
