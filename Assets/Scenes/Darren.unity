@@ -704,6 +704,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5625750423834686831, guid: a5faef33b10924d4ba7e39de4aa779cb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.6
+      objectReference: {fileID: 0}
     - target: {fileID: 6121285804857655109, guid: a5faef33b10924d4ba7e39de4aa779cb, type: 3}
       propertyPath: m_Name
       value: MockPlayer
