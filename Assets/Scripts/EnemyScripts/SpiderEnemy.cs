@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SpiderEnemy : BaseEntity, IMovable
 {
@@ -29,8 +30,9 @@ public class SpiderEnemy : BaseEntity, IMovable
     
 
     public float movementSpeed { get; private set; }
-   
-    
+    private NavMeshAgent navMeshAgent;
+
+
     Vector3 movementDirection; 
 
 
@@ -43,6 +45,9 @@ public class SpiderEnemy : BaseEntity, IMovable
         damage = 5.0f;
         attackSpeed = 1.5f;
         defense = 1.0f;
+
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.speed = movementSpeed;
 
         rb = GetComponent<Rigidbody>();
     }
@@ -59,7 +64,7 @@ public class SpiderEnemy : BaseEntity, IMovable
 
         if (!HasLineOfSight(playerPosition.transform))
         {
-            rb.velocity = Vector3.zero;
+            navMeshAgent.ResetPath();
             return;
         }
 
@@ -86,14 +91,14 @@ public class SpiderEnemy : BaseEntity, IMovable
 
         if (PlayerIsInChaseRange() && !isShooting && !isMeleeAttacking)
         {
-            Move(movementDirection);
+            Move(playerPosition.transform.position);
         }
           
     }
 
     public void Move(Vector3 direction)
     {
-        rb.velocity = direction * movementSpeed;
+        navMeshAgent.SetDestination(direction);
     }
 
     public override void Attack(ILivingEntity entity)
@@ -187,7 +192,7 @@ public class SpiderEnemy : BaseEntity, IMovable
             }
         }
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.35f);
         isMeleeAttacking = false;
 
         yield return new WaitForSeconds(attackSpeed);

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Electricity : MonoBehaviour
 {
     float damage = 1f;
-    float aliveTimer = 3f;
     bool canDealDamage = true;
 
     public float damageTimer { get; private set; }
