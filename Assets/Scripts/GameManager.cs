@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         DontDestroyOnLoad(gameObject);
         audioManager = FindObjectOfType<AudioManager>();
     }
@@ -27,9 +29,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameManager started");
 
-        HandleSceneMusic(SceneManager.GetActiveScene());
+        //HandleSceneMusic(SceneManager.GetActiveScene());
 
-        SceneManager.sceneLoaded += OnSceneLoaded;
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -42,7 +43,7 @@ public class GameManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("Loaded scene: " + scene.name);
-        //HandleSceneMusic(scene);
+        HandleSceneMusic(scene);
     }
     private void HandleSceneMusic(Scene scene)
     {
