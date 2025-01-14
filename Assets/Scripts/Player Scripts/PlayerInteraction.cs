@@ -70,7 +70,7 @@ public class PlayerGrab : MonoBehaviour
             {
                 currentObject = closestCollider.gameObject;
                 isMovingObject = true;
-                Vector3 currentPosition = transform.position;
+                Vector3 currentPosition = playerTransform.position;
                 Bounds objectBounds = currentObject.GetComponent<Renderer>().bounds;
                 Vector3 rightFaceCenter = new Vector3(objectBounds.max.x, objectBounds.center.y, objectBounds.center.z);
                 Vector3 leftFaceCenter = new Vector3(objectBounds.min.x, objectBounds.center.y, objectBounds.center.z);
