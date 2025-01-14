@@ -46,19 +46,22 @@ public class AudioManager : MonoBehaviour
     [Header("OTHER")]
     public AudioClip jumpScareSound;
 
-
-    private void Start()
+    private void Awake()
     {
-
+        DontDestroyOnLoad(gameObject);
     }
-
     public void PlayMusic(AudioClip newClip)
     {
-        if(musicSource == newClip && musicSource.isPlaying)
+        Debug.Log("Attempting to play music: " + newClip.name);
+        if (musicSource.clip == newClip && musicSource.isPlaying)
             return; //avoids restarting track
 
         musicSource.clip = newClip;
         musicSource.Play();
+    }
+    public void StopMusic()
+    {
+        musicSource.Stop();
     }
 
     public void PlaySFX(AudioClip clip)

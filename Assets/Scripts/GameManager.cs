@@ -12,6 +12,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (FindObjectsOfType<GameManager>().Length > 1)
+        {
+            Destroy(gameObject); // Prevent duplicates
+            return;
+        }
+
         DontDestroyOnLoad(gameObject);
         audioManager = FindObjectOfType<AudioManager>();
     }
@@ -19,50 +25,47 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("GameManager started");
+
+        HandleSceneMusic(SceneManager.GetActiveScene());
+
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        audioManager = FindObjectOfType<AudioManager>();
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log("Loaded scene: " + scene.name);
+        //HandleSceneMusic(scene);
+    }
+    private void HandleSceneMusic(Scene scene)
+    {
+        Debug.Log("Handling scene with index: " + scene.buildIndex);
+
         if (scene.name == "MainMenu")
         {
+            Debug.Log("MainMenu");
+
             audioManager.PlayMusic(audioManager.mainMenuMusic);
+
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
 
         }
         else if (scene.name == "GameScene")
         {
+            Debug.Log("Game scene");
+
             audioManager.PlayMusic(audioManager.calmGameMusic);
+
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-}
-//Elm
-[System.Serializable]
-public class Item
-{
-    public string itemName;
-    public Sprite icon;
-    public bool isStackable;
-    public bool isQuestItem;
-
-    public Item(string name, Sprite icon, bool stackable, bool questItem)
-    {
-        itemName = name;
-        this.icon = icon;
-        isStackable = stackable;
-        isQuestItem = questItem;
-    }
-
-    public virtual void Use()
-    {
-        Debug.Log($"Using item: {itemName}");
     }
 }

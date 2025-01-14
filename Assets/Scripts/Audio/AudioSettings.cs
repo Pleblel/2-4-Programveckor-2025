@@ -108,8 +108,7 @@ public class AudioSettings : MonoBehaviour
 
     private void UpdateButtonIcon()
     {
-
-
+        /*
         masterOnIcon.enabled = !masterMuted;
         masterOffIcon.enabled = masterMuted;
 
@@ -117,7 +116,7 @@ public class AudioSettings : MonoBehaviour
         musicOffIcon.enabled = musicMuted;
 
         SFXOnIcon.enabled = !SFXMuted;
-        SFXOffIcon.enabled = SFXMuted;
+        SFXOffIcon.enabled = SFXMuted;*/
 
     }
 
