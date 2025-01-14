@@ -12,6 +12,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (FindObjectsOfType<GameManager>().Length > 1)
+        {
+            Destroy(gameObject); // Prevent duplicates
+            return;
+        }
+
         DontDestroyOnLoad(gameObject);
         audioManager = FindObjectOfType<AudioManager>();
     }
@@ -19,28 +25,47 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("GameManager started");
+
+        HandleSceneMusic(SceneManager.GetActiveScene());
+
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        audioManager = FindObjectOfType<AudioManager>();
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log("Loaded scene: " + scene.name);
+        //HandleSceneMusic(scene);
+    }
+    private void HandleSceneMusic(Scene scene)
+    {
+        Debug.Log("Handling scene with index: " + scene.buildIndex);
+
         if (scene.name == "MainMenu")
         {
+            Debug.Log("MainMenu");
+
             audioManager.PlayMusic(audioManager.mainMenuMusic);
+
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
 
         }
         else if (scene.name == "GameScene")
         {
-            audioManager.PlayMusic(audioManager.calmGameMusic);
-        }
-    }
+            Debug.Log("Game scene");
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            audioManager.PlayMusic(audioManager.calmGameMusic);
+
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 }
