@@ -21,6 +21,7 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     Rigidbody rb;
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private LayerMask playerLayer;
+    Button buttonScript;
 
 
     public float movementSpeed { get; private set; }
@@ -171,7 +172,7 @@ public class ArmadilloEnemy : BaseEntity, IMovable
 
     private void FacePlayer()
     {
-        if (player != null)
+        if (player != null && !isRolling)
         {
             // Calculate the direction to the player
             Vector3 direction = player.transform.position - transform.position;
@@ -196,15 +197,20 @@ public class ArmadilloEnemy : BaseEntity, IMovable
         if (isRolling)
         {
             // Check if the collision is with the player or a wall
-            if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Wall"))
+            if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Button"))
             {
                 if (collision.gameObject.CompareTag("Player") && isRolling)
                 {
                     BaseEntity playerEntity = collision.gameObject.GetComponent<BaseEntity>();
 
                     if (playerEntity != null)
-                        Attack(playerEntity);
-                      
+                        Attack(playerEntity);          
+                }
+
+                if (collision.gameObject.CompareTag("Button"))
+                {
+                    buttonScript = collision.gameObject.GetComponent<Button>();
+                    buttonScript.buttonPressed = true;
                 }
 
                 isRolling = false; // Stop rolling

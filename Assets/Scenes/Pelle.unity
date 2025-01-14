@@ -663,7 +663,7 @@ GameObject:
   - component: {fileID: 697063993}
   - component: {fileID: 697063992}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -702,6 +702,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8f3acee7edd5284496c3dee77dd2b22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonPressed: 0
 --- !u!136 &697063994
 CapsuleCollider:
   m_ObjectHideFlags: 0

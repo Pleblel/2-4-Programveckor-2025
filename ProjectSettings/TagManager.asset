@@ -9,6 +9,7 @@ TagManager:
   - Audio
   - Slow
   - Wall
+  - Button
   layers:
   - Default
   - TransparentFX
