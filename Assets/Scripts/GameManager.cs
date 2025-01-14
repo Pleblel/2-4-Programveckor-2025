@@ -36,8 +36,6 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         audioManager = FindObjectOfType<AudioManager>();
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
