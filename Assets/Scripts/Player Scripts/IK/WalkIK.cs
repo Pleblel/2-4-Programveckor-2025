@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.UIElements;
 
 public class WalkIK : MonoBehaviour
 {
@@ -12,11 +13,15 @@ public class WalkIK : MonoBehaviour
     [SerializeField] float stepDistance = 4;
     [SerializeField] float stepLength = 4;
     [SerializeField] float stepHeight = 1;
-    [SerializeField] float stepOffsetX;
-    [SerializeField] float stepOffsetZ;
     [SerializeField] Vector3 footOffset = default;
     [SerializeField] Rigidbody bodyRb = null;
     [SerializeField] AnimationCurve stepCurve;
+    [SerializeField] float stepOffset;
+    [SerializeField] CameraLockOn cameraLockOn;
+
+    [Header("Locked on stepOffset")]
+    [SerializeField] float stepOffsetX;
+    [SerializeField] float stepOffsetZ;
 
     float footSpacing;
     Vector3 oldPosition, currentPosition, newPosition;
@@ -38,14 +43,23 @@ public class WalkIK : MonoBehaviour
         transform.position = currentPosition;
 
         Ray movingRay;
-        if (directionZ < 0)
+        if(cameraLockOn.isLockedOn == true) 
         {
-            movingRay = new Ray(body.position + (body.right * footSpacing) - (body.transform.forward * Mathf.Abs(directionZ) * 3f * stepOffsetZ) + (body.transform.right * directionX * stepOffsetX * 2), Vector3.down);
-        }
+            if (directionZ < 0)
+            {
+                movingRay = new Ray(body.position + (body.right * footSpacing) - (body.transform.forward * Mathf.Abs(directionZ) * 3f * stepOffsetZ) + (body.transform.right * directionX * stepOffsetX * 2), Vector3.down);
+            }
+            else
+            {
+                movingRay = new Ray(body.position + (body.right * footSpacing) + (body.transform.forward * directionZ * stepOffsetZ) + (body.transform.right * directionX * stepOffsetX * 2), Vector3.down);
+            }
+        } 
         else
         {
-            movingRay = new Ray(body.position + (body.right * footSpacing) + (body.transform.forward * directionZ * stepOffsetZ) + (body.transform.right * directionX * stepOffsetX * 2), Vector3.down);
+            movingRay = new Ray(body.position + (body.right * footSpacing) + (body.transform.forward * stepOffset), Vector3.down);
         }
+        
+
 
         Ray stillRay = new Ray(body.position + (body.right * footSpacing), Vector3.down);
 
