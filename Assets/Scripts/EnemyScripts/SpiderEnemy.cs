@@ -27,7 +27,9 @@ public class SpiderEnemy : BaseEntity, IMovable
     [Header("Attack Settings")]
     private Vector3 hitboxSize = new Vector3(1f, 1f, 1f); // Size of the hitbox
     private float hitboxDistance = 1f; // Distance in front of the player
-    
+    [SerializeField] float knockBackForce = 20f;
+    [SerializeField] float knockBackDuration = 0.2f;
+    public bool knockBackPlayer = false;
 
     public float movementSpeed { get; private set; }
     private NavMeshAgent navMeshAgent;
@@ -71,14 +73,15 @@ public class SpiderEnemy : BaseEntity, IMovable
         FacePlayer();
 
 
-        if (!PlayerIsInChaseRange())
-        {
+        if(IsPlayerInMeleeHitbox())
             navMeshAgent.isStopped = true;
-        }
+
+        if (!PlayerIsInChaseRange())
+            navMeshAgent.isStopped = true;
 
         if (canMeleeAttack && !isMeleeAttacking && IsPlayerInMeleeHitbox())
-            StartCoroutine(MeleeAttack());
-        
+            StartCoroutine(MeleeAttack());         
+              
 
         if (PlayerIsInShootingRange() && canShoot && !PlayerIsInChaseRange())
             StartCoroutine("ShootGoo");
@@ -142,6 +145,7 @@ public class SpiderEnemy : BaseEntity, IMovable
         {
             if (collider.CompareTag("Player"))
             {
+                
                 return true;
             }
         }
@@ -194,11 +198,18 @@ public class SpiderEnemy : BaseEntity, IMovable
                     Rigidbody playerRb = collider.GetComponent<Rigidbody>();
                     if (playerRb != null)
                     {
-                        Debug.Log("Knockback");
-                        playerRb.velocity = Vector3.zero;
-                        Vector3 knockbackDirection = (collider.transform.position - transform.position).normalized;
-                        float knockbackForce = 10f; // Adjust as needed
-                        playerRb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+                        float elpasedTime = 0f;
+                        Vector3 knockbackDirection = new Vector3(collider.transform.position.x - transform.position.x, 0, 0).normalized;
+
+                        while (elpasedTime < knockBackDuration)
+                        {
+                            playerRb.AddForce(knockbackDirection * knockBackForce, ForceMode.Impulse);
+                            elpasedTime += Time.deltaTime;
+                            yield return null;
+                        }
+                        
+                        
+                        
                     }
               
                 }
