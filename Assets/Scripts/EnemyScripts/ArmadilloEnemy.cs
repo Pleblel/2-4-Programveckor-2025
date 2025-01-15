@@ -23,7 +23,7 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     public GameObject player;
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private LayerMask playerLayer;
-    Button buttonScript;
+    Buttons buttonScript;
 
     public float movementSpeed { get; private set; }
     private NavMeshAgent navMeshAgent;
@@ -239,7 +239,7 @@ public class ArmadilloEnemy : BaseEntity, IMovable
             }
             else if (collision.gameObject.CompareTag("Button"))
             {
-                buttonScript = collision.gameObject.GetComponent<Button>();
+                buttonScript = collision.gameObject.GetComponent<Buttons>();
                 buttonScript.buttonPressed = true;
 
                 // Stop rolling after pressing a button

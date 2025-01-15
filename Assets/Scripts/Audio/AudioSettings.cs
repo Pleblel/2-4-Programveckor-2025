@@ -25,6 +25,15 @@ public class AudioSettings : MonoBehaviour
     private bool musicMuted = false;
     private bool SFXMuted = false;
 
+    public int Length { get; private set; }
+
+    private void Awake()
+    {
+        /*if(FindObjectOfType<AudioSettings>().Length > 1)
+        DontDestroyOnLoad(gameObject);
+
+        DontDestroyOnLoad(gameObject);*/
+    }
     private void Start()
     {
         if (PlayerPrefs.HasKey("musicVolume"))
@@ -44,9 +53,9 @@ public class AudioSettings : MonoBehaviour
     }
     public void SetMasterVolume()
     {
-        float volume = masterSlider.value;
-        audioMixer.SetFloat("master", Mathf.Log10(volume)*20);
-        PlayerPrefs.SetFloat("masterVolume", volume);
+        float volume = masterSlider.value;// Apply to the AudioMixer
+        audioMixer.SetFloat("master", Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("masterVolume", volume); // Save value to PlayerPrefs
     }       
     public void SetMusicVolume()
     {
@@ -61,8 +70,18 @@ public class AudioSettings : MonoBehaviour
         PlayerPrefs.SetFloat("SFXVolume", volume);
     }
 
-    private void LoadVolume()
+    public void LoadVolume()
     {
+
+        masterSlider.value = PlayerPrefs.GetFloat("masterVolume", 1f); // Default to 1 if not found
+        musicSlider.value = PlayerPrefs.GetFloat("musicVolume", 1f); 
+        SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f); 
+
+        SetMasterVolume();
+        SetMusicVolume();
+        SetSFXVolume();
+
+        /*
         masterSlider.value = PlayerPrefs.GetFloat("masterVolume");
         musicSlider.value = PlayerPrefs.GetFloat("musicVolume");
         SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume");
@@ -70,15 +89,15 @@ public class AudioSettings : MonoBehaviour
 
         SetMasterVolume();
         SetMusicVolume();
-        SetSFXVolume();
+        SetSFXVolume();*/
     }
 
     public void ToggleMasterMute()
     {
         masterMuted = !masterMuted;
-        audioMixer.SetFloat("master", masterMuted ? -80f : Mathf.Log10(masterSlider.value) * 20);
-        PlayerPrefs.SetInt("masterMuted", masterMuted ? 1 : 0);
-        UpdateButtonIcon();
+        float volume = masterSlider.value;
+        audioMixer.SetFloat("master", Mathf.Log10(Mathf.Max(volume, 0.0001f)) * 20);
+        PlayerPrefs.SetFloat("masterVolume", volume);
     }
     public void ToggleMusicMute()
     {
