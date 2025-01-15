@@ -18,6 +18,7 @@ public class WalkIK : MonoBehaviour
     [SerializeField] AnimationCurve stepCurve;
     [SerializeField] float stepOffset;
     [SerializeField] CameraLockOn cameraLockOn;
+    [SerializeField] PlayerGrab playerGrab;
 
     [Header("Locked on stepOffset")]
     [SerializeField] float stepOffsetX;
@@ -43,7 +44,7 @@ public class WalkIK : MonoBehaviour
         transform.position = currentPosition;
 
         Ray movingRay;
-        if(cameraLockOn.isLockedOn == true) 
+        if(cameraLockOn.isLockedOn == true || playerGrab.isMovingObject == true) 
         {
             if (directionZ < 0)
             {
