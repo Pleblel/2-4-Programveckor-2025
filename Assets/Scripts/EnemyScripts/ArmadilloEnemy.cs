@@ -10,6 +10,7 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     [SerializeField] float rollingRange = 10f;
     [SerializeField] float walkingRange = 15f;
     [SerializeField] float chargeUpRoll = 3.0f;
+    [SerializeField] float minimumDistance = 0.5f;
     Vector3 movementDirection;
     Vector3 rollDirection;
     bool canRoll = true;
@@ -109,9 +110,26 @@ public class ArmadilloEnemy : BaseEntity, IMovable
         return distance <= rollingRange;
     }
 
+    private bool TooCloseToPlayer()
+    {
+        if (player == null) return false;
+        float distance = Vector3.Distance(transform.position, player.transform.position);
+        return distance <= minimumDistance;
+    }
+
+
     public void Move(Vector3 destination)
     {
-        navMeshAgent.SetDestination(destination);
+        if (!TooCloseToPlayer())
+        {
+            navMeshAgent.SetDestination(destination);
+            navMeshAgent.isStopped = false;
+        }
+        else if (TooCloseToPlayer())
+        {
+            navMeshAgent.isStopped = true;
+        }
+            
     }
 
 
@@ -240,5 +258,8 @@ public class ArmadilloEnemy : BaseEntity, IMovable
 
         Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(transform.position, rollingRange);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, minimumDistance);
     }
 }
