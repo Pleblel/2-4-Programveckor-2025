@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8023462871707558724}
   - component: {fileID: 930227642631010795}
   - component: {fileID: 8637425723825737344}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: GooBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

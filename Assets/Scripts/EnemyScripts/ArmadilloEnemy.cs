@@ -10,16 +10,20 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     [SerializeField] float rollingRange = 10f;
     [SerializeField] float walkingRange = 15f;
     [SerializeField] float chargeUpRoll = 3.0f;
+    [SerializeField] float minimumDistance = 0.5f;
     Vector3 movementDirection;
+    Vector3 rollDirection;
     bool canRoll = true;
     bool isRolling = false;
+    bool bouncing = false;
     float originalMovementSpeed;
+    Vector3 bounceDirection;
 
     [Header("References")]
     public GameObject player;
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private LayerMask playerLayer;
-    Button buttonScript;
+    Buttons buttonScript;
 
     public float movementSpeed { get; private set; }
     private NavMeshAgent navMeshAgent;
@@ -32,7 +36,7 @@ public class ArmadilloEnemy : BaseEntity, IMovable
         damage = 10.0f;
         attackSpeed = 5.0f;
         defense = 1000.0f;
-        movementSpeed = 2.0f;
+        movementSpeed = 3.5f;
         originalMovementSpeed = movementSpeed;
 
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -53,7 +57,10 @@ public class ArmadilloEnemy : BaseEntity, IMovable
             return;
         }
 
+        if(!isRolling)
         FacePlayer();
+
+        Bounce();
 
         if (currentHealth <= 1)
         {
@@ -63,6 +70,11 @@ public class ArmadilloEnemy : BaseEntity, IMovable
         if (IsInWalkRange() || IsInRollRange())
         {
             movementDirection = (player.transform.position - transform.position).normalized;
+        }
+
+        if (IsInRollRange() && canRoll && !isRolling && !bouncing)
+        {
+            StartCoroutine(Roll());
         }
     }
 
@@ -76,15 +88,12 @@ public class ArmadilloEnemy : BaseEntity, IMovable
             }
         }
 
-        if (IsInWalkRange() && !isRolling)
+        if (IsInWalkRange() && !isRolling && !bouncing)
         {
             Move(player.transform.position);
         }
 
-        if (IsInRollRange() && canRoll && !isRolling)
-        {
-            StartCoroutine(Roll());
-        }
+        
     }
 
     private bool IsInWalkRange()
@@ -101,9 +110,33 @@ public class ArmadilloEnemy : BaseEntity, IMovable
         return distance <= rollingRange;
     }
 
+    private bool TooCloseToPlayer()
+    {
+        if (player == null) return false;
+        float distance = Vector3.Distance(transform.position, player.transform.position);
+        return distance <= minimumDistance;
+    }
+
+
     public void Move(Vector3 destination)
     {
-        navMeshAgent.SetDestination(destination);
+        if (!TooCloseToPlayer())
+        {
+            navMeshAgent.SetDestination(destination);
+            navMeshAgent.isStopped = false;
+        }
+        else if (TooCloseToPlayer())
+        {
+            navMeshAgent.isStopped = true;
+        }
+            
+    }
+
+
+    private void Bounce()
+    {
+        if(bouncing)
+            transform.position += bounceDirection * rollingSpeed * Time.deltaTime;
     }
 
     IEnumerator Roll()
@@ -114,17 +147,13 @@ public class ArmadilloEnemy : BaseEntity, IMovable
         isRolling = true;
 
         navMeshAgent.isStopped = true; // Stop NavMeshAgent during roll
+        rollDirection = movementDirection;
         yield return new WaitForSeconds(chargeUpRoll);
 
-        Vector3 rollDirection = movementDirection;
-
-        float rollDuration = rollingRange / rollingSpeed; // Approximate duration of roll
-        float elapsedTime = 0f;
-
-        while (elapsedTime < rollDuration)
+      
+        while (isRolling)
         {
             transform.position += rollDirection * rollingSpeed * Time.deltaTime;
-            elapsedTime += Time.deltaTime;
             yield return null;
         }
 
@@ -178,25 +207,47 @@ public class ArmadilloEnemy : BaseEntity, IMovable
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (isRolling)
+        if (isRolling || bouncing)
         {
-            if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Button"))
+            if (collision.gameObject.CompareTag("Wall"))
             {
-                if (collision.gameObject.CompareTag("Player") && isRolling)
-                {
-                    BaseEntity playerEntity = collision.gameObject.GetComponent<BaseEntity>();
-                    if (playerEntity != null)
-                        Attack(playerEntity);
-                }
-
-                if (collision.gameObject.CompareTag("Button"))
-                {
-                    buttonScript = collision.gameObject.GetComponent<Button>();
-                    buttonScript.buttonPressed = true;
-                }
 
                 isRolling = false;
+
+                Vector3 collisionNormal = collision.contacts[0].normal;
+
+                bounceDirection = Vector3.Reflect(rollDirection.normalized, collisionNormal);
+
+                // Optionally, add a slight vertical offset to prevent sticking to the surface
+                bounceDirection.y = 0;
+
+                bouncing = true;
+
+                Debug.Log("Wall hit");
             }
+            else if (collision.gameObject.CompareTag("Player"))
+            {
+                BaseEntity playerEntity = collision.gameObject.GetComponent<BaseEntity>();
+                if (playerEntity != null)
+                {
+                    Attack(playerEntity);
+                }
+
+                // Stop rolling after hitting the player
+                isRolling = false;
+                bouncing = false;
+            }
+            else if (collision.gameObject.CompareTag("Button"))
+            {
+                buttonScript = collision.gameObject.GetComponent<Buttons>();
+                buttonScript.buttonPressed = true;
+
+                // Stop rolling after pressing a button
+                isRolling = false;
+                bouncing = false;
+            }
+
+
         }
     }
 
@@ -207,5 +258,8 @@ public class ArmadilloEnemy : BaseEntity, IMovable
 
         Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(transform.position, rollingRange);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, minimumDistance);
     }
 }

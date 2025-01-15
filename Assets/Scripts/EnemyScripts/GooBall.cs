@@ -41,8 +41,7 @@ public class GooBall : Projectile, IDamageAble
             Destroy(gameObject);
             
         }
-
-        if (other.CompareTag("Floor"))
+        else
         {
             RaycastHit hit;
             if (Physics.Raycast(transform.position, Vector3.down, out hit, 5f))
@@ -52,6 +51,8 @@ public class GooBall : Projectile, IDamageAble
 
             Destroy(gameObject);
         }
+       
+
     }
 
 

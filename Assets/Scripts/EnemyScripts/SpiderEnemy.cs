@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SpiderEnemy : BaseEntity, IMovable
 {
@@ -29,9 +30,8 @@ public class SpiderEnemy : BaseEntity, IMovable
     
 
     public float movementSpeed { get; private set; }
-   
-    
-    Vector3 movementDirection; 
+    private NavMeshAgent navMeshAgent;
+
 
 
     // Start is called before the first frame update
@@ -45,6 +45,8 @@ public class SpiderEnemy : BaseEntity, IMovable
         defense = 1.0f;
 
         rb = GetComponent<Rigidbody>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.speed = movementSpeed;
     }
 
     // Update is called once per frame
@@ -59,16 +61,20 @@ public class SpiderEnemy : BaseEntity, IMovable
 
         if (!HasLineOfSight(playerPosition.transform))
         {
-            rb.velocity = Vector3.zero;
+            navMeshAgent.ResetPath();
             return;
         }
 
+
+
+
         FacePlayer();
 
-        if (PlayerIsInChaseRange())
-            movementDirection = (playerPosition.transform.position - transform.position).normalized;
-        else if (!PlayerIsInChaseRange())
-            rb.velocity = Vector3.zero;
+
+        if (!PlayerIsInChaseRange())
+        {
+            navMeshAgent.isStopped = true;
+        }
 
         if (canMeleeAttack && !isMeleeAttacking && IsPlayerInMeleeHitbox())
             StartCoroutine(MeleeAttack());
@@ -76,8 +82,6 @@ public class SpiderEnemy : BaseEntity, IMovable
 
         if (PlayerIsInShootingRange() && canShoot && !PlayerIsInChaseRange())
             StartCoroutine("ShootGoo");
-
-        Debug.Log(isMeleeAttacking);
     }
 
     private void FixedUpdate()
@@ -86,14 +90,15 @@ public class SpiderEnemy : BaseEntity, IMovable
 
         if (PlayerIsInChaseRange() && !isShooting && !isMeleeAttacking)
         {
-            Move(movementDirection);
+            navMeshAgent.isStopped = false;
+            Move(playerPosition.transform.position);
         }
           
     }
 
     public void Move(Vector3 direction)
     {
-        rb.velocity = direction * movementSpeed;
+        navMeshAgent.SetDestination(direction);
     }
 
     public override void Attack(ILivingEntity entity)
@@ -166,7 +171,7 @@ public class SpiderEnemy : BaseEntity, IMovable
         canMeleeAttack = false;
         isMeleeAttacking = true;
 
-        rb.velocity = Vector3.zero;
+        navMeshAgent.isStopped = true;
         yield return new WaitForSeconds(0.4f);
 
         if (IsPlayerInMeleeHitbox())
@@ -177,18 +182,33 @@ public class SpiderEnemy : BaseEntity, IMovable
             Collider[] hitColliders = Physics.OverlapBox(boxCenter, hitboxSize / 2);
             foreach (Collider collider in hitColliders)
             {
-                BaseEntity entity = collider.GetComponent<BaseEntity>();
+                
                 if (collider.CompareTag("Player"))
                 {
+                    BaseEntity entity = collider.GetComponent<BaseEntity>();
                     //Attack(entity);
                     //entity.Death();
                     Debug.Log("Attacked");
+
+
+                    Rigidbody playerRb = collider.GetComponent<Rigidbody>();
+                    if (playerRb != null)
+                    {
+                        Debug.Log("Knockback");
+                        playerRb.velocity = Vector3.zero;
+                        Vector3 knockbackDirection = (collider.transform.position - transform.position).normalized;
+                        float knockbackForce = 10f; // Adjust as needed
+                        playerRb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+                    }
+              
                 }
+
             }
         }
 
         yield return new WaitForSeconds(0.2f);
         isMeleeAttacking = false;
+        navMeshAgent.isStopped = false;
 
         yield return new WaitForSeconds(attackSpeed);
         canMeleeAttack = true;

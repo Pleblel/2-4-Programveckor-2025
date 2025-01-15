@@ -383,6 +383,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   maxLockOnDistance: 50
+  isLockedOn: 0
 --- !u!114 &3134948276415888206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,7 +397,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionDistance: 1
-  moveSpeed: 5
   offset: 0.5
   movingOffset: 1.6
   movableLayer:

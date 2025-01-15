@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+
 public class Screamer : BaseEntity, IMovable
 {
     [Header("MovementVariables")]
@@ -23,6 +25,7 @@ public class Screamer : BaseEntity, IMovable
     private bool canMeleeAttack = true;
 
     public float movementSpeed { get; private set; }
+    private NavMeshAgent navMeshAgent;
 
 
 
@@ -36,6 +39,11 @@ public class Screamer : BaseEntity, IMovable
         defense = 1.0f;
         movementSpeed = 3.5f;
         originalDefense = defense;
+
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.speed = movementSpeed;
+
+
         rb = GetComponent<Rigidbody>();
         gm = FindObjectOfType<GameManager>();
 
@@ -52,14 +60,20 @@ public class Screamer : BaseEntity, IMovable
         gm = FindObjectOfType<GameManager>();
 
 
-        if (!gm.elctricityOn) return;
+
+
+        if (!gm.elctricityOn) 
+        {
+            navMeshAgent.ResetPath();
+            return;
+        } 
 
 
         ChangeDefense();
 
         if (!HasLineOfSight(player.transform))
         {
-            rb.velocity = Vector3.zero;
+            navMeshAgent.ResetPath();
             return;
         }
 
@@ -93,7 +107,7 @@ public class Screamer : BaseEntity, IMovable
 
 
         if (IsInWalkRange() && gm.elctricityOn && !isMeleeAttacking)
-            Move(movementDirection);         
+            Move(player.transform.position);         
     }
 
 
@@ -116,7 +130,7 @@ public class Screamer : BaseEntity, IMovable
 
     public void Move(Vector3 direction)
     {
-        rb.velocity = direction * movementSpeed;
+        navMeshAgent.SetDestination(direction);
     }
 
 

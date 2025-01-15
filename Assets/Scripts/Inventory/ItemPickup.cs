@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
 {
+
     [SerializeField] Item item;
     [SerializeField] InventoryManager IManager;
 
     void Pickup()
     {
-        InventoryManager.Instance.Add(item);
+        IManager.Add(item);
+        IManager.ListItem();
         Destroy(gameObject);
     }
 

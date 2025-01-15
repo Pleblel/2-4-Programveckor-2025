@@ -170,6 +170,14 @@ public class PlayerMovement : MonoBehaviour, IMovable
     }
 
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Electricity"))
+        {
+
+        }
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Slow"))
