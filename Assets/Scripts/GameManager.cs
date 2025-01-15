@@ -38,8 +38,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameManager started");
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         /*
         audioSettings = FindObjectOfType<AudioSettings>();
         if(audioSettings = null)
