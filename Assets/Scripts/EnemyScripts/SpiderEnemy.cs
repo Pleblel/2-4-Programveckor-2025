@@ -56,7 +56,7 @@ public class SpiderEnemy : BaseEntity, IMovable
         Mathf.RoundToInt(maxHealth);
         Mathf.RoundToInt(currentHealth);
 
-        
+        Debug.Log(currentHealth);
        
         playerPosition = GameObject.FindGameObjectWithTag("Player");
 
@@ -181,8 +181,8 @@ public class SpiderEnemy : BaseEntity, IMovable
                 if (collider.CompareTag("Player"))
                 {
                     BaseEntity entity = collider.GetComponent<BaseEntity>();
-                    //Attack(entity);
-                    //entity.Death();
+                    Attack(entity);
+                    entity.Death();
                     Debug.Log("Attacked");
 
 
