@@ -7,7 +7,7 @@ public class InventoryManager : MonoBehaviour
 {
 
     [SerializeField] static InventoryManager instance;
-    [SerializeField] List<Item> items = new List<Item>();
+    public List<Item> items = new List<Item>();
 
     [SerializeField] Transform itemContent;
     [SerializeField] GameObject inventoryItem;
