@@ -38,8 +38,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameManager started");
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        DisableMouse();
         /*
         audioSettings = FindObjectOfType<AudioSettings>();
         if(audioSettings = null)
@@ -87,8 +86,7 @@ public class GameManager : MonoBehaviour
         isGamePaused = false;
         audioManager.PlayMusic(currentMusic);
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        DisableMouse();
     }
 
     void Pause()
@@ -99,8 +97,7 @@ public class GameManager : MonoBehaviour
         isGamePaused = true;
         audioManager.PlayMusic(audioManager.settingMusic);
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        EnableMouse();
 
     }
 
@@ -140,6 +137,18 @@ public class GameManager : MonoBehaviour
         {
             audioSettings.LoadVolume();
         }*/
+    }
+
+    public void DisableMouse()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void EnableMouse()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void HandleSceneMusic(Scene scene)
