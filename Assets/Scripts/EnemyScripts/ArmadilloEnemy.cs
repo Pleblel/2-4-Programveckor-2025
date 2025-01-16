@@ -11,6 +11,7 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     [SerializeField] float walkingRange = 15f;
     [SerializeField] float chargeUpRoll = 3.0f;
     [SerializeField] float minimumDistance = 0.5f;
+    float originalMovementSpeed;
     Vector3 movementDirection;
     Vector3 rollDirection;
     bool canRoll = true;
