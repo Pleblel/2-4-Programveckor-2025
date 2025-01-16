@@ -29,7 +29,6 @@ public class SpiderEnemy : BaseEntity, IMovable
     private float hitboxDistance = 1f; // Distance in front of the player
     [SerializeField] float knockBackForce = 20f;
     [SerializeField] float knockBackDuration = 0.2f;
-    public bool knockBackPlayer = false;
 
     public float movementSpeed { get; private set; }
     private NavMeshAgent navMeshAgent;
@@ -67,16 +66,9 @@ public class SpiderEnemy : BaseEntity, IMovable
             return;
         }
 
-
-
-
         FacePlayer();
 
-
-        if(IsPlayerInMeleeHitbox())
-            navMeshAgent.isStopped = true;
-
-        if (!PlayerIsInChaseRange())
+        if (!PlayerIsInChaseRange() || IsPlayerInMeleeHitbox())
             navMeshAgent.isStopped = true;
 
         if (canMeleeAttack && !isMeleeAttacking && IsPlayerInMeleeHitbox())
@@ -85,23 +77,24 @@ public class SpiderEnemy : BaseEntity, IMovable
 
         if (PlayerIsInShootingRange() && canShoot && !PlayerIsInChaseRange())
             StartCoroutine("ShootGoo");
-    }
 
-    private void FixedUpdate()
-    {
-        if (!HasLineOfSight(playerPosition.transform)) return;
-
-        if (PlayerIsInChaseRange() && !isShooting && !isMeleeAttacking)
+        if (PlayerIsInChaseRange() && !isShooting && !isMeleeAttacking && !IsPlayerInMeleeHitbox())
         {
             navMeshAgent.isStopped = false;
             Move(playerPosition.transform.position);
         }
+    }
+
+    private void FixedUpdate()
+    {
+       
           
     }
 
     public void Move(Vector3 direction)
     {
         navMeshAgent.SetDestination(direction);
+      
     }
 
     public override void Attack(ILivingEntity entity)
@@ -180,7 +173,7 @@ public class SpiderEnemy : BaseEntity, IMovable
 
         if (IsPlayerInMeleeHitbox())
         {
-            //Pelle
+            //Pelle (Collider) Darren(The rest)
             //Sets a position on where the collider should be to hit the player
             Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
             Collider[] hitColliders = Physics.OverlapBox(boxCenter, hitboxSize / 2);
@@ -196,20 +189,25 @@ public class SpiderEnemy : BaseEntity, IMovable
 
 
                     Rigidbody playerRb = collider.GetComponent<Rigidbody>();
-                    if (playerRb != null)
+                    PlayerMovement playerController = collider.GetComponent<PlayerMovement>();
+                    if (playerRb != null && playerController != null)
                     {
+
+                        playerController.isBeingKnockedBack = true;
                         float elpasedTime = 0f;
                         Vector3 knockbackDirection = new Vector3(collider.transform.position.x - transform.position.x, 0, 0).normalized;
+                        
 
                         while (elpasedTime < knockBackDuration)
                         {
                             playerRb.AddForce(knockbackDirection * knockBackForce, ForceMode.Impulse);
+     
                             elpasedTime += Time.deltaTime;
                             yield return null;
                         }
-                        
-                        
-                        
+
+                        playerController.isBeingKnockedBack = false;
+
                     }
               
                 }

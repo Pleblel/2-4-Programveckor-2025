@@ -7,7 +7,6 @@ public class Screamer : BaseEntity, IMovable
 {
     [Header("MovementVariables")]
     [SerializeField] float walkingRange = 15f;
-    Vector3 movementDirection;
     
     [Header("Refereneces")]
     public GameObject player;
@@ -23,6 +22,8 @@ public class Screamer : BaseEntity, IMovable
     private float hitboxDistance = 1f; // Distance in front of the player
     private bool isMeleeAttacking = false;
     private bool canMeleeAttack = true;
+    [SerializeField] float knockBackDuration = 0.1f;
+    [SerializeField] float knockBackForce = 1f;
 
     public float movementSpeed { get; private set; }
     private NavMeshAgent navMeshAgent;
@@ -60,54 +61,49 @@ public class Screamer : BaseEntity, IMovable
         gm = FindObjectOfType<GameManager>();
 
 
-
+        Debug.Log(navMeshAgent.isStopped);
 
         if (!gm.elctricityOn) 
         {
-            navMeshAgent.ResetPath();
+            navMeshAgent.isStopped = true;
             return;
-        } 
+        }
+
+        if (!HasLineOfSight(player.transform))
+        {
+            navMeshAgent.isStopped = true;
+            return;
+        }
+
 
 
         ChangeDefense();
 
-        if (!HasLineOfSight(player.transform))
-        {
-            navMeshAgent.ResetPath();
-            return;
-        }
 
         FacePlayer();
 
-        if (canMeleeAttack && !isMeleeAttacking && IsPlayerInMeleeHitbox() && gm.elctricityOn)
+        bool inWalkRange = IsInWalkRange();
+        bool inMeleeHitbox = IsPlayerInMeleeHitbox();
+
+        // Update NavMeshAgent state based on current conditions
+        navMeshAgent.isStopped = !inWalkRange || inMeleeHitbox || isMeleeAttacking;
+
+        if (canMeleeAttack && !isMeleeAttacking && inMeleeHitbox)
             StartCoroutine(MeleeAttack());
 
-        
+        // If in walk range and not stopped, update destination
+        if (inWalkRange && !navMeshAgent.isStopped)
+        {
+            Move(player.transform.position);
+        }
 
 
-        if (IsInWalkRange())
-            movementDirection = (player.transform.position - transform.position).normalized;
-
-
-        Debug.Log(defense);
     }
 
 
     private void FixedUpdate()
     {
-        if (!gm.elctricityOn) return;
-
-        if (player != null)
-        {
-            if (!HasLineOfSight(player.transform))
-            {
-                return;
-            }
-        }
-
-
-        if (IsInWalkRange() && gm.elctricityOn && !isMeleeAttacking)
-            Move(player.transform.position);         
+           
     }
 
 
@@ -123,8 +119,8 @@ public class Screamer : BaseEntity, IMovable
     {
         if (player == null) return false;
         float distance = Vector3.Distance(transform.position, player.transform.position);
-
-        return distance <= walkingRange;
+        bool inRange = distance <= walkingRange;
+        return inRange;
     }
 
 
@@ -225,13 +221,35 @@ public class Screamer : BaseEntity, IMovable
                     //entity.Death();
 
                     Debug.Log("Attacked");
+
+                    Rigidbody playerRb = collider.GetComponent<Rigidbody>();
+                    PlayerMovement playerController = collider.GetComponent<PlayerMovement>();
+                    if (playerRb != null && playerController != null)
+                    {
+
+                        playerController.isBeingKnockedBack = true;
+                        float elpasedTime = 0f;
+                        Vector3 knockbackDirection = new Vector3(collider.transform.position.x - transform.position.x, 0, 0).normalized;
+
+
+                        while (elpasedTime < knockBackDuration)
+                        {
+                            playerRb.AddForce(knockbackDirection * knockBackForce, ForceMode.Impulse);
+
+                            elpasedTime += Time.deltaTime;
+                            yield return null;
+                        }
+
+                        playerController.isBeingKnockedBack = false;
+
+                    }
                 }
             }
         }
 
         yield return new WaitForSeconds(0.3f);
         isMeleeAttacking = false;
-
+        navMeshAgent.isStopped = false;
 
 
         yield return new WaitForSeconds(attackSpeed);

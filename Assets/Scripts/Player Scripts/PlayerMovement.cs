@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour, IMovable
     [SerializeField] float rotationSpeed = 7.0f;
     bool beingSlowed;
     bool electrified;
+    public bool isBeingKnockedBack = false;
 
     [Header("Stamina Settings")]
     [SerializeField] private float maxStamina = 100f;
@@ -65,6 +66,8 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     private void FixedUpdate()
     {
+        if (isBeingKnockedBack) return;
+
         rb.angularVelocity = Vector3.zero;
         Move(movementDirection);
 
@@ -184,6 +187,10 @@ public class PlayerMovement : MonoBehaviour, IMovable
         {
             Debug.Log("Hitting slow");
             beingSlowed = true;
+        }
+        else
+        {
+            beingSlowed = false;
         }
 
         if (other.CompareTag("Electric"))

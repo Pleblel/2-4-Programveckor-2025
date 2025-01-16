@@ -194,7 +194,6 @@ MonoBehaviour:
     m_Bits: 256
   knockBackForce: 1
   knockBackDuration: 0.1
-  knockBackPlayer: 0
 --- !u!195 &7467976641137420046
 NavMeshAgent:
   m_ObjectHideFlags: 0

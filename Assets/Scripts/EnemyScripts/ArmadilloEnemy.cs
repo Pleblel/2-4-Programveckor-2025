@@ -16,7 +16,6 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     bool canRoll = true;
     bool isRolling = false;
     bool bouncing = false;
-    float originalMovementSpeed;
     Vector3 bounceDirection;
 
     [Header("References")]
@@ -76,23 +75,17 @@ public class ArmadilloEnemy : BaseEntity, IMovable
         {
             StartCoroutine(Roll());
         }
-    }
-
-    private void FixedUpdate()
-    {
-        if (player != null)
-        {
-            if (!HasLineOfSight(player.transform))
-            {
-                return;
-            }
-        }
 
         if (IsInWalkRange() && !isRolling && !bouncing)
         {
             Move(player.transform.position);
         }
 
+    }
+
+    private void FixedUpdate()
+    {
+       
         
     }
 
