@@ -11,6 +11,8 @@ public class SamsungCode : MonoBehaviour
     public int gridSize = 3; // Number of rows and columns (n × n grid)
     public int sequenceLength = 4; // Length of the sequence
     public LayerMask playerLayer; // Set to "Player" layer
+    public GameManager gameManager; // Reference to the GameManager
+    public float buttonSpacing = 120f; // Distance between buttons
 
     private List<int> correctSequence = new List<int>();
     private List<int> playerSequence = new List<int>();
@@ -67,16 +69,14 @@ public class SamsungCode : MonoBehaviour
         uiPanel.SetActive(true);
         feedbackText.text = "Tap the buttons in the correct order!";
         playerSequence.Clear(); // Reset the sequence
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        gameManager.EnableMouse();
     }
 
     private void CloseUI()
     {
         isUIActive = false;
         uiPanel.SetActive(false);
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        gameManager.DisableMouse();
     }
 
     private void CenterUIPanel()
@@ -97,18 +97,6 @@ public class SamsungCode : MonoBehaviour
 
     private void GenerateGrid()
     {
-        GridLayoutGroup gridLayout = uiPanel.GetComponent<GridLayoutGroup>();
-        if (gridLayout == null)
-        {
-            gridLayout = uiPanel.AddComponent<GridLayoutGroup>();
-        }
-
-        // Configure GridLayoutGroup
-        gridLayout.cellSize = new Vector2(100, 100);
-        gridLayout.spacing = new Vector2(10, 10);
-        gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        gridLayout.constraintCount = gridSize;
-
         // Clear old buttons if any
         foreach (Transform child in uiPanel.transform)
         {
@@ -116,8 +104,10 @@ public class SamsungCode : MonoBehaviour
         }
         buttons.Clear();
 
-        // Create the grid of buttons
-        for (int i = 0; i < gridSize * gridSize; i++)
+        // Total number of buttons in the grid
+        int totalButtons = gridSize * gridSize;
+
+        for (int i = 0; i < totalButtons; i++)
         {
             GameObject buttonObj = Instantiate(buttonPrefab, uiPanel.transform);
             Button button = buttonObj.GetComponent<Button>();
@@ -130,6 +120,23 @@ public class SamsungCode : MonoBehaviour
             buttons.Add(button);
             int index = i; // Capture index for closure
             button.onClick.AddListener(() => OnButtonPressed(index));
+
+            // Set the button position
+            RectTransform buttonTransform = buttonObj.GetComponent<RectTransform>();
+
+            if (i == 0)
+            {
+                // Place the first button in the center
+                buttonTransform.anchoredPosition = Vector2.zero;
+            }
+            else
+            {
+                // Offset the remaining buttons around the center
+                float angle = (i - 1) * Mathf.PI * 2f / (totalButtons - 1); // Circular layout
+                float x = Mathf.Cos(angle) * buttonSpacing;
+                float y = Mathf.Sin(angle) * buttonSpacing;
+                buttonTransform.anchoredPosition = new Vector2(x, y);
+            }
         }
     }
 
