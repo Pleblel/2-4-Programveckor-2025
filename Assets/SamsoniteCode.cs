@@ -9,10 +9,10 @@ public class SamsoniteCode : MonoBehaviour
     public static event KeypadActivationHandler onKeypadCorrect;
 
     [Header("Keypad Objects")]
-    [SerializeField] TextMeshProUGUI textUIOutput;
-    [SerializeField] Button[] numberButtons = new Button[10];
-    [SerializeField] Button deleteButton;
-    [SerializeField] Button enterButton;
+    [SerializeField] private TextMeshProUGUI textUIOutput;
+    [SerializeField] private Button[] numberButtons = new Button[10];
+    [SerializeField] private Button deleteButton;
+    [SerializeField] private Button enterButton;
 
     private List<int> digits = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     private string correctCombination;
