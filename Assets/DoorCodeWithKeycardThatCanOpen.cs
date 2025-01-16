@@ -10,7 +10,7 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
     GameObject cool;
     bool isPlayerInside = false;
     bool isOpening = false;
-    int timer;
+    int timer = 0;
 
     private void Start()
     {
