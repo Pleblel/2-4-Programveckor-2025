@@ -165,20 +165,12 @@ public class PlayerMovement : MonoBehaviour, IMovable
         {
             movementSpeed = slowedSpeed;
         }
-
-        if (electrified)
-        {
-            movementSpeed = slowedSpeed / 2;
-        }
     }
 
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("Electricity"))
-        {
-
-        }
+     
     }
 
     private void OnTriggerStay(Collider other)
@@ -193,10 +185,6 @@ public class PlayerMovement : MonoBehaviour, IMovable
             beingSlowed = false;
         }
 
-        if (other.CompareTag("Electric"))
-        {
-            electrified = true;
-        }
     }
 
     private void OnTriggerExit(Collider other)

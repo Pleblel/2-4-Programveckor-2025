@@ -94,7 +94,7 @@ public class Screamer : BaseEntity, IMovable
         // If in walk range and not stopped, update destination
         if (inWalkRange && !navMeshAgent.isStopped)
         {
-            Move(player.transform.position);
+            Move(player.transform.position);    
         }
 
 
