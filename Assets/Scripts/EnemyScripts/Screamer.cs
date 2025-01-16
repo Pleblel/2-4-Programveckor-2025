@@ -205,8 +205,7 @@ public class Screamer : BaseEntity, IMovable
         rb.velocity = Vector3.zero;
         yield return new WaitForSeconds(0.4f);
 
-        if (IsPlayerInMeleeHitbox())
-        {
+       
             //Pelle
             //Sets a position on where the collider should be to hit the player
 
@@ -227,25 +226,12 @@ public class Screamer : BaseEntity, IMovable
                     if (playerRb != null && playerController != null)
                     {
 
-                        playerController.isBeingKnockedBack = true;
-                        float elpasedTime = 0f;
-                        Vector3 knockbackDirection = new Vector3(collider.transform.position.x - transform.position.x, 0, 0).normalized;
-
-
-                        while (elpasedTime < knockBackDuration)
-                        {
-                            playerRb.AddForce(knockbackDirection * knockBackForce, ForceMode.Impulse);
-
-                            elpasedTime += Time.deltaTime;
-                            yield return null;
-                        }
-
-                        playerController.isBeingKnockedBack = false;
+                       yield return Knockback(playerRb, playerController, collider.transform.position);
 
                     }
                 }
             }
-        }
+        
 
         yield return new WaitForSeconds(0.3f);
         isMeleeAttacking = false;
@@ -257,7 +243,26 @@ public class Screamer : BaseEntity, IMovable
         
     }
 
+    IEnumerator Knockback(Rigidbody playerRb, PlayerMovement playerController, Vector3 playerPosition)
+    {
 
+
+        playerController.isBeingKnockedBack = true;
+        float elpasedTime = 0f;
+        Vector3 knockbackDirection = (playerPosition - transform.position).normalized;
+
+
+        while (elpasedTime < knockBackDuration)
+        {
+            playerRb.AddForce(knockbackDirection * knockBackForce, ForceMode.Impulse);
+
+            elpasedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        playerController.isBeingKnockedBack = false;
+    }
 
     private void OnDrawGizmos()
     {

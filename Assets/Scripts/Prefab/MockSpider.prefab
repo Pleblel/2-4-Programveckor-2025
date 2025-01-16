@@ -193,7 +193,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   knockBackForce: 1
-  knockBackDuration: 0.1
+  knockBackDuration: 0.02
 --- !u!195 &7467976641137420046
 NavMeshAgent:
   m_ObjectHideFlags: 0

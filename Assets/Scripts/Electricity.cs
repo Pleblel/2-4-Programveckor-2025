@@ -6,6 +6,7 @@ public class Electricity : MonoBehaviour
 {
     float damage = 10f;
     public float knockBackForce = 1f;
+    public float knockBackDuration = 0.3f;
 
     // Start is called before the first frame update
     void Start()
@@ -25,8 +26,7 @@ public class Electricity : MonoBehaviour
         {
             BaseEntity player = collision.collider.GetComponent<BaseEntity>();
 
-            if (player != null)
-            {
+            
                 // player.TakeDamage(damage);
                 Debug.Log("Electrified");
                 Rigidbody playerRb = collision.collider.GetComponent<Rigidbody>();
@@ -35,21 +35,35 @@ public class Electricity : MonoBehaviour
                 if (playerRb != null && playerController != null)
                 {
 
-                    playerController.isBeingKnockedBack = true;
-                    Vector3 knockbackDirection = new Vector3(collision.collider.transform.position.x - transform.position.x, 0, 0).normalized;
-
-
-                    if(playerController.isBeingKnockedBack)
-                    {
-                        playerRb.AddForce(knockbackDirection * knockBackForce, ForceMode.Impulse);
-                    }
-
-                    playerController.isBeingKnockedBack = false;
-
+                     Debug.Log("Knocked back");
+                       
+                     if(!playerController.isBeingKnockedBack)
+                     StartCoroutine(Knockback(playerRb, playerController, collision.collider.transform.position));
                 }
-            }
+            
                
         }
     }
 
-}
+
+    IEnumerator Knockback(Rigidbody playerRb, PlayerMovement playerController, Vector3 playerPosition)
+    {
+
+
+        playerController.isBeingKnockedBack = true;
+        float elpasedTime = 0f;
+        Vector3 knockbackDirection = (playerPosition - transform.position).normalized;
+
+
+        while (elpasedTime < knockBackDuration)
+        {
+            playerRb.AddForce(knockbackDirection * knockBackForce, ForceMode.Impulse);
+
+            elpasedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        playerController.isBeingKnockedBack = false;
+    }
+ }
