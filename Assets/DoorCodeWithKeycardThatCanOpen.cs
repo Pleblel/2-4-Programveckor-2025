@@ -18,10 +18,11 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
     }
     private void Update()
     {
-        if (isPlayerInside && Input.GetKeyDown(KeyCode.E) && inventory.items.Contains(Keycard))
+        if (isPlayerInside && Input.GetKeyDown(KeyCode.E))
         {
             if (!isOpening)
-            { 
+            {
+                Debug.Log("Hello chuzz");
                 DoorOpen(); 
             }
         }
@@ -29,18 +30,15 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (((1 << other.gameObject.layer) & playerLayer.value) != 0)
-        {
+ 
             isPlayerInside = true;
-        }
+
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (((1 << other.gameObject.layer) & playerLayer.value) != 0)
-        {
             isPlayerInside = false;
-        }
+ 
     }
 
     void DoorOpen()
