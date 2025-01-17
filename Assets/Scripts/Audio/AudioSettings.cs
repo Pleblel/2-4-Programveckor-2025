@@ -1,6 +1,7 @@
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class AudioSettings : MonoBehaviour
@@ -29,10 +30,15 @@ public class AudioSettings : MonoBehaviour
 
     private void Awake()
     {
-        /*if(FindObjectOfType<AudioSettings>().Length > 1)
-        DontDestroyOnLoad(gameObject);
+        if(FindObjectOfType<AudioSettings>().Length > 1)
+        {
+            DontDestroyOnLoad(gameObject);
+            return;
+        }
 
-        DontDestroyOnLoad(gameObject);*/
+
+        DontDestroyOnLoad(gameObject);
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     private void Start()
     {
@@ -51,8 +57,59 @@ public class AudioSettings : MonoBehaviour
         UpdateButtonIcon();
 
     }
+
+    private void Update()
+    {
+        FindSlidersInNewScene();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        print("loading new scene");
+       
+    }
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    private void FindSlidersInNewScene()
+    {
+
+        masterSlider = GameObject.Find("Master Volume")?.GetComponent<Slider>();
+        musicSlider = GameObject.Find("Music Volume")?.GetComponent<Slider>();
+        SFXSlider = GameObject.Find("Sound Effects")?.GetComponent<Slider>();
+
+        Debug.Log($"Master slider found: {masterSlider != null}");
+        Debug.Log($"Music slider found: {musicSlider != null}");
+        Debug.Log($"SFX slider found: {SFXSlider != null}");
+
+        // If sliders are found, attach listeners and initialize them
+        if (masterSlider != null)
+        {
+            masterSlider.onValueChanged.AddListener(delegate { SetMasterVolume(); });
+            masterSlider.value = PlayerPrefs.GetFloat("masterVolume", 1f); 
+        }
+
+        if (musicSlider != null)
+        {
+            musicSlider.onValueChanged.AddListener(delegate { SetMusicVolume(); });
+            musicSlider.value = PlayerPrefs.GetFloat("musicVolume", 1f); 
+        }
+
+        if (SFXSlider != null)
+        {
+            SFXSlider.onValueChanged.AddListener(delegate { SetSFXVolume(); });
+            SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f); 
+        }
+        Debug.Log($"Master Slider found: {masterSlider != null}");
+        Debug.Log($"Music Slider found: {musicSlider != null}");
+        Debug.Log($"SFX Slider found: {SFXSlider != null}");
+
+        LoadVolume();
+    }
     public void SetMasterVolume()
     {
+        Debug.Log("master vol saved");
         float volume = masterSlider.value;// Apply to the AudioMixer
         audioMixer.SetFloat("master", Mathf.Log10(volume) * 20);
         PlayerPrefs.SetFloat("masterVolume", volume); // Save value to PlayerPrefs
@@ -73,23 +130,19 @@ public class AudioSettings : MonoBehaviour
     public void LoadVolume()
     {
 
-        masterSlider.value = PlayerPrefs.GetFloat("masterVolume", 1f); // Default to 1 if not found
-        musicSlider.value = PlayerPrefs.GetFloat("musicVolume", 1f); 
-        SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f); 
+        if (masterSlider != null)
+            masterSlider.value = PlayerPrefs.GetFloat("masterVolume", 1f);
+
+        if (musicSlider != null)
+            musicSlider.value = PlayerPrefs.GetFloat("musicVolume", 1f);
+
+        if (SFXSlider != null)
+            SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f);
 
         SetMasterVolume();
         SetMusicVolume();
         SetSFXVolume();
 
-        /*
-        masterSlider.value = PlayerPrefs.GetFloat("masterVolume");
-        musicSlider.value = PlayerPrefs.GetFloat("musicVolume");
-        SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume");
-
-
-        SetMasterVolume();
-        SetMusicVolume();
-        SetSFXVolume();*/
     }
 
     public void ToggleMasterMute()
@@ -109,7 +162,7 @@ public class AudioSettings : MonoBehaviour
     public void ToggleSFXMute()
     {
         SFXMuted = !SFXMuted;
-        audioMixer.SetFloat("´SFX", SFXMuted ? -80f : Mathf.Log10(masterSlider.value) * 20);
+        audioMixer.SetFloat("SFX", SFXMuted ? -80f : Mathf.Log10(masterSlider.value) * 20);
         PlayerPrefs.SetInt("SFXMuted", SFXMuted ? 1 : 0);
         UpdateButtonIcon();
     }
@@ -127,7 +180,7 @@ public class AudioSettings : MonoBehaviour
 
     private void UpdateButtonIcon()
     {
-        /*
+        
         masterOnIcon.enabled = !masterMuted;
         masterOffIcon.enabled = masterMuted;
 
@@ -135,7 +188,7 @@ public class AudioSettings : MonoBehaviour
         musicOffIcon.enabled = musicMuted;
 
         SFXOnIcon.enabled = !SFXMuted;
-        SFXOffIcon.enabled = SFXMuted;*/
+        SFXOffIcon.enabled = SFXMuted;
 
     }
 
