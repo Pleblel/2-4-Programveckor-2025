@@ -20,8 +20,8 @@ public class GameManager : MonoBehaviour
 
     private AudioClip currentMusic;
 
-    public GameObject MainMenuUI = GameObject.Find("MainMenuUI");
-    public GameObject OptionMenuUI = GameObject.Find("OptionMenuUI");
+    public GameObject MainMenuUI;
+    public GameObject OptionMenuUI;
 
     private void Awake()
     {
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameManager started");
 
-        EnableMouse();
+        DisableMouse();
         
         audioSettings = FindObjectOfType<AudioSettings>();
         if(audioSettings == null)
@@ -59,7 +59,8 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
-    
+        MainMenuUI = GameObject.Find("MainMenuUI");
+        OptionMenuUI = GameObject.Find("OptionMenuUI");
 
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -197,18 +198,7 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
 
         }
-        else if (scene.name == "GameScene")
-        {
-            Debug.Log("Game scene");
 
-            //audioManager.PlayMusic(audioManager.calmGameMusic);
-
-            currentMusic = audioManager.calmGameMusic;
-            audioManager.PlayMusic(currentMusic);
-
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
     }
 
 

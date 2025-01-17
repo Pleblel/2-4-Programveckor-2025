@@ -23,7 +23,7 @@ public class Electricity : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!gm.elctricityOn) return;
+        if (!gm.electricityOn) return;
 
         if (collision.collider.CompareTag("Player"))
         {
