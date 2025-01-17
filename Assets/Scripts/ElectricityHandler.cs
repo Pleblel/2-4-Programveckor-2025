@@ -17,6 +17,7 @@ public class ElectricityHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(currentRoom != null)
         electricityOn = currentRoom.hasElectricity;
     }
 
