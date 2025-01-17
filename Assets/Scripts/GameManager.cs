@@ -7,7 +7,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private AudioManager audioManager;
 
-    public bool elctricityOn = true;
+    public bool electricityOn = false;
+    private Room currentRoom; // Tracks the player's current room
 
     public static bool isGamePaused = false;
     public GameObject pauseMenuUI;
@@ -19,8 +20,8 @@ public class GameManager : MonoBehaviour
 
     private AudioClip currentMusic;
 
-    public GameObject MainMenuUI = GameObject.Find("MainMenuUI");
-    public GameObject OptionMenuUI = GameObject.Find("OptionMenuUI");
+    public GameObject MainMenuUI;
+    public GameObject OptionMenuUI;
 
     private void Awake()
     {
@@ -46,7 +47,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameManager started");
 
-        EnableMouse();
+        DisableMouse();
         
         audioSettings = FindObjectOfType<AudioSettings>();
         if(audioSettings == null)
@@ -58,7 +59,8 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
-    
+        MainMenuUI = GameObject.Find("MainMenuUI");
+        OptionMenuUI = GameObject.Find("OptionMenuUI");
 
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -95,6 +97,17 @@ public class GameManager : MonoBehaviour
 
         EnableMouse();
 
+    }
+
+
+    public void SetCurrentRoom(Room room)
+    {
+        if (room != null)
+        {
+            currentRoom = room;
+            electricityOn = room.hasElectricity;
+            Debug.Log("Electricity is now: " + electricityOn);
+        }
     }
 
     public void LoadMenu()
@@ -154,6 +167,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+
+
     public void DisableMouse()
     {
         Cursor.visible = false;
@@ -182,18 +198,7 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
 
         }
-        else if (scene.name == "GameScene")
-        {
-            Debug.Log("Game scene");
 
-            //audioManager.PlayMusic(audioManager.calmGameMusic);
-
-            currentMusic = audioManager.calmGameMusic;
-            audioManager.PlayMusic(currentMusic);
-
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
     }
 
 

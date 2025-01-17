@@ -63,7 +63,7 @@ public class Screamer : BaseEntity, IMovable
 
         Debug.Log(navMeshAgent.isStopped);
 
-        if (!gm.elctricityOn) 
+        if (!gm.electricityOn) 
         {
             navMeshAgent.isStopped = true;
             return;
@@ -109,9 +109,9 @@ public class Screamer : BaseEntity, IMovable
 
     private void ChangeDefense()
     {
-        if (gm.elctricityOn)
+        if (gm.electricityOn)
             defense = electricityOnDefense;
-        else if (!gm.elctricityOn)
+        else if (!gm.electricityOn)
             defense = originalDefense;
     }
 
