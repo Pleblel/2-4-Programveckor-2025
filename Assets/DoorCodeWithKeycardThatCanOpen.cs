@@ -7,7 +7,7 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
     [SerializeField] LayerMask playerLayer; // Set to "Player" layer
     [SerializeField] InventoryManager inventory;
     [SerializeField] Item Keycard;
-    GameObject cool;
+    [SerializeField] Transform cool;
     bool isPlayerInside = false;
     bool isOpening = false;
     int timer = 0;
@@ -18,37 +18,39 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
     }
     private void Update()
     {
-        if (isPlayerInside && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerInside && Input.GetKeyDown(KeyCode.E) && inventory.items.Contains(Keycard))
         {
             if (!isOpening)
             {
                 Debug.Log("Hello chuzz");
-                DoorOpen(); 
+                StartCoroutine(DoorOpen()); 
             }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
- 
             isPlayerInside = true;
-
     }
 
     private void OnTriggerExit(Collider other)
     {
             isPlayerInside = false;
- 
     }
 
-    void DoorOpen()
+    IEnumerator DoorOpen()
     {
-        cool = GetComponentInParent<GameObject>();
-        timer++;
-        for (int i = 0; i < 100; i++)
-        {
+        float elapsedTime = 0f;
+        Vector3 startPosition = cool.position;
+        Vector3 endPosition = startPosition + new Vector3(0, 5f, 0); // Move up by 5 units
 
-            cool.transform.position = new Vector3(0, timer * Time.deltaTime, 0);
+        while (elapsedTime < 2)
+        {
+            cool.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / 2);
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
+
+        cool.position = endPosition; // Ensure final position is exact
     }
 }
