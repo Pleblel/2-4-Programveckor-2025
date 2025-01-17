@@ -29,7 +29,6 @@ public class AudioManager : MonoBehaviour
     public AudioClip drag;
     public AudioClip button;
     public AudioClip lever;
-    public AudioClip hit;
     public AudioClip obtainItem;
 
     [Header("MOBS")]

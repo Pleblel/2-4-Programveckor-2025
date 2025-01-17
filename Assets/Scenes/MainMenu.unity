@@ -264,6 +264,7 @@ MonoBehaviour:
   death: {fileID: 0}
   walking: {fileID: 8300000, guid: 287b1c23d46038e49addb55a4aa4790a, type: 3}
   running: {fileID: 8300000, guid: 62e2ca1904ea4124cbd7db1d84f0eeaa, type: 3}
+  hit: {fileID: 0}
   mainMenuMusic: {fileID: 8300000, guid: 4ba4b9328d1154943ae745cbfdbf34a0, type: 3}
   settingMusic: {fileID: 8300000, guid: 58de2958d82664291b8707da7991f16c, type: 3}
   calmGameMusic: {fileID: 8300000, guid: dc1d6b96e081b4befbd033dee4730596, type: 3}
@@ -271,7 +272,6 @@ MonoBehaviour:
   drag: {fileID: 0}
   button: {fileID: 0}
   lever: {fileID: 0}
-  hit: {fileID: 0}
   obtainItem: {fileID: 0}
   manCrying: {fileID: 8300000, guid: 5115c10679342204cbc819d61338f318, type: 3}
   manHitting: {fileID: 8300000, guid: 90105c98a76ad4dec9ec990d26140a70, type: 3}
@@ -3289,10 +3289,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
