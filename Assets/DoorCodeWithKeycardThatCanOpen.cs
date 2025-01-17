@@ -30,12 +30,18 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.layer == playerLayer)
+        {
             isPlayerInside = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        if (other.gameObject.layer == playerLayer)
+        {
             isPlayerInside = false;
+        }
     }
 
     IEnumerator DoorOpen()
