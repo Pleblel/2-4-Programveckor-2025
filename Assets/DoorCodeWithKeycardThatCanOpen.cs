@@ -14,7 +14,7 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
 
     private void Start()
     {
-        cool = GetComponentInParent<GameObject>();
+
     }
     private void Update()
     {
@@ -43,7 +43,12 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
 
     void DoorOpen()
     {
+        cool = GetComponentInParent<GameObject>();
         timer++;
-        cool.transform.position = new Vector3(0, timer * Time.deltaTime, 0);
+        for (int i = 0; i < 100; i++)
+        {
+
+            cool.transform.position = new Vector3(0, timer * Time.deltaTime, 0);
+        }
     }
 }
