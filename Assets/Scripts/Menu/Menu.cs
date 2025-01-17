@@ -7,7 +7,7 @@ public class Menu : MonoBehaviour
 {
     public void OnStartButton()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("Tutorial1");
     }
 
     public void OnExitButton()

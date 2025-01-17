@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
 
     public static bool isGamePaused = false;
+    private static GameManager instance;
     public GameObject pauseMenuUI;
     public GameObject canvas;
     public CanvasGroup CanvasGroup;
@@ -25,27 +26,17 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        MainMenuUI = GameObject.Find("MainMenuUI");
-        OptionMenuUI = GameObject.Find("OptionMenuUI");
-
-        if (MainMenuUI == null || OptionMenuUI == null)
+        if (instance != null && instance != this)
         {
+            Destroy(gameObject);
             return;
         }
-        OptionMenuUI.SetActive(false);
 
-        if (FindObjectsOfType<GameManager>().Length > 1)
-        {
-            Destroy(gameObject); // Prevent duplicates
-            return;
-        }
-    
+        instance = this;
+        DontDestroyOnLoad(gameObject); // Ensure this persists
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        DontDestroyOnLoad(gameObject);
-        audioManager = FindObjectOfType<AudioManager>();
-
-
+        Initialize();
         if (MainMenuUI == null || OptionMenuUI == null)
         {
             return;
@@ -54,13 +45,22 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void Initialize()
+    {
+        MainMenuUI = GameObject.Find("MainMenuUI");
+        OptionMenuUI = GameObject.Find("OptionMenuUI");
+
+        if (OptionMenuUI != null) OptionMenuUI.SetActive(false);
+        audioManager = FindObjectOfType<AudioManager>();
+    }
+
 
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("GameManager started");
 
-        DisableMouse();
+        EnableMouse();
         
         audioSettings = FindObjectOfType<AudioSettings>();
         if(audioSettings != null)
@@ -198,9 +198,19 @@ public class GameManager : MonoBehaviour
             currentMusic = audioManager.mainMenuMusic;
             audioManager.PlayMusic(currentMusic);
 
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            EnableMouse();
 
+        }
+        else 
+        {
+            Debug.Log("Game scene");
+
+            //audioManager.PlayMusic(audioManager.calmGameMusic);
+
+            currentMusic = audioManager.calmGameMusic;
+            audioManager.PlayMusic(currentMusic);
+
+            DisableMouse();
         }
 
     }

@@ -26,18 +26,18 @@ public class PauseMenu : MonoBehaviour
         quitButton.onClick.AddListener(OnQuitButtonClick);
     }
 
-    private void OnQuitButtonClick()
+    public void OnQuitButtonClick()
     {
         gm.QuitGame();
     }
 
-    private void OnMenuButtonClicked()
+    public void OnMenuButtonClicked()
     {
         gm.LoadMenu();
     }
 
 
-    private void OnResumeButtonClick()
+    public void OnResumeButtonClick()
     {
         gm.Resume();
     }
