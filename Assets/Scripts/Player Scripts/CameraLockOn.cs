@@ -39,10 +39,12 @@ public class CameraLockOn : MonoBehaviour
         {
             if (HasLineOfSight(currentTarget))
                 UpdateLockOnCamera();
-            else
-               DisableLockOn();
+          
         }
-
+        else
+        {
+                DisableLockOn();
+        }
       
         
     }

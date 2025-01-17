@@ -19,6 +19,7 @@ public class WalkIK : MonoBehaviour
     [SerializeField] float stepOffset;
     [SerializeField] CameraLockOn cameraLockOn;
     [SerializeField] PlayerGrab playerGrab;
+    [SerializeField] int footRotaion;
 
     [Header("Locked on stepOffset")]
     [SerializeField] float stepOffsetX;
@@ -111,22 +112,6 @@ public class WalkIK : MonoBehaviour
             Vector3 tempPosition = Vector3.Lerp(oldPosition, newPosition, curveValue);
             tempPosition.y += Mathf.Sin(curveValue * Mathf.PI) * stepHeight;
 
-            // Adjust rotation using a switch case for dirZ
-            float sineOffset = Mathf.Sin(curveValue * Mathf.PI) * 45;
-            Vector3 currentEulerAngles = transform.localEulerAngles;
-            switch (Mathf.Sign(dirZ))
-            {
-                case 1: // Moving forward
-                    currentEulerAngles.x = -69.5f + sineOffset;
-                    break;
-                case -1: // Moving backward
-                    currentEulerAngles.x = -69.5f;
-                    break;
-                case 0: // Neutral (no sine offset)
-                    currentEulerAngles.x = -69.5f;
-                    break;
-            }
-            transform.localRotation = Quaternion.Euler(currentEulerAngles);
 
 
             currentPosition = tempPosition;

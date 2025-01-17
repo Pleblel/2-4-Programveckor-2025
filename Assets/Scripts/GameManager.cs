@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public static bool isGamePaused = false;
     public GameObject pauseMenuUI;
     public GameObject canvas;
+    public CanvasGroup CanvasGroup;
     Transform pauseMenuTransform;
 
     private AudioSettings audioSettings; 
@@ -180,4 +181,6 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
     }
+
+
 }

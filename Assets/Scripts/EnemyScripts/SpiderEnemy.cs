@@ -56,7 +56,7 @@ public class SpiderEnemy : BaseEntity, IMovable
         Mathf.RoundToInt(maxHealth);
         Mathf.RoundToInt(currentHealth);
 
-        
+        Debug.Log(currentHealth);
        
         playerPosition = GameObject.FindGameObjectWithTag("Player");
 
@@ -171,8 +171,6 @@ public class SpiderEnemy : BaseEntity, IMovable
         navMeshAgent.isStopped = true;
         yield return new WaitForSeconds(0.4f);
 
-        if (IsPlayerInMeleeHitbox())
-        {
             //Pelle (Collider) Darren(The rest)
             //Sets a position on where the collider should be to hit the player
             Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
@@ -183,8 +181,8 @@ public class SpiderEnemy : BaseEntity, IMovable
                 if (collider.CompareTag("Player"))
                 {
                     BaseEntity entity = collider.GetComponent<BaseEntity>();
-                    //Attack(entity);
-                    //entity.Death();
+                    Attack(entity);
+                    entity.Death();
                     Debug.Log("Attacked");
 
 
@@ -193,27 +191,12 @@ public class SpiderEnemy : BaseEntity, IMovable
                     if (playerRb != null && playerController != null)
                     {
 
-                        playerController.isBeingKnockedBack = true;
-                        float elpasedTime = 0f;
-                        Vector3 knockbackDirection = new Vector3(collider.transform.position.x - transform.position.x, 0, 0).normalized;
-                        
-
-                        while (elpasedTime < knockBackDuration)
-                        {
-                            playerRb.AddForce(knockbackDirection * knockBackForce, ForceMode.Impulse);
-     
-                            elpasedTime += Time.deltaTime;
-                            yield return null;
-                        }
-
-                        playerController.isBeingKnockedBack = false;
-
-                    }
+                    yield return StartCoroutine(Knockback(playerRb, playerController, collider.transform.position));
               
-                }
+                    }
 
+                }
             }
-        }
 
         yield return new WaitForSeconds(0.2f);
         isMeleeAttacking = false;
@@ -223,6 +206,27 @@ public class SpiderEnemy : BaseEntity, IMovable
         canMeleeAttack = true;
     }
 
+
+    IEnumerator Knockback(Rigidbody playerRb, PlayerMovement playerController, Vector3 playerPosition)
+    {
+
+
+        playerController.isBeingKnockedBack = true;
+        float elpasedTime = 0f;
+        Vector3 knockbackDirection = new Vector3(playerPosition.x - transform.position.x, 0,0).normalized;
+
+
+        while (elpasedTime < knockBackDuration)
+        {
+            playerRb.AddForce(knockbackDirection * knockBackForce, ForceMode.Impulse);
+
+            elpasedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        playerController.isBeingKnockedBack = false;
+    }
 
 
     private bool HasLineOfSight(Transform target)
