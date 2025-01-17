@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
 
     private AudioClip currentMusic;
 
+    public GameObject MainMenuUI = GameObject.Find("MainMenuUI");
+    public GameObject OptionMenuUI = GameObject.Find("OptionMenuUI");
+
     private void Awake()
     {
         if (FindObjectsOfType<GameManager>().Length > 1)
@@ -31,6 +34,10 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
         audioManager = FindObjectOfType<AudioManager>();
+
+     
+        OptionMenuUI.SetActive(false);
+
     }
 
 
@@ -39,31 +46,19 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameManager started");
 
-        DisableMouse();
-        /*
+        EnableMouse();
+        
         audioSettings = FindObjectOfType<AudioSettings>();
-        if(audioSettings = null)
+        if(audioSettings == null)
         {
             audioSettings.LoadVolume();
-        }*/
+        }
+
+       
     }
     void Update()
     {
-        try
-        {
-            canvas = GameObject.Find("Canvas");
-            pauseMenuTransform = canvas.transform.Find("PauseMenu");
-        }
-        catch
-        {
-            Debug.Log("No canvas found");
-        }
-        
-        
-        if (pauseMenuTransform != null)
-        {
-            pauseMenuUI = pauseMenuTransform.gameObject;
-        }
+    
 
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -117,27 +112,46 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Loaded scene: " + scene.name);
         HandleSceneMusic(scene);
-        /*
-        if(scene.name != "MainMenu")
-        {
-            GameObject MainMenuUI = GameObject.Find("MainMenuUI");
-            GameObject OptionMenuUI = GameObject.Find("OptionMenuUI");
-            if(MainMenuUI != null)
-            {
-                Destroy(MainMenuUI); //destory ui in other scenes
 
-            }
-            if(OptionMenuUI != null)
+        try
+        {
+            canvas = GameObject.Find("Canvas");
+            pauseMenuTransform = canvas.transform.Find("PauseMenu");
+        }
+        catch
+        {
+            Debug.Log("No canvas found");
+        }
+
+
+        if (pauseMenuTransform != null)
+        {
+            pauseMenuUI = pauseMenuTransform.gameObject;
+
+            pauseMenuUI.SetActive(false);
+        }
+
+        if (scene.name == "MainMenu")
+        {
+            //checks if main menu is there so option menu can be deactivated
+            if(MainMenuUI == isActiveAndEnabled)
             {
-                Destroy(OptionMenuUI); 
+                Debug.Log("menu is on ");
+                if (OptionMenuUI == isActiveAndEnabled)
+                {
+                    Debug.Log("menu is on and I am deactivated");
+                    OptionMenuUI.SetActive(false);
+                }  
             }
+            
+            
         }
 
         AudioSettings audioSettings = FindObjectOfType<AudioSettings>();
         if(audioSettings != null)
         {
             audioSettings.LoadVolume();
-        }*/
+        }
     }
 
     public void DisableMouse()
