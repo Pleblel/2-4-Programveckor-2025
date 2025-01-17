@@ -7,6 +7,7 @@ public class Electricity : MonoBehaviour
     float damage = 10f;
     public float knockBackForce = 1f;
     public float knockBackDuration = 0.3f;
+    GameManager gm;
 
     // Start is called before the first frame update
     void Start()
@@ -17,11 +18,13 @@ public class Electricity : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-     
+        gm = FindAnyObjectByType<GameManager>();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!gm.elctricityOn) return;
+
         if (collision.collider.CompareTag("Player"))
         {
             BaseEntity player = collision.collider.GetComponent<BaseEntity>();
