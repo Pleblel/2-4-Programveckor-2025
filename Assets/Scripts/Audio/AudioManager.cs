@@ -17,6 +17,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip death;
     public AudioClip walking;
     public AudioClip running;
+    public AudioClip hit;
 
     [Header("MUSIC")]
     public AudioClip mainMenuMusic;
@@ -34,6 +35,7 @@ public class AudioManager : MonoBehaviour
     [Header("MOBS")]
 
     public AudioClip manCrying;
+    public AudioClip manHitting;
     public AudioClip manScreaming;
     public AudioClip ratNoise;
     public AudioClip ratDeath;

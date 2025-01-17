@@ -273,8 +273,9 @@ MonoBehaviour:
   lever: {fileID: 0}
   hit: {fileID: 0}
   obtainItem: {fileID: 0}
-  manCrying: {fileID: 0}
-  manScreaming: {fileID: 0}
+  manCrying: {fileID: 8300000, guid: 5115c10679342204cbc819d61338f318, type: 3}
+  manHitting: {fileID: 8300000, guid: 90105c98a76ad4dec9ec990d26140a70, type: 3}
+  manScreaming: {fileID: 8300000, guid: aa2fb21a989be4e0dbdcca4f63ca8806, type: 3}
   ratNoise: {fileID: 0}
   ratDeath: {fileID: 0}
   spiderShoot: {fileID: 0}
