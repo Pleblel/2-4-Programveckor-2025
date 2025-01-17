@@ -20,11 +20,20 @@ public class GameManager : MonoBehaviour
 
     private AudioClip currentMusic;
 
-    public GameObject MainMenuUI = GameObject.Find("MainMenuUI");
-    public GameObject OptionMenuUI = GameObject.Find("OptionMenuUI");
+    public GameObject MainMenuUI;
+    public GameObject OptionMenuUI;
 
     private void Awake()
     {
+        MainMenuUI = GameObject.Find("MainMenuUI");
+        OptionMenuUI = GameObject.Find("OptionMenuUI");
+
+        if (MainMenuUI == null || OptionMenuUI == null)
+        {
+            return;
+        }
+        OptionMenuUI.SetActive(false);
+
         if (FindObjectsOfType<GameManager>().Length > 1)
         {
             Destroy(gameObject); // Prevent duplicates
