@@ -216,10 +216,10 @@ public class Screamer : BaseEntity, IMovable
                 BaseEntity entity = collider.GetComponent<BaseEntity>();
                 if (collider.CompareTag("Player"))
                 {
-                    //Attack(entity);
-                    //entity.Death();
+                    Attack(entity);
+                    entity.Death();
 
-                    Debug.Log("Attacked");
+                   
 
                     Rigidbody playerRb = collider.GetComponent<Rigidbody>();
                     PlayerMovement playerController = collider.GetComponent<PlayerMovement>();

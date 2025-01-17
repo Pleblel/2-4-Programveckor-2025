@@ -16,6 +16,7 @@ public class PlayerGrab : MonoBehaviour
 
     private GameObject currentObject;
     public bool isMovingObject = false;
+    private Vector3 interactVelocity;
     private Vector3 interactionPoint;
     private Vector3 boxHalfExtent = new Vector3(0.5f, 1, 0.2f);
     private Vector3 difference;
@@ -121,7 +122,8 @@ public class PlayerGrab : MonoBehaviour
 
     void MoveObjectWithPlayer()
     {
-        currentObject.transform.position = transform.position + difference.normalized * movingOffset;
+        //currentObject.transform.position = transform.position + difference.normalized * movingOffset;
+        currentObject.GetComponent<Rigidbody>().position = Vector3.SmoothDamp(currentObject.transform.position, transform.position + difference.normalized * movingOffset, ref interactVelocity, 0.2f, Mathf.Infinity, Time.fixedDeltaTime); ;
 
         //currentObject.GetComponent<Rigidbody>().position = Vector3.SmoothDamp(currentObject.transform.position, interactionPoint, ref interactVelocity, 0.2f, Mathf.Infinity, Time.fixedDeltaTime);
         //currentObject.transform.position = interactionPoint;

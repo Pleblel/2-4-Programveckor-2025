@@ -5,7 +5,6 @@ using UnityEngine;
 //Elm
 public class SwitchController : MonoBehaviour
 {
-    // Define an event to be triggered
     public delegate void SwitchActivatedHandler();
     public static event SwitchActivatedHandler OnSwitchActivated;
 
@@ -17,10 +16,10 @@ public class SwitchController : MonoBehaviour
         }
     }
 
-    // This function simulates activating the switch
+
     public void ActivateSwitch()
     {
         Debug.Log("Switch activated!");
-        OnSwitchActivated?.Invoke(); // Trigger the event if there are subscribers
+        OnSwitchActivated?.Invoke();
     }
 }

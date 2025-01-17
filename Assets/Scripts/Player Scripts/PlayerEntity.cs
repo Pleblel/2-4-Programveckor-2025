@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class PlayerEntity : BaseEntity
 {
+    public float playerDamage;
+
+
     protected override void Start()
     {
         maxHealth = 100f;
         currentHealth = maxHealth;
-        damage = 5.0f;
+        damage = 40.0f;
         attackSpeed = 1.0f;
         defense = 1.0f;
+
+        playerDamage = damage;
     }
 
 

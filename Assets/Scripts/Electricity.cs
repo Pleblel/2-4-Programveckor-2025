@@ -27,7 +27,7 @@ public class Electricity : MonoBehaviour
             BaseEntity player = collision.collider.GetComponent<BaseEntity>();
 
             
-                // player.TakeDamage(damage);
+                player.TakeDamage(damage);
                 Debug.Log("Electrified");
                 Rigidbody playerRb = collision.collider.GetComponent<Rigidbody>();
                 PlayerMovement playerController = collision.collider.GetComponent<PlayerMovement>();

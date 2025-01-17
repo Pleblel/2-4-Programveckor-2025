@@ -9,8 +9,6 @@ public class LightController : MonoBehaviour
     private void Start()
     {
         sceneLight = GetComponent<Light>();
-
-        // Subscribe to the switch event
         SwitchController.OnSwitchActivated += ToggleLight;
     }
 
@@ -18,7 +16,7 @@ public class LightController : MonoBehaviour
     {
         if (sceneLight != null)
         {
-            sceneLight.enabled = !sceneLight.enabled; // Toggle the light state
+            sceneLight.enabled = !sceneLight.enabled;
             Debug.Log("Light toggled: " + (sceneLight.enabled ? "On" : "Off"));
         }
     }
