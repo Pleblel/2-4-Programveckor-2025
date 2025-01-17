@@ -48,7 +48,7 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
     {
         float elapsedTime = 0f;
         Vector3 startPosition = cool.position;
-        Vector3 endPosition = startPosition + new Vector3(0, 5f, 0); // Move up by 5 units
+        Vector3 endPosition = startPosition + new Vector3(0, 5f, 0);
 
         while (elapsedTime < 2)
         {
@@ -57,6 +57,6 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
             yield return null;
         }
 
-        cool.position = endPosition; // Ensure final position is exact
+        cool.position = endPosition;
     }
 }
