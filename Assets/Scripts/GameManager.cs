@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public static bool isGamePaused = false;
     public GameObject pauseMenuUI;
     public GameObject canvas;
+    public CanvasGroup CanvasGroup;
     Transform pauseMenuTransform;
 
     private AudioSettings audioSettings; 
@@ -178,6 +179,23 @@ public class GameManager : MonoBehaviour
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
+
+    public void FadeIn()
+    {
+        if (CanvasGroup.alpha < 1)
+        {
+            CanvasGroup.alpha += Time.deltaTime;
+        }
+    }
+    
+    public void FadeOut()
+    {
+        if(CanvasGroup.alpha >= 0)
+        {
+            CanvasGroup.alpha -= Time.deltaTime;
         }
     }
 }
