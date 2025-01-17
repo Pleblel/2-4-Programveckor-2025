@@ -29,6 +29,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip drag;
     public AudioClip button;
     public AudioClip lever;
+    public AudioClip door;
+    public AudioClip lightSwitchOn;
+    public AudioClip lightSwitchOff;
     public AudioClip obtainItem;
 
     [Header("MOBS")]
@@ -44,8 +47,13 @@ public class AudioManager : MonoBehaviour
     public AudioClip armadilloWallHit;
 
 
+    [Header("UI")]
+
+    public AudioClip startButton;
+    public AudioClip menuButtons;
+
     [Header("OTHER")]
-    public AudioClip jumpScareSound;
+    public AudioClip electricity;
 
     private void Awake()
     {
