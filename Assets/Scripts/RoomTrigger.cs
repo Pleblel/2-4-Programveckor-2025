@@ -2,14 +2,16 @@ using UnityEngine;
 
 public class RoomTrigger : MonoBehaviour
 {
+
+    public Room room;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Room room = GetComponent<Room>();
+            room = GetComponent<Room>();
             if (room != null)
             {
-                FindObjectOfType<GameManager>().SetCurrentRoom(room);
+                FindObjectOfType<ElectricityHandler>().SetCurrentRoom(room);
             }
         }
     }

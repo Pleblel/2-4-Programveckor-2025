@@ -10,7 +10,7 @@ public class Screamer : BaseEntity, IMovable
     
     [Header("Refereneces")]
     public GameObject player;
-    public GameManager gm;
+    public ElectricityHandler gm;
     Rigidbody rb;
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private LayerMask playerLayer;
@@ -46,7 +46,7 @@ public class Screamer : BaseEntity, IMovable
 
 
         rb = GetComponent<Rigidbody>();
-        gm = FindObjectOfType<GameManager>();
+        gm = FindObjectOfType<ElectricityHandler>();
 
 
     }
@@ -58,7 +58,7 @@ public class Screamer : BaseEntity, IMovable
         Mathf.RoundToInt(currentHealth);
 
         player = GameObject.FindGameObjectWithTag("Player");
-        gm = FindObjectOfType<GameManager>();
+        gm = FindObjectOfType<ElectricityHandler>();
 
 
         Debug.Log(navMeshAgent.isStopped);

@@ -11,6 +11,9 @@ TagManager:
   - Wall
   - Button
   - Electric
+  - Room
+  - Box
+  - Lights
   layers:
   - Default
   - TransparentFX
