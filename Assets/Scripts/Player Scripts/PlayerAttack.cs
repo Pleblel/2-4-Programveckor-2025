@@ -95,6 +95,7 @@ public class PlayerAttack : MonoBehaviour
         float _damage = CalculateDamage(currentCharge);
         Debug.Log(_damage);
         Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
+        this.GetComponent<Animator>().Play("Attack");
         Collider[] hitColliders = Physics.OverlapBox(boxCenter, hitboxSize / 2);
         foreach (Collider collider in hitColliders)
         {
