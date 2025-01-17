@@ -252,6 +252,7 @@ MonoBehaviour:
   elctricityOn: 1
   pauseMenuUI: {fileID: 0}
   canvas: {fileID: 0}
+  CanvasGroup: {fileID: 0}
 --- !u!4 &276171470
 Transform:
   m_ObjectHideFlags: 0
@@ -933,6 +934,7 @@ MonoBehaviour:
   elctricityOn: 1
   pauseMenuUI: {fileID: 0}
   canvas: {fileID: 0}
+  CanvasGroup: {fileID: 0}
 --- !u!4 &1192534508
 Transform:
   m_ObjectHideFlags: 0
