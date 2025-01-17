@@ -183,19 +183,4 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void FadeIn()
-    {
-        if (CanvasGroup.alpha < 1)
-        {
-            CanvasGroup.alpha += Time.deltaTime;
-        }
-    }
-    
-    public void FadeOut()
-    {
-        if(CanvasGroup.alpha >= 0)
-        {
-            CanvasGroup.alpha -= Time.deltaTime;
-        }
-    }
 }

@@ -24,6 +24,8 @@ public class DoorScript : MonoBehaviour
 
     private IEnumerator TransitionPlayer(Transform player)
     {
+        gm.FadeIn();
+
         // Freeze the game
         Time.timeScale = 0f;
 
