@@ -180,16 +180,4 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
     }
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-=======
->>>>>>> b3af3e4ca9275c95bbd68f02cbd0d3749f725d86
->>>>>>> Stashed changes
 }
