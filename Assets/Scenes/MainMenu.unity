@@ -266,12 +266,15 @@ MonoBehaviour:
   running: {fileID: 8300000, guid: 62e2ca1904ea4124cbd7db1d84f0eeaa, type: 3}
   hit: {fileID: 0}
   mainMenuMusic: {fileID: 8300000, guid: 4ba4b9328d1154943ae745cbfdbf34a0, type: 3}
-  settingMusic: {fileID: 8300000, guid: 58de2958d82664291b8707da7991f16c, type: 3}
+  settingMusic: {fileID: 8300000, guid: 65cd23fce7c4c1942a64255de99d2c2c, type: 3}
   calmGameMusic: {fileID: 8300000, guid: dc1d6b96e081b4befbd033dee4730596, type: 3}
   panicGameMusic: {fileID: 0}
   drag: {fileID: 0}
   button: {fileID: 0}
   lever: {fileID: 0}
+  door: {fileID: 0}
+  lightSwitchOn: {fileID: 0}
+  lightSwitchOff: {fileID: 0}
   obtainItem: {fileID: 0}
   manCrying: {fileID: 8300000, guid: 5115c10679342204cbc819d61338f318, type: 3}
   manHitting: {fileID: 8300000, guid: 90105c98a76ad4dec9ec990d26140a70, type: 3}
@@ -282,7 +285,9 @@ MonoBehaviour:
   spiderDeath: {fileID: 0}
   armadilloDash: {fileID: 0}
   armadilloWallHit: {fileID: 0}
-  jumpScareSound: {fileID: 0}
+  startButton: {fileID: 0}
+  menuButtons: {fileID: 0}
+  electricity: {fileID: 0}
 --- !u!4 &24951160
 Transform:
   m_ObjectHideFlags: 0
@@ -1166,7 +1171,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 24951159}
-  elctricityOn: 1
   pauseMenuUI: {fileID: 0}
   canvas: {fileID: 0}
   CanvasGroup: {fileID: 0}
