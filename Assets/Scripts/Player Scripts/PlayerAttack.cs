@@ -13,6 +13,8 @@ public class PlayerAttack : MonoBehaviour
     float maxCharge = 1f;  // Maximum charge amount
     float currentCharge = 0f;
     float lastChargeAmount = 0f;
+   [SerializeField] float boxHeight = 1.2f;
+    [SerializeField] float boxForward = 1.2f;
     bool isCharging = false;
 
   
@@ -135,7 +137,7 @@ public class PlayerAttack : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
+        Vector3 boxCenter = new Vector3(transform.position.x, transform.position.y * boxHeight, transform.position.z) + (transform.forward * boxForward) * hitboxDistance;
         Gizmos.DrawWireCube(boxCenter, hitboxSize);
     }
 }
