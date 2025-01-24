@@ -30,7 +30,6 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Exited: {other.gameObject.name}, Layer: {other.gameObject.layer}");
         if (((1 << other.gameObject.layer) & playerLayer) != 0)
         {
             isPlayerInside = true;
@@ -39,7 +38,6 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log($"Exited: {other.gameObject.name}, Layer: {other.gameObject.layer}");
         if (((1 << other.gameObject.layer) & playerLayer) != 0)
         {
             isPlayerInside = false;
