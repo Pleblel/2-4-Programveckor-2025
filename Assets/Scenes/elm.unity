@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 27ec7b24ba9c5c746bb4883c3b57e012, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -155,6 +155,71 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 096bc49864fc04a4eac7825cb6d0e842, type: 2}
+--- !u!1001 &334322659
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 958318612370731229, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
+      propertyPath: m_Range
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019386322282842374, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
+      propertyPath: followCamera
+      value: 
+      objectReference: {fileID: 1405504428}
+    - target: {fileID: 3139378212768240040, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
+      propertyPath: m_Name
+      value: main character 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8606946633255214546, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.9000907
+      objectReference: {fileID: 0}
+    - target: {fileID: 8606946633255214546, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.03999996
+      objectReference: {fileID: 0}
+    - target: {fileID: 8606946633255214546, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.0335903
+      objectReference: {fileID: 0}
+    - target: {fileID: 8606946633255214546, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8606946633255214546, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8606946633255214546, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8606946633255214546, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8606946633255214546, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8606946633255214546, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8606946633255214546, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3ee42f33e4f809b45b4ddcf2fa022ac1, type: 3}
 --- !u!1 &703846639
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,6 +801,7 @@ MonoBehaviour:
   death: {fileID: 0}
   walking: {fileID: 0}
   running: {fileID: 0}
+  hit: {fileID: 0}
   mainMenuMusic: {fileID: 0}
   settingMusic: {fileID: 0}
   calmGameMusic: {fileID: 0}
@@ -743,9 +809,12 @@ MonoBehaviour:
   drag: {fileID: 0}
   button: {fileID: 0}
   lever: {fileID: 0}
-  hit: {fileID: 0}
+  door: {fileID: 0}
+  lightSwitchOn: {fileID: 0}
+  lightSwitchOff: {fileID: 0}
   obtainItem: {fileID: 0}
   manCrying: {fileID: 0}
+  manHitting: {fileID: 0}
   manScreaming: {fileID: 0}
   ratNoise: {fileID: 0}
   ratDeath: {fileID: 0}
@@ -753,7 +822,9 @@ MonoBehaviour:
   spiderDeath: {fileID: 0}
   armadilloDash: {fileID: 0}
   armadilloWallHit: {fileID: 0}
-  jumpScareSound: {fileID: 0}
+  startButton: {fileID: 0}
+  menuButtons: {fileID: 0}
+  electricity: {fileID: 0}
 --- !u!4 &1107468408
 Transform:
   m_ObjectHideFlags: 0
@@ -1828,3 +1899,4 @@ SceneRoots:
   - {fileID: 6721103072219158290}
   - {fileID: 6240081341973470782}
   - {fileID: 741107877}
+  - {fileID: 334322659}
