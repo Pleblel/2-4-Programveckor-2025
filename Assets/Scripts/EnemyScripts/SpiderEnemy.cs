@@ -106,6 +106,8 @@ public class SpiderEnemy : BaseEntity, IMovable
     {
         if (!isAlive)
             Destroy(gameObject);
+
+        AudioManager.Intance.PlayMusic(AudioManager.Intance.spiderDeath); 
     }
     public override void TakeDamage(float damage)
     {
@@ -152,6 +154,8 @@ public class SpiderEnemy : BaseEntity, IMovable
         isShooting = true;
         GameObject GooInstance = Instantiate(Goo, bulletSpawn.position, Quaternion.identity);
         GooBall gooScript = GooInstance.GetComponent<GooBall>();
+
+        AudioManager.Intance.PlayMusic(AudioManager.Intance.spiderShoot);
 
         if (gooScript != null) 
         {

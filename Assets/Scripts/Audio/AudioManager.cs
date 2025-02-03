@@ -17,7 +17,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip death;
     public AudioClip walking;
     public AudioClip running;
-    public AudioClip hit;
+    public AudioClip hitSpider;
+    public AudioClip hitArmadillo;
+    public AudioClip hitMan;
 
     [Header("MUSIC")]
     public AudioClip mainMenuMusic;
@@ -54,6 +56,8 @@ public class AudioManager : MonoBehaviour
 
     [Header("OTHER")]
     public AudioClip electricity;
+
+    public static AudioManager Intance;
 
     private void Awake()
     {
