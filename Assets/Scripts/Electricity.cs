@@ -56,7 +56,7 @@ public class Electricity : MonoBehaviour
         playerController.isBeingKnockedBack = true;
         float elpasedTime = 0f;
         Vector3 knockbackDirection = (playerPosition - transform.position).normalized;
-
+        
 
         while (elpasedTime < knockBackDuration)
         {
