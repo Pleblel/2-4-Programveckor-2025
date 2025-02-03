@@ -29,6 +29,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip drag;
     public AudioClip button;
     public AudioClip lever;
+    public AudioClip keycard;
     public AudioClip door;
     public AudioClip lightSwitchOn;
     public AudioClip lightSwitchOff;
@@ -39,10 +40,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip manCrying;
     public AudioClip manHitting;
     public AudioClip manScreaming;
-    public AudioClip ratNoise;
-    public AudioClip ratDeath;
     public AudioClip spiderShoot;
     public AudioClip spiderDeath;
+    public AudioClip armadilloWalk;
     public AudioClip armadilloDash;
     public AudioClip armadilloWallHit;
 
