@@ -106,6 +106,10 @@ public class PlayerAttack : MonoBehaviour
             NavMeshAgent enemyNMA = collider.GetComponent<NavMeshAgent>();
             if (entity != null && entity.isAlive && collider.CompareTag("Enemy"))
             {
+                string enemyName = collider.gameObject.name;//check name
+                GetComponent<PlayerHitSFX>().PlayHitSound(enemyName); //hit sound of enemy
+                Debug.Log("bap");
+
                 StartCoroutine(Knockback(enemyRb, collider.transform.position, enemyNMA));
                 entity.TakeDamage(_damage);
                 entity.Death();
