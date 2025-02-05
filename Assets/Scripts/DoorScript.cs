@@ -5,13 +5,13 @@ public class DoorScript : MonoBehaviour
 {
     public GameObject destinationDoor;
     public CanvasGroup canvasGroup;
-    public float exitOffset = 4f;
+    public float exitOffset = 2f;
     public float freezeDuration = 1f;
     public float fadeDuration = 1f;
     private bool fadingIn = false;
     private bool fadingOut = false;
 
-    private void Start()
+    private void Awake()
     {
         if (canvasGroup == null)
         {
@@ -19,9 +19,14 @@ public class DoorScript : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+     
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && enabled == true)
         {
             StartCoroutine(TransitionPlayer(other.transform));
         }
@@ -31,17 +36,9 @@ public class DoorScript : MonoBehaviour
     {
         yield return StartCoroutine(FadeIn());
 
-        // Get the forward direction of the destination door
-        Vector3 doorForward = destinationDoor.transform.forward;
 
-        // Compute exit position in front of the door
-        Vector3 exitPosition = destinationDoor.transform.position + (doorForward * exitOffset);
-
-        // Set player's position, maintaining their current height
-        player.position = new Vector3(exitPosition.x, player.position.y, exitPosition.z);
-
-        // Rotate the player to face away from the door
-        player.rotation = Quaternion.LookRotation(-doorForward);
+      
+        player.position = destinationDoor.transform.position; 
 
         // Freeze the game
         Time.timeScale = 0f;

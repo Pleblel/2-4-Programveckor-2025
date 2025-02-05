@@ -212,7 +212,7 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     {
         if (isRolling || bouncing)
         {
-            if (collision.gameObject.CompareTag("Wall"))
+            if (collision.gameObject.CompareTag("BWall"))
             {
 
                 isRolling = false;
