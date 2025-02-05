@@ -57,7 +57,7 @@ public class AudioManager : MonoBehaviour
     [Header("OTHER")]
     public AudioClip electricity;
 
-    public static AudioManager Intance;
+    public static AudioManager Instance;
 
     private void Awake()
     {

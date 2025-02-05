@@ -92,13 +92,16 @@ public class ArmadilloEnemy : BaseEntity, IMovable
 
     private bool IsInWalkRange()
     {
+
         if (player == null) return false;
         float distance = Vector3.Distance(transform.position, player.transform.position);
         return distance <= walkingRange;
+
     }
 
     private bool IsInRollRange()
     {
+
         if (player == null) return false;
         float distance = Vector3.Distance(transform.position, player.transform.position);
         return distance <= rollingRange;
@@ -114,6 +117,9 @@ public class ArmadilloEnemy : BaseEntity, IMovable
 
     public void Move(Vector3 destination)
     {
+
+        AudioManager.Instance.PlayMusic(AudioManager.Instance.armadilloWalk);
+
         if (!TooCloseToPlayer())
         {
             navMeshAgent.SetDestination(destination);
@@ -134,7 +140,9 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     }
 
     IEnumerator Roll()
-    {
+    {        
+        AudioManager.Instance.PlayMusic(AudioManager.Instance.armadilloDash);
+        
         if (!canRoll) yield break;
 
         canRoll = false;
@@ -170,6 +178,7 @@ public class ArmadilloEnemy : BaseEntity, IMovable
 
     public override void TakeDamage(float damage)
     {
+        AudioManager.Instance.PlayMusic(AudioManager.Instance.hitArmadillo);
         currentHealth -= (damage / defense);
     }
 

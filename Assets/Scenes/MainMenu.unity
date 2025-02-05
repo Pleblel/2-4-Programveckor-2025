@@ -260,18 +260,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1105921341}
   SFXSource: {fileID: 1821653987}
-  lowHealthBeat: {fileID: 0}
+  lowHealthBeat: {fileID: 8300000, guid: 2062560f3c53246f9b3557db5188ce64, type: 3}
   death: {fileID: 0}
   walking: {fileID: 8300000, guid: 287b1c23d46038e49addb55a4aa4790a, type: 3}
   running: {fileID: 8300000, guid: 62e2ca1904ea4124cbd7db1d84f0eeaa, type: 3}
-  hit: {fileID: 0}
+  hitSpider: {fileID: 8300000, guid: b482bedb7b6955040ab66ff5bdcba916, type: 3}
+  hitArmadillo: {fileID: 8300000, guid: d982ecc64fe519d419aa0a0cb6c17652, type: 3}
+  hitMan: {fileID: 8300000, guid: 61d259fa0f8e2ea4f842a91a92631c38, type: 3}
   mainMenuMusic: {fileID: 8300000, guid: 4ba4b9328d1154943ae745cbfdbf34a0, type: 3}
   settingMusic: {fileID: 8300000, guid: b32a257b821d0e548b6d971054fc4ae9, type: 3}
   calmGameMusic: {fileID: 8300000, guid: dc1d6b96e081b4befbd033dee4730596, type: 3}
   panicGameMusic: {fileID: 0}
   drag: {fileID: 0}
-  button: {fileID: 8300000, guid: 7bf91f9f50317f442ae9127facfcd67f, type: 3}
-  lever: {fileID: 0}
+  button: {fileID: 8300000, guid: 59b303824f913134fbb9a9a381228ae3, type: 3}
+  lever: {fileID: 8300000, guid: 0210c1127dd754ced9c723f73428cc1c, type: 3}
+  keycard: {fileID: 8300000, guid: 0854eb2aa90c6584792a55cd01d675aa, type: 3}
   door: {fileID: 8300000, guid: 0892a7d2709a35a438e910499fb4be18, type: 3}
   lightSwitchOn: {fileID: 8300000, guid: 7834238bebcf8c842b4af3424afd53f8, type: 3}
   lightSwitchOff: {fileID: 8300000, guid: 4e7a8bd4fb6f80944862209680824f29, type: 3}
@@ -279,11 +282,10 @@ MonoBehaviour:
   manCrying: {fileID: 8300000, guid: 5115c10679342204cbc819d61338f318, type: 3}
   manHitting: {fileID: 8300000, guid: 90105c98a76ad4dec9ec990d26140a70, type: 3}
   manScreaming: {fileID: 8300000, guid: aa2fb21a989be4e0dbdcca4f63ca8806, type: 3}
-  ratNoise: {fileID: 0}
-  ratDeath: {fileID: 0}
   spiderShoot: {fileID: 8300000, guid: 1f51b87f8a616534bb6350c97a519a8f, type: 3}
   spiderDeath: {fileID: 8300000, guid: c86c7b21d2245f94c84f1d330b3e9f40, type: 3}
-  armadilloDash: {fileID: 0}
+  armadilloWalk: {fileID: 8300000, guid: 4d11813f5983ce047873c94858e6a6c1, type: 3}
+  armadilloDash: {fileID: 8300000, guid: 18162cddc77438044b49e9769b0ae644, type: 3}
   armadilloWallHit: {fileID: 0}
   startButton: {fileID: 0}
   menuButtons: {fileID: 0}
