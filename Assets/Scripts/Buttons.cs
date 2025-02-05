@@ -7,6 +7,7 @@ public class Buttons : MonoBehaviour
     public bool buttonPressed = false;
     [SerializeField] BoxCollider bc;
     public Room room;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -46,5 +47,4 @@ public class Buttons : MonoBehaviour
         if (collision.collider.CompareTag("Box") || collision.collider.CompareTag("Player") || collision.collider.CompareTag("Enemy"))
             buttonPressed = false;
     }
-
 }
