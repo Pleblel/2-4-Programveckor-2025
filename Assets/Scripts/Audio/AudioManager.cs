@@ -30,7 +30,6 @@ public class AudioManager : MonoBehaviour
     [Header("INTERACTIONS")]
     public AudioClip drag;
     public AudioClip button;
-    public AudioClip lever;
     public AudioClip keycard;
     public AudioClip door;
     public AudioClip lightSwitchOn;
