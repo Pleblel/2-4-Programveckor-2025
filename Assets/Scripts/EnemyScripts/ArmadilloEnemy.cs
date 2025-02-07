@@ -178,7 +178,7 @@ public class ArmadilloEnemy : BaseEntity, IMovable
 
     public override void TakeDamage(float damage)
     {
-        AudioManager.Instance.PlayMusic(AudioManager.Instance.hitArmadillo);
+        //AudioManager.Instance.PlayMusic(AudioManager.Instance.hitArmadillo);
         currentHealth -= (damage / defense);
     }
 

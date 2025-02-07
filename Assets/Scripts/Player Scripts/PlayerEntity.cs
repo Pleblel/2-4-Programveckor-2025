@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerEntity : BaseEntity
 {
@@ -34,7 +35,7 @@ public class PlayerEntity : BaseEntity
     public override void Death()
     {
         if (!isAlive)
-            Destroy(gameObject);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public override void TakeDamage(float damage)
     {

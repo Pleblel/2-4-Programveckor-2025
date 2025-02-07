@@ -107,7 +107,7 @@ public class SpiderEnemy : BaseEntity, IMovable
         if (!isAlive)
             Destroy(gameObject);
 
-        AudioManager.Instance.PlayMusic(AudioManager.Instance.spiderDeath); 
+        //AudioManager.Instance.PlayMusic(AudioManager.Instance.spiderDeath); 
     }
     public override void TakeDamage(float damage)
     {
