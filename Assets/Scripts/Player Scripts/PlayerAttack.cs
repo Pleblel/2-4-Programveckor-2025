@@ -113,7 +113,7 @@ public class PlayerAttack : MonoBehaviour
             if (entity != null && entity.isAlive && collider.CompareTag("Enemy"))
             {
                 string enemyName = collider.gameObject.name;//check name
-                GetComponent<PlayerHitSFX>().PlayHitSound(enemyName); //hit sound of enemy
+                //GetComponent<PlayerHitSFX>().PlayHitSound(enemyName); //hit sound of enemy
                 Debug.Log("bap");
 
                 // Knocks back, deals damage and does death check

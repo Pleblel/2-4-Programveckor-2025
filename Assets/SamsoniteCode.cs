@@ -96,12 +96,25 @@ public class SamsoniteCode : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             keyPad.SetActive(true);
+        }
+            
+
+
+
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
             keyPad.SetActive(false);
+        }
+            
     }
 }
