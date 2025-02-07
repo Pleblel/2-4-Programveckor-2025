@@ -32,6 +32,7 @@ public class DoorScript : MonoBehaviour
         }
     }
 
+
     private IEnumerator TransitionPlayer(Transform player)
     {
         yield return StartCoroutine(FadeIn());

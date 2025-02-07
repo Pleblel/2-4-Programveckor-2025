@@ -12,6 +12,11 @@ public class Room : MonoBehaviour
 
     public GameObject electricityDoor;
 
+
+    public GameObject openDoor;
+
+    public GameObject closedDoor;
+
     DoorScript dS;
 
     void Start()
@@ -32,18 +37,37 @@ public class Room : MonoBehaviour
      if(noElectricityDoor != null)
      {
             if (!hasElectricity)
+            {
                 dS.enabled = true;
+                openDoor.SetActive(true);
+                closedDoor.SetActive(false);
+            }
             else
+            {
                 dS.enabled = false;
+                openDoor.SetActive(false);
+                closedDoor.SetActive(true);
+            }  
+          
+                
      }
      
      if(electricityDoor != null)
      {
             if (hasElectricity)
+            {
                 dS.enabled = true;
+                openDoor.SetActive(true);
+                closedDoor.SetActive(false);
+            }
             else
+            {
                 dS.enabled = false;
-     }
+                openDoor.SetActive(false);
+                closedDoor.SetActive(true);
+            }
+
+        }
 
 
     }
