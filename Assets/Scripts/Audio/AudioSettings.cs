@@ -15,12 +15,15 @@ public class AudioSettings : MonoBehaviour
     [SerializeField] private Slider SFXSlider;
 
     [Header("-------- Mute buttons --------")]
-    [SerializeField] Image masterOnIcon;
-    [SerializeField] Image masterOffIcon;
-    [SerializeField] Image musicOnIcon;
-    [SerializeField] Image musicOffIcon;
-    [SerializeField] Image SFXOnIcon;
-    [SerializeField] Image SFXOffIcon;
+    [SerializeField] Sprite masterOnIcon;
+    [SerializeField] Sprite masterOffIcon;
+    [SerializeField] Sprite musicOnIcon;
+    [SerializeField] Sprite musicOffIcon;
+    [SerializeField] Sprite SFXOnIcon;
+    [SerializeField] Sprite SFXOffIcon;
+    [SerializeField] Button masterMute;
+    [SerializeField] Button musicMute;
+    [SerializeField] Button SFXMute;
 
     private bool masterMuted = false;
     private bool musicMuted = false;
@@ -178,17 +181,17 @@ public class AudioSettings : MonoBehaviour
         audioMixer.SetFloat("SFX", SFXMuted ? -80f : Mathf.Log10(SFXSlider.value) * 20);
     }
 
-    private void UpdateButtonIcon()
+    public void UpdateButtonIcon()
     {
-        
-        masterOnIcon.enabled = !masterMuted;
-        masterOffIcon.enabled = masterMuted;
 
-        musicOnIcon.enabled = !musicMuted;
-        musicOffIcon.enabled = musicMuted;
-
-        SFXOnIcon.enabled = !SFXMuted;
-        SFXOffIcon.enabled = SFXMuted;
+        if (masterMuted)
+        {
+            masterMute.image.sprite = masterOffIcon;
+        }
+        else if (!masterMute)
+        {
+            masterMute.image.sprite = masterOnIcon;
+        }
 
     }
 
