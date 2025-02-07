@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
 {
@@ -18,19 +19,18 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
     }
     private void Update()
     {
-        // Check if player is inside the trigger zone and presses E while having the keycard in inventory
-        if (isPlayerInside && Input.GetKeyDown(KeyCode.E) && inventory.items.Contains(Keycard))
+        // Check if player is inside the trigger zone while having the keycard in inventory
+        if (isPlayerInside && inventory.items.Contains(Keycard))
         {
             if (!isOpening)
             {
-                Debug.Log("Hello chuzz");
-                StartCoroutine(DoorOpen());  // Start opening the door
+                SceneManager.LoadScene("MainMenu");
             }
         }
     }
 
     // Trigger event when player enters the doors detection zone
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
         if (((1 << other.gameObject.layer) & playerLayer) != 0)
         {
@@ -39,7 +39,7 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
     }
 
     // Trigger event when player exits the doors detection zone
-    private void OnTriggerExit(Collider other)
+    private void OnCollisionExit(Collision other)
     {
         if (((1 << other.gameObject.layer) & playerLayer) != 0)
         {

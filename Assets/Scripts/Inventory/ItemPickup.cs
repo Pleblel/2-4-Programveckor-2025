@@ -6,15 +6,31 @@ public class ItemPickup : MonoBehaviour
     [SerializeField] Item item;
     [SerializeField] InventoryManager IManager;
 
+    bool itemPickedUp = false;
+
+
+    private void Update()
+    {
+        if (itemPickedUp)
+            gameObject.SetActive(false);
+    }
+
+
     void Pickup()
     {
         IManager.Add(item);
         IManager.ListItem();
-        Destroy(gameObject);
+       
     }
 
-    private void OnMouseDown()
+
+    private void OnCollisionEnter(Collision collision)
     {
-        Pickup();
+        if (collision.collider.CompareTag("Player"))
+        {
+            Pickup();
+            itemPickedUp = true;
+        }
+        
     }
 }
