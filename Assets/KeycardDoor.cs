@@ -7,7 +7,7 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
     [SerializeField] LayerMask playerLayer; // Set to "Player" layer
     [SerializeField] InventoryManager inventory;
     [SerializeField] Item Keycard;
-    [SerializeField] Transform cool;
+    [SerializeField] Transform transform;
     bool isPlayerInside = false;
     bool isOpening = false;
     int timer = 0;
@@ -18,45 +18,49 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
     }
     private void Update()
     {
+        // Check if player is inside the trigger zone and presses E while having the keycard in inventory
         if (isPlayerInside && Input.GetKeyDown(KeyCode.E) && inventory.items.Contains(Keycard))
         {
             if (!isOpening)
             {
                 Debug.Log("Hello chuzz");
-                StartCoroutine(DoorOpen()); 
+                StartCoroutine(DoorOpen());  // Start opening the door
             }
         }
     }
 
+    // Trigger event when player enters the doors detection zone
     private void OnTriggerEnter(Collider other)
     {
         if (((1 << other.gameObject.layer) & playerLayer) != 0)
         {
-            isPlayerInside = true;
+            isPlayerInside = true; // Set flag indicating player is inside
         }
     }
 
+    // Trigger event when player exits the doors detection zone
     private void OnTriggerExit(Collider other)
     {
         if (((1 << other.gameObject.layer) & playerLayer) != 0)
         {
-            isPlayerInside = false;
+            isPlayerInside = false; // Reset flag indicating player left the area
         }
     }
 
     IEnumerator DoorOpen()
     {
         float elapsedTime = 0f;
-        Vector3 startPosition = cool.position;
+        Vector3 startPosition = transform.position;
         Vector3 endPosition = startPosition + new Vector3(0, 5f, 0);
 
+        // Move the door up over 2 seconds
         while (elapsedTime < 2)
         {
-            cool.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / 2);
+            transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / 2); // Smoothly change position
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        cool.position = endPosition;
+        transform.position = endPosition;
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    // Everyone
+
     [SerializeField] private AudioManager audioManager;
 
     
