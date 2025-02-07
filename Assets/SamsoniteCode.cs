@@ -18,8 +18,19 @@ public class SamsoniteCode : MonoBehaviour
     private string correctCombination;
     private string playerCombination = "";
 
+    public TextMeshProUGUI correctCodeText;
+    public GameObject keyPad;
+
+    public GameObject openDoorObject;
+    public GameObject closedDoorObject;
+    public BoxCollider bC;
+
     private void Start()
     {
+        openDoorObject.SetActive(false);
+        closedDoorObject.SetActive(true);
+
+
         textUIOutput.text = "";
 
         for (int i = 0; i < digits.Count; i++)
@@ -29,6 +40,8 @@ public class SamsoniteCode : MonoBehaviour
         }
 
         correctCombination = $"{digits[0]}{digits[1]}{digits[2]}{digits[3]}";
+
+        correctCodeText.text = correctCombination.ToString();
 
         for (int i = 0; i < numberButtons.Length; i++)
         {
@@ -64,7 +77,12 @@ public class SamsoniteCode : MonoBehaviour
         {
             Debug.Log("Correct Code Entered!");
             textUIOutput.text = "ACCESS GRANTED";
-            onKeypadCorrect?.Invoke();
+            openDoorObject.SetActive(true);
+            closedDoorObject.SetActive(false);
+            bC.enabled = false;
+            keyPad.SetActive(false);
+            enabled = false;
+            
         }
         else
         {
@@ -72,5 +90,18 @@ public class SamsoniteCode : MonoBehaviour
             textUIOutput.text = "ACCESS DENIED";
             playerCombination = ""; // Reset input
         }
+    }
+
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player"))
+            keyPad.SetActive(true);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+            keyPad.SetActive(false);
     }
 }
