@@ -7,6 +7,8 @@ public class Buttons : MonoBehaviour
     public bool buttonPressed = false;
     [SerializeField] BoxCollider bc;
     public Room room;
+    public GameObject doorEnabled;
+    public DoorScript dS;
     
 
     // Start is called before the first frame update
@@ -21,6 +23,16 @@ public class Buttons : MonoBehaviour
     void Update()
     {
         UpdateElectricityState();
+
+        if (doorEnabled != null && buttonPressed)
+        {
+            dS = doorEnabled.GetComponent<DoorScript>();
+            dS.enabled = true;
+
+        }
+
+        
+           
     }
 
     void UpdateElectricityState()

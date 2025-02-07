@@ -32,20 +32,16 @@ public class InventoryManager : MonoBehaviour
 
     public void ListItem()
     {
-        foreach (Transform item in itemContent)
-        {
-            Destroy(item.gameObject);
-        }
 
-        foreach (var item in items)
-        {
-            GameObject obj = Instantiate(inventoryItem, itemContent);
-            Debug.Log("Instantiate code passed");
-            var itemName = obj.transform.Find("ItemName").GetComponent<TextMeshProUGUI>();
-            var itemIcon = obj.transform.Find("ItemIcon").GetComponent<Image>();
+        /*  foreach (var item in items)
+          {
+              GameObject obj = Instantiate(inventoryItem, itemContent);
+              Debug.Log("Instantiate code passed");
+              var itemName = obj.transform.Find("ItemName").GetComponent<TextMeshProUGUI>();
+              var itemIcon = obj.transform.Find("ItemIcon").GetComponent<Image>();
 
-            itemName.text = item.itemName;
-            itemIcon.sprite = item.icon;
-        }
+              itemName.text = item.itemName;
+              itemIcon.sprite = item.icon;
+          }*/
     }
 }

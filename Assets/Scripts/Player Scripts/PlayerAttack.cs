@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class PlayerAttack : MonoBehaviour
 {
+
+    // Pelle
     [Header("UI Elements")]
     [SerializeField] Slider chargeBarSlider; // The UI slider element
 
@@ -85,6 +87,7 @@ public class PlayerAttack : MonoBehaviour
         currentCharge = Mathf.Clamp(currentCharge, 0f, maxCharge);
     }
 
+    // Damage calculation
     float CalculateDamage(float chargeTime)
     {
         float chargePercentage = chargeTime / maxCharge;
@@ -93,9 +96,11 @@ public class PlayerAttack : MonoBehaviour
 
     void DealDamage()
     {
-
+        // Calls damage calculatin.
         float _damage = CalculateDamage(currentCharge);
         Debug.Log(_damage);
+
+        // Creates collider for the attack
         Vector3 boxCenter = transform.position + transform.forward * hitboxDistance;
         this.GetComponent<Animator>().Play("Attack");
         Collider[] hitColliders = Physics.OverlapBox(boxCenter, hitboxSize / 2);
@@ -104,12 +109,14 @@ public class PlayerAttack : MonoBehaviour
             BaseEntity entity = collider.GetComponent<BaseEntity>();
             Rigidbody enemyRb = collider.GetComponent<Rigidbody>();
             NavMeshAgent enemyNMA = collider.GetComponent<NavMeshAgent>();
+            //checks if there is an enemy
             if (entity != null && entity.isAlive && collider.CompareTag("Enemy"))
             {
                 string enemyName = collider.gameObject.name;//check name
                 GetComponent<PlayerHitSFX>().PlayHitSound(enemyName); //hit sound of enemy
                 Debug.Log("bap");
 
+                // Knocks back, deals damage and does death check
                 StartCoroutine(Knockback(enemyRb, collider.transform.position, enemyNMA));
                 entity.TakeDamage(_damage);
                 entity.Death();
@@ -117,6 +124,7 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    // Darren
     IEnumerator Knockback(Rigidbody enemyRb, Vector3 enemyPosition, NavMeshAgent NMA)
     {
         NMA.isStopped = true;

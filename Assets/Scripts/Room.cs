@@ -34,19 +34,32 @@ public class Room : MonoBehaviour
     {
       UpdateLights();
 
+
+        bool doorsReal = openDoor != null && closedDoor != null; 
+
      if(noElectricityDoor != null)
      {
             if (!hasElectricity)
             {
                 dS.enabled = true;
-                openDoor.SetActive(true);
-                closedDoor.SetActive(false);
+
+                if (doorsReal)
+                {
+                    openDoor.SetActive(true);
+                    closedDoor.SetActive(false);
+                }
+                
             }
             else
             {
                 dS.enabled = false;
-                openDoor.SetActive(false);
-                closedDoor.SetActive(true);
+
+                if (doorsReal)
+                {
+                    openDoor.SetActive(false);
+                    closedDoor.SetActive(true);
+                }
+               
             }  
           
                 
@@ -57,14 +70,20 @@ public class Room : MonoBehaviour
             if (hasElectricity)
             {
                 dS.enabled = true;
-                openDoor.SetActive(true);
-                closedDoor.SetActive(false);
+                if (doorsReal)
+                {
+                    openDoor.SetActive(true);
+                    closedDoor.SetActive(false);
+                }
             }
             else
             {
                 dS.enabled = false;
-                openDoor.SetActive(false);
-                closedDoor.SetActive(true);
+                if (doorsReal)
+                {
+                    openDoor.SetActive(false);
+                    closedDoor.SetActive(true);
+                }
             }
 
         }
