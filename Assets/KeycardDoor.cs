@@ -19,7 +19,6 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
     }
     private void Update()
     {
-        // Check if player is inside the trigger zone while having the keycard in inventory
         if (isPlayerInside && inventory.items.Contains(Keycard))
         {
             if (!isOpening)
@@ -29,16 +28,12 @@ public class DoorCodeWithKeycardThatCanOpen : MonoBehaviour
         }
     }
 
-    // Trigger event when player enters the doors detection zone
-    private void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (((1 << other.gameObject.layer) & playerLayer) != 0)
-        {
-            isPlayerInside = true; // Set flag indicating player is inside
-        }
+        if (((1 << collision.gameObject.layer) & playerLayer) != 0)
+            isPlayerInside = true;
     }
 
-    // Trigger event when player exits the doors detection zone
     private void OnCollisionExit(Collision other)
     {
         if (((1 << other.gameObject.layer) & playerLayer) != 0)
