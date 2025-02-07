@@ -118,7 +118,7 @@ public class ArmadilloEnemy : BaseEntity, IMovable
     public void Move(Vector3 destination)
     {
 
-        AudioManager.Instance.PlayMusic(AudioManager.Instance.armadilloWalk);
+       // AudioManager.Instance.PlayMusic(AudioManager.Instance.armadilloWalk);
 
         if (!TooCloseToPlayer())
         {
@@ -141,7 +141,7 @@ public class ArmadilloEnemy : BaseEntity, IMovable
 
     IEnumerator Roll()
     {        
-        AudioManager.Instance.PlayMusic(AudioManager.Instance.armadilloDash);
+        //AudioManager.Instance.PlayMusic(AudioManager.Instance.armadilloDash);
         
         if (!canRoll) yield break;
 
@@ -246,6 +246,13 @@ public class ArmadilloEnemy : BaseEntity, IMovable
                 buttonScript.buttonPressed = true;
 
                 // Stop rolling after pressing a button
+                isRolling = false;
+                bouncing = false;
+            }
+           
+            
+            if (collision.gameObject.CompareTag("Wall"))
+            {
                 isRolling = false;
                 bouncing = false;
             }

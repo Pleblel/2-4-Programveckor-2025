@@ -10,22 +10,41 @@ public class Room : MonoBehaviour
 
     public GameObject noElectricityDoor;
 
+    public GameObject electricityDoor;
+
     DoorScript dS;
 
     void Start()
     {
         UpdateLights(); // Ensure the initial state is correct
+
+        if(noElectricityDoor != null)
         dS = noElectricityDoor.GetComponent<DoorScript>();
+
+        if (electricityDoor != null)
+            dS = electricityDoor.GetComponent<DoorScript>();
     }
 
     private void Update()
     {
-        UpdateLights();
+      UpdateLights();
 
-        if (!hasElectricity)
-            dS.enabled = true;
-        else
-            dS.enabled = false;
+     if(noElectricityDoor != null)
+     {
+            if (!hasElectricity)
+                dS.enabled = true;
+            else
+                dS.enabled = false;
+     }
+     
+     if(electricityDoor != null)
+     {
+            if (hasElectricity)
+                dS.enabled = true;
+            else
+                dS.enabled = false;
+     }
+
 
     }
 

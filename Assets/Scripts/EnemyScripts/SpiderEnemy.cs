@@ -155,7 +155,7 @@ public class SpiderEnemy : BaseEntity, IMovable
         GameObject GooInstance = Instantiate(Goo, bulletSpawn.position, Quaternion.identity);
         GooBall gooScript = GooInstance.GetComponent<GooBall>();
 
-        AudioManager.Instance.PlayMusic(AudioManager.Instance.spiderShoot);
+        //AudioManager.Instance.PlayMusic(AudioManager.Instance.spiderShoot);
 
         if (gooScript != null) 
         {

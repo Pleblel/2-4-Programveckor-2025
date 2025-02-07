@@ -33,7 +33,7 @@ public class Buttons : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.collider.CompareTag("Box") || collision.collider.CompareTag("Player") || collision.collider.CompareTag("Enemy"))
+        if (collision.collider.CompareTag("Box") || collision.collider.CompareTag("Player"))
             buttonPressed = true;
 
         if (collision.collider.CompareTag("Room"))
@@ -41,10 +41,17 @@ public class Buttons : MonoBehaviour
             room = collision.collider.GetComponent<Room>();
         }
     }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.CompareTag("Enemy"))
+            buttonPressed = true;
+    }
     private void OnCollisionExit(Collision collision)
     {
 
-        if (collision.collider.CompareTag("Box") || collision.collider.CompareTag("Player") || collision.collider.CompareTag("Enemy"))
+        if (collision.collider.CompareTag("Box") || collision.collider.CompareTag("Player"))
             buttonPressed = false;
     }
 }
