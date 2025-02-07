@@ -82,9 +82,6 @@ public class AudioSettings : MonoBehaviour
         musicSlider = GameObject.Find("Music Volume")?.GetComponent<Slider>();
         SFXSlider = GameObject.Find("Sound Effects")?.GetComponent<Slider>();
 
-        Debug.Log($"Master slider found: {masterSlider != null}");
-        Debug.Log($"Music slider found: {musicSlider != null}");
-        Debug.Log($"SFX slider found: {SFXSlider != null}");
 
         // If sliders are found, attach listeners and initialize them
         if (masterSlider != null)
@@ -104,10 +101,7 @@ public class AudioSettings : MonoBehaviour
             SFXSlider.onValueChanged.AddListener(delegate { SetSFXVolume(); });
             SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f); 
         }
-        Debug.Log($"Master Slider found: {masterSlider != null}");
-        Debug.Log($"Music Slider found: {musicSlider != null}");
-        Debug.Log($"SFX Slider found: {SFXSlider != null}");
-
+        
         LoadVolume();
     }
     public void SetMasterVolume()
@@ -183,12 +177,14 @@ public class AudioSettings : MonoBehaviour
 
     public void UpdateButtonIcon()
     {
+        if (masterMute != null)
+            masterMute.image.sprite = masterMuted ? masterOffIcon : masterOnIcon;
 
         if (masterMuted)
         {
             masterMute.image.sprite = masterOffIcon;
         }
-        else if (!masterMute)
+        else
         {
             masterMute.image.sprite = masterOnIcon;
         }
